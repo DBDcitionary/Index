@@ -1,0 +1,6 @@
+echo "# DB_Dictionary-Project" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/DBDcitionary/DB_Dictionary-Project.git
+git push -u origin master
