@@ -289,8 +289,10 @@ table {
     border: 1px solid #000;
   }
   .table {
+      border: 1px outset blue;
     border-collapse: collapse !important;
   }
+
   .table-bordered th,
   .table-bordered td {
     border: 1px solid #ddd !important;
