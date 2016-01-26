@@ -1,16 +1,3 @@
 ﻿ table {
-      border: 1px solid black;
     border-collapse: collapse !important;
   }
-
-
-    td {
-        border: 3px outset blue;
-        background-color: black;
-    }
-
-    
-    th {
-        border: 1px outset blue;
-        background-color:lightgray;
-    }
