@@ -1,0 +1,21 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   Spec Requirements/G4S Deposita Database Dictionary Functional System Specification.docx
+#	modified:   WebApplication1/.vs/WebApplication1/v14/.suo
+#
+# Changes not staged for commit:
+#	modified:   WebApplication1/WebApplication1/App_Data/DefaultConnection.mdf
+#	modified:   WebApplication1/WebApplication1/App_Data/DefaultConnection_log.ldf
+#	modified:   WebApplication1/WebApplication1/Controllers/HomeController.cs
+#	modified:   WebApplication1/WebApplication1/Views/Home/Index.cshtml
+#	modified:   WebApplication1/WebApplication1/bin/WebApplication1.dll
+#	modified:   WebApplication1/WebApplication1/bin/WebApplication1.pdb
+#	modified:   WebApplication1/WebApplication1/obj/Debug/WebApplication1.dll
+#	modified:   WebApplication1/WebApplication1/obj/Debug/WebApplication1.pdb
+#
+
