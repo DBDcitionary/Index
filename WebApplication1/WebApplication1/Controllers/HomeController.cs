@@ -11,7 +11,11 @@ namespace WebApplication1.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
+<<<<<<< HEAD
 
+=======
+            ViewBag.MyName = "Whaever";
+>>>>>>> origin/master
             return View();
         }
 
