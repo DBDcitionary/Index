@@ -29,6 +29,11 @@
 th{
     font-size:medium;
     height: 60px;
+    border-color:#999;
+}
+
+table {
+
 }
 
 article,
