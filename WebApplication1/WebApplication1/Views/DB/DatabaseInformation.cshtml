@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication1.Database_Tbl>
+
+@{
+    ViewBag.Title = "DatabaseInformation";
+}
+
+<h2>DatabaseInformation</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DB_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DB_Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DB_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DB_Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.DB_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DB_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DB_ID })
+        </td>
+    </tr>
+}
+
+</table>
