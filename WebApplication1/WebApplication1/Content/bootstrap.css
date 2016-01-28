@@ -29,15 +29,8 @@
 th{
     font-size:medium;
     height: 60px;
-<<<<<<< refs/remotes/origin/master
-    border-color:#999;
 }
 
-table {
-
-=======
->>>>>>> master~2
-}
 
 article,
 aside,
@@ -308,7 +301,7 @@ table {
     border: 1px solid #000;
   }
   .table {
-      border: 1px outset blue;
+    border: 1px outset blue;
     border-collapse: collapse !important;
   }
 
@@ -340,7 +333,6 @@ body {
 }
 
 .jumbotron {
-height:20px;
 margin-top: -113px;
 }
 
@@ -1458,7 +1450,7 @@ th {
 
 .table thead > tr > th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dddddd;
+  border-bottom: 3px solid #dddddd;
 }
 
 .table caption + thead tr:first-child th,
