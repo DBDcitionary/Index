@@ -320,6 +320,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\DB\DatabaseInformation.cshtml" />
     <Content Include="Views\DB\Index.cshtml" />
+    <Content Include="Views\DB\TableInformation.cshtml" />
+    <Content Include="Views\DB\FieldInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
