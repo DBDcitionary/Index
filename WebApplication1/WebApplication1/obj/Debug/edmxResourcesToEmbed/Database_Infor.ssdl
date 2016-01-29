@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB_DictionaryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Database_Tbl">
+    <Key>
+      <PropertyRef Name="DB_ID" />
+    </Key>
+    <Property Name="DB_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DB_Name" Type="varchar" MaxLength="225" />
+    <Property Name="DB_Description" Type="varchar" MaxLength="225" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Field_Tbl">
+    <Key>
+      <PropertyRef Name="Field_ID" />
+    </Key>
+    <Property Name="Field_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Field_Name" Type="varchar" MaxLength="225" />
+    <Property Name="Field_Description" Type="varchar" MaxLength="225" Nullable="false" />
+    <Property Name="TBL_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Table_Tbl">
+    <Key>
+      <PropertyRef Name="TBL_ID" />
+    </Key>
+    <Property Name="TBL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TBL_Name" Type="varchar" MaxLength="225" />
+    <Property Name="TBL_Description" Type="varchar" MaxLength="225" Nullable="false" />
+    <Property Name="DB_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User_Role_Tbl">
+    <Key>
+      <PropertyRef Name="User_Role_ID" />
+    </Key>
+    <Property Name="User_Role_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Role" Type="varchar" MaxLength="50" />
+    <Property Name="Role_Description" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="User_Tbl">
+    <Key>
+      <PropertyRef Name="User_ID" />
+    </Key>
+    <Property Name="User_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="User_Role_ID" Type="int" />
+    <Property Name="Password" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="fk_DB_TBL">
+    <End Role="Database_Tbl" Type="Self.Database_Tbl" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Database_Tbl">
+        <PropertyRef Name="DB_ID" />
+      </Principal>
+      <Dependent Role="Table_Tbl">
+        <PropertyRef Name="DB_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_TBL_Field">
+    <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Field_Tbl" Type="Self.Field_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Table_Tbl">
+        <PropertyRef Name="TBL_ID" />
+      </Principal>
+      <Dependent Role="Field_Tbl">
+        <PropertyRef Name="TBL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserRoleID">
+    <End Role="User_Role_Tbl" Type="Self.User_Role_Tbl" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="User_Tbl" Type="Self.User_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_Role_Tbl">
+        <PropertyRef Name="User_Role_ID" />
+      </Principal>
+      <Dependent Role="User_Tbl">
+        <PropertyRef Name="User_Role_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DB_DictionaryModelStoreContainer">
+    <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_DB_TBL" Association="Self.fk_DB_TBL">
+      <End Role="Database_Tbl" EntitySet="Database_Tbl" />
+      <End Role="Table_Tbl" EntitySet="Table_Tbl" />
+    </AssociationSet>
+    <AssociationSet Name="fk_TBL_Field" Association="Self.fk_TBL_Field">
+      <End Role="Table_Tbl" EntitySet="Table_Tbl" />
+      <End Role="Field_Tbl" EntitySet="Field_Tbl" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserRoleID" Association="Self.fk_UserRoleID">
+      <End Role="User_Role_Tbl" EntitySet="User_Role_Tbl" />
+      <End Role="User_Tbl" EntitySet="User_Tbl" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
