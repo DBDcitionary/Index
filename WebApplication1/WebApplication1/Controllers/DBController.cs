@@ -21,14 +21,14 @@ namespace WebApplication1.Controllers
             return View(db.Database_Tbl.ToList());
         }
 
-        public ActionResult TableInformation()
+        public ActionResult TableInformation(int? dB_ID)
         {
-            return View(db.Table_Tbl.ToList());
+            return View(db.Table_Tbl.Where(T => T.DB_ID == dB_ID).First());
         }
 
-        public ActionResult FieldInformation()
+        public ActionResult FieldInformation(int? tbl_ID)
         {
-            return View(db.Field_Tbl.ToList());
+            return View(db.Field_Tbl.Where(L => L.TBL_ID == tbl_ID).FirstOrDefault());
         }
     }
 }
