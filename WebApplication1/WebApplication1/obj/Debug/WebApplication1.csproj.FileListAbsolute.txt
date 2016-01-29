@@ -159,6 +159,7 @@ C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\
 C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache
 C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\ApplicationInsights.config
@@ -177,8 +178,6 @@ C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplicatio
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.dll.config
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.pdb
-C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.dll.CodeAnalysisLog.xml
-C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.dll.lastcodeanalysissucceeded
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Antlr3.Runtime.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\EntityFramework.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\EntityFramework.SqlServer.dll
@@ -244,4 +243,4 @@ C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplicatio
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
-C:\Users\khensani.baloyi\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache

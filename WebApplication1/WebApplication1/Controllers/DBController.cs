@@ -20,5 +20,15 @@ namespace WebApplication1.Controllers
         {
             return View(db.Database_Tbl.ToList());
         }
+
+        public ActionResult TableInformation()
+        {
+            return View(db.Table_Tbl.ToList());
+        }
+
+        public ActionResult FieldInformation()
+        {
+            return View(db.Field_Tbl.ToList());
+        }
     }
 }
