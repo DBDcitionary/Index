@@ -24,11 +24,14 @@
 th{
     font-size:medium;
     height: 60px;
+<<<<<<< refs/remotes/origin/master
     border-color:#999;
 }
 
 table {
 
+=======
+>>>>>>> master~2
 }
 
 article,
@@ -327,7 +330,12 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
-  background-color: #ffffff;
+  background-color: whitesmoke;
+}
+
+.jumbotron {
+height:20px;
+margin-top: -113px;
 }
 
 input,
@@ -1444,7 +1452,7 @@ th {
 
 .table thead > tr > th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dddddd;
+  border-bottom: 3px solid #dddddd;
 }
 
 .table caption + thead tr:first-child th,
