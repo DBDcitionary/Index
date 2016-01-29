@@ -18,7 +18,6 @@ namespace WebApplication1.Controllers
 
         public ActionResult DatabaseInformation()
         {
-
             return View(db.Database_Tbl.ToList());
         }
     }
