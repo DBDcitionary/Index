@@ -11,14 +11,17 @@ namespace WebApplication1
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     
+    [Table("Table_Tbl")]
     public partial class Field_Tbl
     {
         public int Field_ID { get; set; }
         public string Field_Name { get; set; }
         public string Field_Description { get; set; }
         public int TBL_ID { get; set; }
-    
+        public List<Table_Tbl> FieldInfor { get; set; }
+
         public virtual Table_Tbl Table_Tbl { get; set; }
     }
 }

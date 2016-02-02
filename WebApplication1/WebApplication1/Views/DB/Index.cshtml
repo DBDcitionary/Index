@@ -1,10 +1,22 @@
-﻿
-@{
-    ViewBag.Title = "Index";
-}
+﻿@using WebApplication1.Models;
+@model IEnumerable<WebApplication1.Database_Tbl>
 
-<div class="jumbotron">
-    <h1>Database Dictionary</h1>
+<div>
+    @{
+        ViewBag.Title = "DatabaseInformation";
+    }
+
+    <div class="jumbotron">
+        <h1>Database Dictionary</h1>
+    </div>
+
+    <h2>Database Information</h2><br />
+    <ul>
+        @foreach (var item in Model) {
+            <li>@Html.ActionLink(item.DB_Name,"Index","TableInformation",new { db_ID = item.DB_ID},null)</li>
+        }
+    </ul>
 </div>
+
 
 

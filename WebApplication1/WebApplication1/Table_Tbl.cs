@@ -11,7 +11,9 @@ namespace WebApplication1
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("Database_Tbl")]
     public partial class Table_Tbl
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,12 +21,18 @@ namespace WebApplication1
         {
             this.Field_Tbl = new HashSet<Field_Tbl>();
         }
-    
+
+        internal object First()
+        {
+            throw new NotImplementedException();
+        }
+
         public int TBL_ID { get; set; }
         public string TBL_Name { get; set; }
         public string TBL_Description { get; set; }
         public int DB_ID { get; set; }
-    
+        public List<Database_Tbl> TableInfor { get; set; }
+
         public virtual Database_Tbl Database_Tbl { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Field_Tbl> Field_Tbl { get; set; }

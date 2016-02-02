@@ -33,9 +33,9 @@
             @Html.DisplayFor(modelItem => item.DB_Description)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DB_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DB_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.DB_ID })
+            @Html.ActionLink("Edit","", new { dB_ID=item.DB_ID }) |
+            @Html.ActionLink("Details", "TableInformation","DB", new { dB_ID=item.DB_ID },null) |
+            @Html.ActionLink("Delete", "", new { dB_ID=item.DB_ID })
         </td>
     </tr>
 }

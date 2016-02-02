@@ -3,13 +3,22 @@
 @{
     ViewBag.Title = "FieldInformation";
 }
+<div class="jumbotron">
+    <h1>Database Dictionary</h1>
+</div>
 
-<h2>FieldInformation</h2>
+<h2>Field Information</h2><br />
+
+<div>
+    <span class="glyphicon glyphicon-arrow-left">
+        @Html.ActionLink("Back to previous page", null, null, null, new { href = Request.UrlReferrer })
+    </span>
+</div><br />
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-striped">
     <tr>
         <th> Name
             <!--@Html.DisplayNameFor(model => model.Field_Name)-->
@@ -19,8 +28,8 @@
         </th>
         <th></th>
     </tr>
-
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Field_Name)
@@ -29,11 +38,9 @@
             @Html.DisplayFor(modelItem => item.Field_Description)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Field_ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Field_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Field_ID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.Field_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Field_ID })
         </td>
     </tr>
-}
-
+    }
 </table>
