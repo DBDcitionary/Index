@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication1.Field_Tbl>
+
+@{
+    ViewBag.Title = "FieldInformation";
+}
+
+<h2>FieldInformation</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th> Name
+            <!--@Html.DisplayNameFor(model => model.Field_Name)-->
+        </th>
+        <th> Description
+            <!--@Html.DisplayNameFor(model => model.Field_Description)-->
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Field_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Field_Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Field_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Field_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Field_ID })
+        </td>
+    </tr>
+}
+
+</table>

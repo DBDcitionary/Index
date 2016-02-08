@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebApplication1.Table_Tbl>
+
+@{
+    ViewBag.Title = "TableInformation";
+}
+
+<h2>TableInformation</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th> Name
+           <!--@Html.DisplayNameFor(model => model.TBL_Name)-->
+        </th>
+        <th> Description
+            <!--@Html.DisplayNameFor(model => model.TBL_Description)-->
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TBL_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TBL_Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TBL_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TBL_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TBL_ID })
+        </td>
+    </tr>
+}
+
+</table>
