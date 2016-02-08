@@ -90,38 +90,44 @@ namespace WebApplication1.Controllers
         public ActionResult Search(string searchby, string search)
         {
             qlist querylist = new qlist();//Variable
-            
-            if (searchby == "1")
-            { 
-                //Returning results and Refined by Database information
-                querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search) || a.DB_Name == search || search == null).ToList();
-                querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList();
-                querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name ==  search).ToList();
-                return View(querylist);
-            }
-            else if (searchby == "2")
+            try
             {
-                //Returning results and Refined by Table information
-                querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList();
-                querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search || b.TBL_Name.StartsWith(search) || search == null).ToList();
-                querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search).ToList();
-                return View(querylist);
+                if (searchby == "1")
+                {
+                    //Returning results and Refined by Database information 
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search) || a.DB_Name == search || search == null).ToList();//Getting database information list 
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList();
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search).ToList();
+                    return View(querylist);
+                }
+                else if (searchby == "2")
+                {
+                    //Returning results and Refined by Table information
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList();
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search || b.TBL_Name.StartsWith(search) || search == null).ToList();//Gettting Table information list
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search).ToList();
+                    return View(querylist);
+                }
+                else if (searchby == "3")
+                {
+                    //Returning results and Refined by Field Information
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList();
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList();
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search || c.Field_Name.StartsWith(search) || search == null).ToList();//Getting Field Infromation list
+                    return View(querylist);
+                }
+                else
+                {
+                    //Returning results
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search)).ToList();//Getting database information list
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name.StartsWith(search)).ToList();//Gettting Table information list
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name.StartsWith(search)).ToList();//Getting Field Infromation list
+                    return View(querylist);//Passing View With List that is Contained in querylist variable
+                }
             }
-            else if (searchby == "3")
+            catch (Exception exp)
             {
-                //Returning results and Refined by Field Information
-                querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList();
-                querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList();
-                querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search || c.Field_Name.StartsWith(search) || search == null).ToList();
-                return View(querylist);
-            }
-            else
-            {
-                //Returning results
-                querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search)).ToList();//Getting database information list
-                querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name.StartsWith(search)).ToList();//Gettting Table information list
-                querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name.StartsWith(search)).ToList();//Getting Field Infromation list
-                return View(querylist);//Passing View With List that is Contained in querylist variable
+                throw exp;
             }
      
         }

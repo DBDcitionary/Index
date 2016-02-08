@@ -18,20 +18,20 @@ a{
 #search {
     position:absolute;
     top:80px;
-    right:120px;
+    right:100px;
 }
 
 #btnSearch{
     position:absolute;
-    top: 78px;
-    right:-89px;
+    top: 130px;
+    right:-25px;
     border-radius: 0 !important;
 }
 
 #searchtxtbox{
     position:absolute;
-    top: -2px;
-    right:-169px;
+    top: 50px;
+    right:-84px;
 }
 
 #rbtn{
@@ -45,8 +45,12 @@ label{
     font-size:larger;
 }
 
-.btn{
+.btn {
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
-    background-color:lightgray;
+    background-color: lightgray;
+}
+
+fieldset {
+    
 }
