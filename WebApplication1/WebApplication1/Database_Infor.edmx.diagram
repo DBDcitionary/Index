@@ -13,6 +13,10 @@
         <AssociationConnector Association="DB_DictionaryModel.fk_DB_TBL" ManuallyRouted="false" />
         <AssociationConnector Association="DB_DictionaryModel.fk_TBL_Field" ManuallyRouted="false" />
         <AssociationConnector Association="DB_DictionaryModel.fk_UserRoleID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DB_DictionaryModel.lk_ObjectType" Width="1.5" PointX="7.875" PointY="3.25" />
+        <AssociationConnector Association="DB_DictionaryModel.fk_DB_ObjectType" />
+        <AssociationConnector Association="DB_DictionaryModel.fk_FIELD_ObjectType" />
+        <AssociationConnector Association="DB_DictionaryModel.fk_TBL_ObjectType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

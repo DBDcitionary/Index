@@ -9,8 +9,26 @@
 
 <h2>Table Information</h2><br />
 
+<div id="search">
+    <p>
+        @using (@Html.BeginForm("search", "DB", FormMethod.Get))
+        {
+            <label>Search: </label><br />
+            @Html.RadioButton("searchby", "1")<text> Database </text>
+            @Html.RadioButton("searchby", "2")<text> Table </text>
+            @Html.RadioButton("searchby", "3")<text> Field </text><br /><br />
+            <div id="searchtxtbox">
+                @Html.TextBox("search", null, new { placeholder = "Search...", style = "Height:34px;Width:240px" })
+            </div>
+            <div id="btnSearch">
+                <button type="submit" class="btn btn-primary" value="search"><span class="glyphicon glyphicon-search"></span></button>
+            </div>
+        }
+    </p>
+</div>
+
 <div>
-    <span class="glyphicon glyphicon-arrow-left">
+    <span class="glyphicon glyphicon-circle-arrow-left">
         @Html.ActionLink("Back to previous page", null, null, null, new { href = Request.UrlReferrer })
     </span>
 </div><br />

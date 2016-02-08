@@ -6,16 +6,11 @@
         ViewBag.Title = "DatabaseInformation";
     }
 
-    <div class="jumbotron">
+<div class="jumbotron">
         <h1>Database Dictionary</h1>
     </div>
 
     <h2>Database Information</h2><br />
-    <ul>
-        @foreach (var item in Model) {
-            <li>@Html.ActionLink(item.DB_Name,"Index","TableInformation",new { db_ID = item.DB_ID},null)</li>
-        }
-    </ul>
 </div>
 
 
