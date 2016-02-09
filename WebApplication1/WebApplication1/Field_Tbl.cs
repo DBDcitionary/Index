@@ -18,7 +18,9 @@ namespace WebApplication1
         public string Field_Name { get; set; }
         public string Field_Description { get; set; }
         public int TBL_ID { get; set; }
+        public Nullable<int> ObjectTypeID { get; set; }
     
         public virtual Table_Tbl Table_Tbl { get; set; }
+        public virtual lk_ObjectType lk_ObjectType { get; set; }
     }
 }

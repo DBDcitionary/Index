@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="logo">
-        <a href="~/"><img src="~/fonts/logo.jpg"></a>
+        <a style="background-color:transparent;border:none" href="~/"><img src="~/fonts/logo.jpg"></a>
     </div>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -23,7 +23,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Home", "DatabaseInformation", "DB")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>

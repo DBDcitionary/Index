@@ -7,6 +7,7 @@
     <Property Name="DB_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DB_Name" Type="varchar" MaxLength="225" />
     <Property Name="DB_Description" Type="varchar" MaxLength="225" Nullable="false" />
+    <Property Name="ObjectTypeID" Type="int" />
   </EntityType>
   <EntityType Name="Field_Tbl">
     <Key>
@@ -16,6 +17,15 @@
     <Property Name="Field_Name" Type="varchar" MaxLength="225" />
     <Property Name="Field_Description" Type="varchar" MaxLength="225" Nullable="false" />
     <Property Name="TBL_ID" Type="int" Nullable="false" />
+    <Property Name="ObjectTypeID" Type="int" />
+  </EntityType>
+  <EntityType Name="lk_ObjectType">
+    <Key>
+      <PropertyRef Name="ObjectTypeID" />
+    </Key>
+    <Property Name="ObjectTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Object_Type" Type="varchar" MaxLength="255" />
+    <Property Name="Object_Description" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="Table_Tbl">
     <Key>
@@ -25,6 +35,7 @@
     <Property Name="TBL_Name" Type="varchar" MaxLength="225" />
     <Property Name="TBL_Description" Type="varchar" MaxLength="225" Nullable="false" />
     <Property Name="DB_ID" Type="int" Nullable="false" />
+    <Property Name="ObjectTypeID" Type="int" />
   </EntityType>
   <EntityType Name="User_Role_Tbl">
     <Key>
@@ -43,6 +54,20 @@
     <Property Name="User_Role_ID" Type="int" />
     <Property Name="Password" Type="varbinary(max)" />
   </EntityType>
+  <Association Name="fk_DB_ObjectType">
+    <End Role="lk_ObjectType" Type="Self.lk_ObjectType" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Database_Tbl" Type="Self.Database_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lk_ObjectType">
+        <PropertyRef Name="ObjectTypeID" />
+      </Principal>
+      <Dependent Role="Database_Tbl">
+        <PropertyRef Name="ObjectTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_DB_TBL">
     <End Role="Database_Tbl" Type="Self.Database_Tbl" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -57,6 +82,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_FIELD_ObjectType">
+    <End Role="lk_ObjectType" Type="Self.lk_ObjectType" Multiplicity="0..1" />
+    <End Role="Field_Tbl" Type="Self.Field_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lk_ObjectType">
+        <PropertyRef Name="ObjectTypeID" />
+      </Principal>
+      <Dependent Role="Field_Tbl">
+        <PropertyRef Name="ObjectTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_TBL_Field">
     <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -68,6 +105,18 @@
       </Principal>
       <Dependent Role="Field_Tbl">
         <PropertyRef Name="TBL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_TBL_ObjectType">
+    <End Role="lk_ObjectType" Type="Self.lk_ObjectType" Multiplicity="0..1" />
+    <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lk_ObjectType">
+        <PropertyRef Name="ObjectTypeID" />
+      </Principal>
+      <Dependent Role="Table_Tbl">
+        <PropertyRef Name="ObjectTypeID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -88,16 +137,29 @@
   <EntityContainer Name="DB_DictionaryModelStoreContainer">
     <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="lk_ObjectType" EntityType="Self.lk_ObjectType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_DB_ObjectType" Association="Self.fk_DB_ObjectType">
+      <End Role="lk_ObjectType" EntitySet="lk_ObjectType" />
+      <End Role="Database_Tbl" EntitySet="Database_Tbl" />
+    </AssociationSet>
     <AssociationSet Name="fk_DB_TBL" Association="Self.fk_DB_TBL">
       <End Role="Database_Tbl" EntitySet="Database_Tbl" />
       <End Role="Table_Tbl" EntitySet="Table_Tbl" />
     </AssociationSet>
+    <AssociationSet Name="fk_FIELD_ObjectType" Association="Self.fk_FIELD_ObjectType">
+      <End Role="lk_ObjectType" EntitySet="lk_ObjectType" />
+      <End Role="Field_Tbl" EntitySet="Field_Tbl" />
+    </AssociationSet>
     <AssociationSet Name="fk_TBL_Field" Association="Self.fk_TBL_Field">
       <End Role="Table_Tbl" EntitySet="Table_Tbl" />
       <End Role="Field_Tbl" EntitySet="Field_Tbl" />
+    </AssociationSet>
+    <AssociationSet Name="fk_TBL_ObjectType" Association="Self.fk_TBL_ObjectType">
+      <End Role="lk_ObjectType" EntitySet="lk_ObjectType" />
+      <End Role="Table_Tbl" EntitySet="Table_Tbl" />
     </AssociationSet>
     <AssociationSet Name="fk_UserRoleID" Association="Self.fk_UserRoleID">
       <End Role="User_Role_Tbl" EntitySet="User_Role_Tbl" />
