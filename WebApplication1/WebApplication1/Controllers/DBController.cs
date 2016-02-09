@@ -12,7 +12,6 @@ namespace WebApplication1.Controllers
         // GET: DB Information
         public ActionResult Index()
         {
-
             return View();
         }
 
