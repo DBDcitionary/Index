@@ -31,9 +31,7 @@
 </div>
 
 <div>
-    <span class="glyphicon glyphicon-circle-arrow-left">
-        @Html.ActionLink("Back to previous page", null, null, null, new { href = Request.UrlReferrer })
-    </span>
+    <a href="javascript:void(0);" onclick="history.go(-1);" style="text-decoration:none"><span class="glyphicon glyphicon-circle-arrow-left"></span> Return to the Previous Page</a>
 </div><br />
 
 <p>
