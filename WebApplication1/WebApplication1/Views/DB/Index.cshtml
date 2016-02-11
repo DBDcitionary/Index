@@ -5,6 +5,15 @@
     @{
         ViewBag.Title = "DatabaseInformation";
     }
+    <p>
+        @Html.ActionLink("Create New","Create")
+        @using (Html.BeginForm("DatabaseInformation", "Database_Tbl", FormMethod.Get))
+        {
+            <p>
+                <input type="submit" value="filter" />
+            </p>
+        }
+    </p>
 
 <div class="jumbotron">
         <h1>Database Dictionary</h1>
