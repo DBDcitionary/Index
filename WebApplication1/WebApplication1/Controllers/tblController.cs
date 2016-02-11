@@ -24,15 +24,7 @@ namespace WebApplication1.Controllers
         // GET: tbl/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Table_Tbl table_Tbl = db.Table_Tbl.Find(id);
-            if (table_Tbl == null)
-            {
-                return HttpNotFound();
-            }
             return View(table_Tbl);
         }
 

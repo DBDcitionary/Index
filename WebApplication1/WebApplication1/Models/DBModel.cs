@@ -16,6 +16,7 @@ namespace WebApplication1.Models
             public string DB_Name { get; set; }
             public string DB_Description { get; set; }
 
+
             //Properties for Table Elements
             [Key]
             public int TBL_ID { get; set; }
