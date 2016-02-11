@@ -11,7 +11,7 @@ namespace WebApplication1.Controllers
 {
     public class DBController : Controller
     {
-        private DB_DictionaryContext db = new DB_DictionaryContext(); //Variale for Database Connection.
+        private DB_DictionaryContext db = new DB_DictionaryContext(); //Variable for Database Connection.
         // GET: DB Information
         public ActionResult Index()
         {
@@ -25,6 +25,7 @@ namespace WebApplication1.Controllers
             //**************************************
             try
             {
+                
                 var dbInfo = db.Database_Tbl.ToList();//Listing Database Information
                 return View(dbInfo);//passing the view page with the results
             }
@@ -41,7 +42,7 @@ namespace WebApplication1.Controllers
             //***************************************
             try
             {
-                //Condition to check the ID of the Database is not Empty
+                //Condition to check the ID of the Database if is not Empty
                 if (dB_ID == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -67,7 +68,7 @@ namespace WebApplication1.Controllers
             //***************************************
             try
             {
-                //Condition to check the ID of the table is not Empty
+                //Condition to check the ID of the table if `is not Empty
                 if (tbl_ID == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -130,6 +131,15 @@ namespace WebApplication1.Controllers
                 throw exp;
             }
      
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
     }
