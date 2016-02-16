@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DBController.cs" />
+    <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\tblController.cs" />
@@ -337,6 +338,8 @@
     <Content Include="Views\tbl\Index.cshtml" />
     <Content Include="Views\tbl\tblInformation.cshtml" />
     <Content Include="Views\DB\Search.cshtml" />
+    <Content Include="Views\DB\Create.cshtml" />
+    <Content Include="Views\Field\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,18 +10,10 @@ namespace WebApplication1.Models
     {
         public Context() : base("WebApplication1ConnectionString")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, WebApplication1.Migrations.Configuration>("WebApplication1ConnectionString"));
         }
-
         public DbSet<Database_Tbl> dbInfor { get; set; }
         public DbSet<Table_Tbl> tblInfor { get; set; }
         public DbSet<Field_Tbl> fldInfor { get; set; }
         public DbSet<lk_ObjectType> lkO_type { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
-    }
-
+     }
 }

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
 using System.Data.Entity;
+using System.Data;
 
 namespace WebApplication1.Controllers
 {
@@ -141,5 +142,58 @@ namespace WebApplication1.Controllers
             base.Dispose(disposing);
         }
 
+        //GET: DB/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "DB_Name,DB_Description")] Database_Tbl database_Tbl)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Database_Tbl.Add(database_Tbl);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+            }
+            catch
+            {
+                //Log the error.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your systems administrator.");
+            }
+            return View(database_Tbl);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            Database_Tbl database_Tbl = db.Database_Tbl.Find(id);
+            return View(database_Tbl);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include ="DB_Name,DB_Description")] Database_Tbl database_Tbl)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(database_Tbl).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch(DataMisalignedException /*dex */)
+            {
+                //Log the error.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your systems administrator");
+            }
+            return View(database_Tbl);
+        }
     }
 }
