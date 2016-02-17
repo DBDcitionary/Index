@@ -56,4 +56,7 @@ fieldset {
     
 }
 
-
+#ErrorWarning{
+    background-color: #ff0000;
+    color: white;
+} 

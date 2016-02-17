@@ -242,4 +242,8 @@ C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplicatio
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\PagedList.dll
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\PagedList.Mvc.dll
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\PagedList.xml
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\PagedList.Mvc.xml
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache

@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
 using System.Data.Entity;
+using PagedList;
+using PagedList.Mvc;
 
 namespace WebApplication1.Controllers
 {
@@ -31,7 +33,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception exp)
             {
-                throw exp;
+                return View("Error");
             }
         }
 
@@ -57,7 +59,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception exp)
             {
-                throw exp;
+                return View("Error");
             }
         }
 
@@ -83,12 +85,12 @@ namespace WebApplication1.Controllers
             }
             catch (Exception exp)
             {
-                throw exp;
+                return View("Error");
             }
         }
 
         [HttpGet]
-        public ActionResult Search(string searchby, string search)
+        public ActionResult Search(string searchby, string search,int ? page)
         {
             qlist querylist = new qlist();//Variable
             try
@@ -96,39 +98,44 @@ namespace WebApplication1.Controllers
                 if (searchby == "1")
                 {
                     //Returning results and Refined by Database information 
-                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search) || a.DB_Name == search || search == null).ToList();//Getting database information list 
-                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList();
-                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search).ToList();
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search) || a.DB_Name == search || search == null).ToList().ToPagedList(page ?? 1, 2);//Getting database information list
+                     
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList().ToPagedList(page ?? 1, 2);
+
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search).ToList().ToPagedList(page ?? 1, 2);
+
                     return View(querylist);
                 }
                 else if (searchby == "2")
                 {
                     //Returning results and Refined by Table information
-                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList();
-                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search || b.TBL_Name.StartsWith(search) || search == null).ToList();//Gettting Table information list
-                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search).ToList();
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList().ToPagedList(page ?? 1, 3);
+
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search || b.TBL_Name.StartsWith(search) || search == null).ToList().ToPagedList(page ?? 1, 3);//Gettting Table information list
+
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search).ToList().ToPagedList(page ?? 1, 3);
                     return View(querylist);
                 }
                 else if (searchby == "3")
                 {
                     //Returning results and Refined by Field Information
-                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList();
-                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList();
-                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search || c.Field_Name.StartsWith(search) || search == null).ToList();//Getting Field Infromation list
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name == search).ToList().ToPagedList(page ?? 1, 3);
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name == search).ToList().ToPagedList(page ?? 1, 3);
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name == search || c.Field_Name.StartsWith(search) || search == null).ToList().ToPagedList(page ?? 1, 3);//Getting Field Infromation list
                     return View(querylist);
                 }
                 else
                 {
                     //Returning results
-                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search)).ToList();//Getting database information list
-                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name.StartsWith(search)).ToList();//Gettting Table information list
-                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name.StartsWith(search)).ToList();//Getting Field Infromation list
+                    querylist.dblist = db.Database_Tbl.Where(a => a.DB_Name.StartsWith(search)).ToList().ToPagedList(page ?? 1, 10);//Getting database information list
+                    querylist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name.StartsWith(search)).ToList().ToPagedList(page ?? 1, 10);//Gettting Table information list
+                    querylist.fldlist = db.Field_Tbl.Where(c => c.Field_Name.StartsWith(search)).ToList().ToPagedList(page ?? 1, 10);//Getting Field Infromation list
                     return View(querylist);//Passing View With List that is Contained in querylist variable
                 }
             }
             catch (Exception exp)
             {
-                throw exp;
+                return View("Error");
             }
      
         }

@@ -1,10 +1,12 @@
-﻿@model WebApplication1.Models.qlist
+﻿@using PagedList;
+@using PagedList.Mvc
 
+@model WebApplication1.Models.qlist
 @{
     ViewBag.Title = "Search";
 }
 
-<h2>Search :</h2><br />
+<h2><strong>Search Results</strong></h2><br />
 
 <div id="search">
     <p>
@@ -32,9 +34,11 @@
    @if (Model.dblist.Count() == 0 & Model.tbllist.Count() == 0 & Model.fldlist.Count() == 0)
    {
        <tr >
-           <th colspan="2">
-               <img src="~/fonts/alert.png"> Your search criteria return no matched results. Please try again.
-           </th>
+           <td colspan="2">
+                <div id="ErrorWarning">
+                    <img src="~/fonts/alert.png"> Your search criteria return no matched results. Please try again.
+                </div>
+            </td>
        </tr>
    }
    else
@@ -57,9 +61,9 @@
                     @Html.DisplayFor(modelItem => item.DB_Description)
                 </td>
             </tr>
-        }
-        foreach (var item in Model.tbllist)
-        {
+       }
+       foreach (var item in Model.tbllist)
+       {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.TBL_Name)
@@ -68,9 +72,9 @@
                 @Html.DisplayFor(modelItem => item.TBL_Description)
                 </td>
             </tr>
-        }
-        foreach (var item in Model.fldlist)
-        {
+       }
+       foreach (var item in Model.fldlist)
+       {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Field_Name)
@@ -79,6 +83,16 @@
                     @Html.DisplayFor(modelItem => item.Field_Description)
                 </td>
             </tr>
-        }
+       }
    }
-</table>
+</table><br />
+
+<div class="pagination">
+ 
+        @Html.PagedListPager(Model.dblist, page => Url.Action("search", new { page,searchby = Request.QueryString["searchby"],search = Request.QueryString["search"] }))
+  
+        @Html.PagedListPager(Model.tbllist, page => Url.Action("search", new { page,searchby = Request.QueryString["searchby"],search = Request.QueryString["search"] }))
+ 
+        @Html.PagedListPager(Model.fldlist, page => Url.Action("search", new{page,searchby = Request.QueryString["searchby"],search = Request.QueryString["search"]}))
+   
+</div>
