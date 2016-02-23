@@ -17,7 +17,9 @@
                 <label>Search Criteria :</label><br />
                     @Html.RadioButton("searchby", "1")<text> Database </text>
                     @Html.RadioButton("searchby", "2")<text> Table </text>
-                    @Html.RadioButton("searchby", "3")<text> Field </text><br />
+                    @Html.RadioButton("searchby", "3")<text> Field </text>
+                    @Html.RadioButton("searchby","4",true)<text>All</text>
+                <br />
                 <div id="searchtxtbox">
                     @Html.TextBox("search", null, new { placeholder = "Search............", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
                 </div>
@@ -30,69 +32,83 @@
 </div>
 
 <table class="table table-striped">
-  
-   @if (Model.dblist.Count() == 0 & Model.tbllist.Count() == 0 & Model.fldlist.Count() == 0)
-   {
-       <tr >
-           <td colspan="2">
+
+    @if (@ViewBag.Mesage != null)
+    {
+        <tr>
+            <td colspan="2">
                 <div id="ErrorWarning">
                     <img src="~/fonts/alert.png"> Your search criteria return no matched results. Please try again.
                 </div>
             </td>
-       </tr>
-   }
-   else
-   {
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Description
-        </th>
-    </tr>
-       foreach (var item in Model.dblist)
-       {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DB_Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DB_Description)
-                </td>
-            </tr>
-       }
-       foreach (var item in Model.tbllist)
-       {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TBL_Name)
-                </td>
-                <td>
-                @Html.DisplayFor(modelItem => item.TBL_Description)
-                </td>
-            </tr>
-       }
-       foreach (var item in Model.fldlist)
-       {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Field_Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Field_Description)
-                </td>
-            </tr>
-       }
-   }
-</table><br />
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <th>
+                <strong>Name</strong>
+            </th>
+            <th>
+                <strong>Description</strong>
+            </th>
+        </tr>
+        if (Model.dblist != null)
+        {
+            foreach (var item in Model.dblist)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DB_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DB_Description)
+                    </td>
+                </tr>
+            }
 
-<div class="pagination">
- 
-        @Html.PagedListPager(Model.dblist, page => Url.Action("search", new { page,searchby = Request.QueryString["searchby"],search = Request.QueryString["search"] }))
-  
-        @Html.PagedListPager(Model.tbllist, page => Url.Action("search", new { page,searchby = Request.QueryString["searchby"],search = Request.QueryString["search"] }))
- 
-        @Html.PagedListPager(Model.fldlist, page => Url.Action("search", new{page,searchby = Request.QueryString["searchby"],search = Request.QueryString["search"]}))
-   
-</div>
+            if (Model.dblist != null)
+            {
+                @Html.PagedListPager(Model.dblist, page => Url.Action("search", new { page, searchby = Request.QueryString["searchby"], search = Request.QueryString["search"] }))
+            }
+        }
+
+        if (Model.tbllist != null)
+        {
+            foreach (var item in Model.tbllist)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TBL_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TBL_Description)
+                    </td>
+                </tr>
+            }
+            if (Model.tbllist != null)
+            {
+                @Html.PagedListPager(Model.tbllist, page => Url.Action("search", new { page, searchby = Request.QueryString["searchby"], search = Request.QueryString["search"] }))
+            }
+        }
+
+        if (Model.fldlist != null)
+        {
+            foreach (var item in Model.fldlist)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Field_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Field_Description)
+                    </td>
+                </tr>
+            }
+            if (Model.fldlist != null)
+            {
+                @Html.PagedListPager(Model.fldlist, page => Url.Action("search", new { page, searchby = Request.QueryString["searchby"], search = Request.QueryString["search"] }))
+            }
+        }
+    }
+</table><br />

@@ -394,7 +394,7 @@ namespace WebApplication1.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("DatabaseInformation", "DB");
+            return RedirectToAction("Index", "DB");
         }
 
         //

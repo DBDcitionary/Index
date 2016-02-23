@@ -1,4 +1,7 @@
-﻿@model IEnumerable<WebApplication1.Database_Tbl>
+﻿@using PagedList;
+@using PagedList.Mvc
+
+@model IPagedList<WebApplication1.Database_Tbl>
 
 @{
     ViewBag.Title = "DatabaseInformation";
@@ -7,8 +10,6 @@
 <div class="jumbotron">
     <h1>Database Dictionary</h1>
 </div>
-
-<h2>Database Information</h2><br />
 
 <div id="search">
     <p>
@@ -19,7 +20,9 @@
                 <label>Search Criteria :</label><br />
                 @Html.RadioButton("searchby", "1")<text> Database </text>
                 @Html.RadioButton("searchby", "2")<text> Table </text>
-                @Html.RadioButton("searchby", "3")<text> Field </text><br />
+                @Html.RadioButton("searchby", "3")<text> Field </text>
+                @Html.RadioButton("searchby", "4",true)<text>All</text>
+                <br />
                     <div id="searchtxtbox">
                         @Html.TextBox("search", null, new { placeholder = "Search............", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
                     </div>
@@ -31,6 +34,22 @@
     </p>
 </div>
 
+@*<div>
+    <fieldset>
+        <legend>Connect to Server</legend>
+        @using (Html.BeginForm("DatabaseInformation","DB", FormMethod.Get))
+        {
+            <text>Server Name</text>@Html.DropDownList("server")
+
+            <text><strong>User Name:</strong></text>
+                @Html.TextBox("uName",null,new {@placeholder="UserName", style ="padding-bottom:5px;padding-top:5px;padding-right:50px"})
+            <br /><br />
+            <text><strong>Password:</strong></text>
+                @Html.Password("pWord", null, new { @placeholder = "Password", style = "padding-bottom:5px;padding-top:5px;padding-right:50px" })
+        }
+    </fieldset>
+</div><br />*@
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -38,11 +57,9 @@
     <tr>
         <th>
             Name
-            <!--@Html.DisplayNameFor(model => model.DB_Name)-->
         </th>
         <th>
             Description
-            <!--@Html.DisplayNameFor(model => model.DB_Description)-->
         </th>
         <th></th>
     </tr>
@@ -58,10 +75,9 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "", new { dB_ID = item.DB_ID }) |
-                @Html.ActionLink("Details", "TableInformation", "DB", new { dB_ID = item.DB_ID }, null) |
-                @Html.ActionLink("Delete", "", new { dB_ID = item.DB_ID })
+                @Html.ActionLink("Details", "TableInformation", "DB", new { dB_ID = item.DB_ID }, null) 
             </td>
         </tr>
     }
-
+    @Html.PagedListPager(Model, page => Url.Action("DatabaseInformation", new {page}))
 </table>

@@ -238,10 +238,10 @@
       <DependentUpon>Database_Infor.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\DBModel.cs" />
+    <Compile Include="Models\DBModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\AllModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Table_Tbl.cs">
