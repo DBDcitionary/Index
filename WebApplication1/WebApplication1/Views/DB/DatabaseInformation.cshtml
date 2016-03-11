@@ -1,7 +1,6 @@
 ﻿@using PagedList;
 @using PagedList.Mvc
-
-@model IPagedList<WebApplication1.Database_Tbl>
+@model IEnumerable<WebApplication1.Models.dbInfor>
 
 @{
     ViewBag.Title = "DatabaseInformation";
@@ -10,74 +9,87 @@
 <div class="jumbotron">
     <h1>Database Dictionary</h1>
 </div>
+<div id="infor">
+    <p class="text-info" style="font-size: 14px">
+        You Connected to Server: <b><i>@ViewBag.Name</i></b>
+    </p>
 
-<div id="search">
+    <div id="buttonChange">
+        @Html.ActionLink("Change Server", "Index", "DB", new { style = "text-decoration:none;color:black" })
+    </div>
+</div><br />
+<div>
+    @using (Html.BeginForm("DatabaseInformation", "DB", FormMethod.Get))
+    {
+        <div class="list">
+            <div id="listbox1">
+                <text><strong>Databases</strong></text>
+                   @Html.ListBox("DBName", null ,new { id = "list1", @class = "form-control", style = "Width:100%", Size = 15 })
+            </div>
+            <div id="listbox2">
+                <text><strong>Tables</strong></text>
+                   @Html.ListBox("tblName", null ,new { @class = "form-control", style = "Width:100%", Size = 15 })
+            </div>
+            <input type="submit" value="Get" name="submit" />
+        </div>
+    }
+</div>
+
+@*<table class="table table-striped">
+  <thead>
+    <tr>
+        <th>
+            <strong>Database Name</strong>
+        </th>
+        <th>
+            <strong>Database Size</strong>
+        </th>
+    </tr>
+  </thead>
+    <tbody>
+   @foreach (var item in ViewBag.DBName)
+   {
+        <tr>
+            <td>
+                <a href="~/">@item.Text.ToString()</a>
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>*@
+
+@*<div class="tree-listing">
+    <ul>
+        @foreach (var item in ViewBag.DBName)
+        {
+            <li><a href="~/Views/DB/TableInformation.cshtml">@item.Text.ToString()</a></li>
+        }
+    </ul>
+</div>*@
+
+<br /><br />
+<div id = "search" >
     <p>
         <fieldset>
-            <legend>Search Database Dictionary</legend>
-            @using (@Html.BeginForm("search", "DB", FormMethod.Get))
+            <legend> Search Database Dictionary </legend>
+            @using(@Html.BeginForm("search", "DB", FormMethod.Get))
             {
-                <label>Search Criteria :</label><br />
-                @Html.RadioButton("searchby", "1")<text> Database </text>
-                @Html.RadioButton("searchby", "2")<text> Table </text>
-                @Html.RadioButton("searchby", "3")<text> Field </text>
-                @Html.RadioButton("searchby", "4",true)<text>All</text>
-                <br />
-                    <div id="searchtxtbox">
-                        @Html.TextBox("search", null, new { placeholder = "Search............", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
-                    </div>
-                    <div id="btnSearch">
-                        <button type="submit" class="btn btn-primary" value="search"><span class="glyphicon glyphicon-search"></span></button>
+                <label> Search Criteria:</label ><br />
+                  @Html.RadioButton("searchby", "1") <text> Database </text>
+                  @Html.RadioButton("searchby", "2") <text> Table </text>
+                  @Html.RadioButton("searchby", "3") <text> Field </text>
+                  @Html.RadioButton("searchby", "4", true) <text> All </text>
+                  <br/>
+                      <div id = "searchtxtbox">
+                           @Html.TextBox("search", null, new { placeholder = "Search............", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
+                       </div>
+                       <div id = "btnSearch">
+                            <button type = "submit" class="btn btn-primary" value="search"><span class="glyphicon glyphicon-search"></span></button>
                     </div>
             }
         </fieldset>
     </p>
 </div>
-
-@*<div>
-    <fieldset>
-        <legend>Connect to Server</legend>
-        @using (Html.BeginForm("DatabaseInformation","DB", FormMethod.Get))
-        {
-            <text>Server Name</text>@Html.DropDownList("server")
-
-            <text><strong>User Name:</strong></text>
-                @Html.TextBox("uName",null,new {@placeholder="UserName", style ="padding-bottom:5px;padding-top:5px;padding-right:50px"})
-            <br /><br />
-            <text><strong>Password:</strong></text>
-                @Html.Password("pWord", null, new { @placeholder = "Password", style = "padding-bottom:5px;padding-top:5px;padding-right:50px" })
-        }
-    </fieldset>
-</div><br />*@
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table table-striped">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Description
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DB_Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DB_Description)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "", new { dB_ID = item.DB_ID }) |
-                @Html.ActionLink("Details", "TableInformation", "DB", new { dB_ID = item.DB_ID }, null) 
-            </td>
-        </tr>
-    }
-    @Html.PagedListPager(Model, page => Url.Action("DatabaseInformation", new {page}))
-</table>

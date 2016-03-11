@@ -8,32 +8,170 @@ using WebApplication1.Models;
 using System.Data.Entity;
 using PagedList;
 using PagedList.Mvc;
+using System.Web.Configuration;
+using System.Configuration;
+using System.Data.Sql;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace WebApplication1.Controllers
 {
     public class DBController : Controller
     {
-        private DB_DictionaryContext db = new DB_DictionaryContext(); //Variable for Database Connection.
+        private DB_DictionaryContext db = new DB_DictionaryContext();
         // GET: DB Information
-        public ActionResult Index()
+        [Authorize]
+        public ActionResult Index(string ServerName)
         {
-            return View();
-        }
-
-        public ActionResult DatabaseInformation(int? page, int ? server)
-        {
-            //***************************************
-            //Getting Database Information
-            //**************************************
             try
             {
+                SqlDataSourceEnumerator NetworkServers = SqlDataSourceEnumerator.Instance;
+                DataTable dataSource = NetworkServers.GetDataSources();
+                List<string> fullServerName = new List<string>();
+                for (int i = 0; i < dataSource.Rows.Count; i++)
+                {
+                        DataRow Row = dataSource.Rows[i];
+                        var servername = dataSource.Columns[WebConfigurationManager.AppSettings[5]].Table.Rows[i].ItemArray[0].ToString();
+                        var instancename = dataSource.Columns[WebConfigurationManager.AppSettings[6]].Table.Rows[i].ItemArray[1].ToString();
+                        string newServerName = servername + "\\" + instancename;
+                        switch (instancename)
+                        {
+                            case "":
+                                fullServerName.Add(servername);
+                                break;
+                            default:
+                                fullServerName.Add(newServerName);
+                                break;
+                        }
+                        ViewBag.ServerName = new SelectList(fullServerName);
+                }
+
+                if (dataSource.Rows.Count == 0)
+                {
+                    ViewBag.ServerName = new SelectList(new[]{ "No Server Found" });
+                }
+                else
+                {
+                    return View();
+                }
+                return View();
                 
-                var dbInfo = db.Database_Tbl.ToList().ToPagedList(page ?? 1, 50);//Listing Database Information
-                return View(dbInfo);//passing the view page with the results
             }
             catch (Exception)
             {
-                return View("Error on Database Information");
+                return View("ServerError");
+            }  
+        }
+
+        [HttpPost]
+        public ActionResult Index(string ServerName, string altServerName, bool alternative, bool authen, string uName, string pWord, string connectString,string providerName, List<string> dbnames)
+        { 
+           dbnames = new List<string>(); //variable to hold database names list
+            try
+            {
+                //*****************************************************************
+                //CONDITION TO CHECK WHICH SERVER YOU USING FROM cmbbox or txtbox
+                //*****************************************************************
+                switch (alternative)
+                {
+                    case true:
+                        if (authen == true)//condition to check if user is using SQL Authentication to Login into the Server
+                        {
+                            connectString = WebConfigurationManager.AppSettings[7]+altServerName+WebConfigurationManager.AppSettings[9]+uName+ WebConfigurationManager.AppSettings[10]+pWord; //Untrusted Connection string
+                        }
+                        else
+                            connectString = WebConfigurationManager.AppSettings[7]+altServerName+WebConfigurationManager.AppSettings[8]; //Trusted Connection string
+                        ViewBag.Name = (altServerName);//Passing the Server Name into ViewBag Properties
+                        break;
+                    default:
+                        if (authen == true)
+                        {
+                            connectString = WebConfigurationManager.AppSettings[7]+ServerName+WebConfigurationManager.AppSettings[9]+uName+WebConfigurationManager.AppSettings[10]+pWord;
+                        }
+                        else
+                            connectString = WebConfigurationManager.AppSettings[7]+ServerName+WebConfigurationManager.AppSettings[8];
+                        ViewBag.Name = (ServerName);
+                        break;
+                }
+
+                //**************************
+                //ADDING CONNECTION STRING
+                //**************************
+                Configuration constring = WebConfigurationManager.OpenWebConfiguration("~");
+                int con = ConfigurationManager.ConnectionStrings.Count;
+                ConnectionStringSettings conset = new ConnectionStringSettings("conn", connectString,providerName+WebConfigurationManager.AppSettings[11]);
+                ConnectionStringsSection stringsec = constring.ConnectionStrings;
+                stringsec.ConnectionStrings.Remove(conset);
+                stringsec.ConnectionStrings.Add(conset);
+                constring.Save(ConfigurationSaveMode.Modified);
+                //*********************************
+                //USING CONNECTION STRING
+                //*********************************
+                using (SqlConnection conn = new SqlConnection(connectString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT [name] FROM [master].[dbo].sysdatabases WHERE dbid > 6", conn);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        DataRow Row = dt.Rows[i];
+                        var dbname = dt.Columns[0].Table.Rows[i].ItemArray[0].ToString();
+                        dbnames.Add(dbname);
+                    }
+
+                    if (dt.Rows.Count == 0)
+                    {
+                        ViewBag.DBName = new SelectList("");
+                    }
+                }
+                ViewBag.DBName = new SelectList(dbnames);
+                ViewBag.tblName = new SelectList("");
+                Session["dbnames"] = dbnames;
+                return View("DatabaseInformation");
+            }
+            catch (Exception)
+            {
+                return View("ServerError");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DatabaseInformation(string DBName, List<string>dbnames)
+        { 
+            try
+            {
+                List<string> tbllist = new List<string>();
+                dbnames = (List<string>)Session["dbnames"];
+                using (SqlConnection con = new SqlConnection(WebConfigurationManager.ConnectionStrings["conn"].ConnectionString))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM ["+DBName+"].INFORMATION_SCHEMA.TABLES", con);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    string name = dt.Rows[0].ItemArray[2].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        DataRow Row = dt.Rows[i];
+                        var tblNames = dt.Rows[i].ItemArray[2].ToString();
+                        tbllist.Add(tblNames);
+                    }
+
+                    if (dt.Rows.Count == 0)
+                    {
+                        ViewBag.tblName = new SelectList("");
+                    }
+                }
+
+                ViewBag.tblName = new SelectList(tbllist);
+                ViewBag.DBName = new SelectList(dbnames);
+                return View();
+            }
+            catch (Exception)
+            {
+                return View("Error");
             }
         }
 
@@ -59,7 +197,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception)
             {
-                return View("Error on Table Information");
+                return View("Error");
             }
         }
 
@@ -85,7 +223,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception)
             {
-                return View("Error Field Information");
+                return View("Error");
             }
         }
 
@@ -134,7 +272,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception)
             {
-                return View("Error On Search");
+                return View("Error");
             }
      
         }

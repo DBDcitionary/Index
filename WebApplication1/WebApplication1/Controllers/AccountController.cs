@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using System.Web.Configuration;
 
 
 namespace WebApplication1.Controllers
@@ -324,12 +325,19 @@ namespace WebApplication1.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+                var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            if (loginInfo.Email.EndsWith(WebConfigurationManager.AppSettings["domain"]))
             {
-                return RedirectToAction("Login");
+                if (loginInfo == null)
+                {
+                    return RedirectToAction("Login");
+                }
             }
-
+            else
+            {
+                return View("LoginError");
+            }
+           
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)

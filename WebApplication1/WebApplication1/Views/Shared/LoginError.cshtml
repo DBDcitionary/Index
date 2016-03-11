@@ -1,0 +1,14 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Login Error";
+}
+
+<h1 class="text-danger">Please login with the right User Credentials</h1>
+<br />
+<div>
+    <p>
+        @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>
+
