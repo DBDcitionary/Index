@@ -1,7 +1,4 @@
-﻿body {
-}
-
-.container {
+﻿.container {
 
 }
 
@@ -114,12 +111,16 @@ fieldset {
 
 #listbox1{
     max-width: 20em;
+    box-shadow: 1px 1px 8px black;
+    border: 1px solid #0094ff;
 }
 
 #listbox2{
     margin-left: 0px;
     margin-top: 20px;
-    max-width: 200em;
+    max-width: 20em;
+    box-shadow: 1px 1px 8px black;
+    border: 1px solid #0094ff;
 }
 
 .list{
@@ -134,9 +135,46 @@ max-height: initial;
 }
 
 thead {
-background-color:#dbdbdb;
+    background-color:#dbdbdb;
 }
 
 tbody{
     font-size:102%;
+}
+
+#tableheader{
+    border:1px solid #808080;
+    width:281px;
+    background: #0094ff;
+    color:white;
+    font-size: 16px;
+    padding-left:10px;
+}
+
+.section1,
+.section2{
+   border: 1px solid #0094ff;
+   height: 100px;
+}
+
+.section1{
+    margin-top: -43em;
+}
+
+.section2{
+    margin-top:10px;
+}
+
+.section3{
+    margin-top:10px;
+    border:1px solid #0094ff;
+    height: 80em;
+}
+
+#sec1Header,
+#sec2Header {
+background: #0094ff;
+color: white;
+font-size:19px;
+padding-left: 10px;
 }

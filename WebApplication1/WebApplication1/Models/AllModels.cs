@@ -4,22 +4,33 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Web.Mvc;
+using System.Data.SqlClient;
+using System.Web.Configuration;
 
 namespace WebApplication1.Models
 {
-    public class ServerInfor
+    public class model
     {
-        public string ServerName { get; set; }
-        public string InstanceName { get; set; }
-        public string IsClustered { get; set; }
-        public string Version { get; set; }
+        public string connectionstring = WebConfigurationManager.ConnectionStrings["conn"].ConnectionString;
 
-        public List<string> fullServerName { get; set; }
-    }
+        public class server
+        {
 
-    public class dbInfor
-    {
-        public string name { get; set; }
-        public List<string> dbnames { get; set; }
+        }
+
+        public class database
+        {
+
+        }
+
+        public class table
+        {
+
+        }
+
+        public class column
+        {
+
+        }
     }
 }

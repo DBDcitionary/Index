@@ -5,7 +5,16 @@
 @{
     ViewBag.Title = "DatabaseInformation";
 }
+@Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+<script type="text/javascript">
+    $().ready(function () { $(".form-control").removeAttr('multiple'); });
 
+    $(function () {
+        $(".form-control").change(function () {
+            $("#dbform").submit();
+        });
+    })
+</script>
 <div class="jumbotron">
     <h1>Database Dictionary</h1>
 </div>
@@ -19,77 +28,65 @@
     </div>
 </div><br />
 <div>
-    @using (Html.BeginForm("DatabaseInformation", "DB", FormMethod.Get))
+    @using (Html.BeginForm("DatabaseInformation", "DB", FormMethod.Get, new { @class = "form", id = "dbform", name ="databaseinfor"}))
     {
         <div class="list">
             <div id="listbox1">
-                <text><strong>Databases</strong></text>
-                   @Html.ListBox("DBName", null ,new { id = "list1", @class = "form-control", style = "Width:100%", Size = 15 })
+                <div id="tableheader">
+                    <text><strong> Database List</strong></text>
+                </div>
+                   @Html.ListBox("DBName", null,new { @class = "form-control", style = "Width:100%", Size = 15})
             </div>
             <div id="listbox2">
-                <text><strong>Tables</strong></text>
-                   @Html.ListBox("tblName", null ,new { @class = "form-control", style = "Width:100%", Size = 15 })
-            </div>
-            <input type="submit" value="Get" name="submit" />
+                <div id="tableheader">
+                    <text><strong> Table List</strong></text>
+                </div>
+                    @Html.ListBox("tblName", null, new { @class = "form-control", style = "Width:100%", Size = 15 })
+                </div>
         </div>
     }
 </div>
 
-@*<table class="table table-striped">
-  <thead>
-    <tr>
-        <th>
-            <strong>Database Name</strong>
-        </th>
-        <th>
-            <strong>Database Size</strong>
-        </th>
-    </tr>
-  </thead>
-    <tbody>
-   @foreach (var item in ViewBag.DBName)
-   {
-        <tr>
-            <td>
-                <a href="~/">@item.Text.ToString()</a>
-            </td>
-            <td>
+<div class="section1">
+    <section>
+        <div id="sec1Header">
+            <text>Databases Information</text>
+        </div>
+    </section>
+</div>
 
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>*@
+<div class="section2">
+    <section>
+        <div id="sec2Header">
+            <text>Table Information</text>
+        </div>
+    </section>
+</div>
+<div class="section3">
+    <section>
+   
+    </section>
+</div>
 
-@*<div class="tree-listing">
-    <ul>
-        @foreach (var item in ViewBag.DBName)
-        {
-            <li><a href="~/Views/DB/TableInformation.cshtml">@item.Text.ToString()</a></li>
-        }
-    </ul>
-</div>*@
-
-<br /><br />
 <div id = "search" >
     <p>
         <fieldset>
-            <legend> Search Database Dictionary </legend>
-            @using(@Html.BeginForm("search", "DB", FormMethod.Get))
-            {
-                <label> Search Criteria:</label ><br />
-                  @Html.RadioButton("searchby", "1") <text> Database </text>
-                  @Html.RadioButton("searchby", "2") <text> Table </text>
-                  @Html.RadioButton("searchby", "3") <text> Field </text>
-                  @Html.RadioButton("searchby", "4", true) <text> All </text>
-                  <br/>
-                      <div id = "searchtxtbox">
-                           @Html.TextBox("search", null, new { placeholder = "Search............", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
-                       </div>
-                       <div id = "btnSearch">
-                            <button type = "submit" class="btn btn-primary" value="search"><span class="glyphicon glyphicon-search"></span></button>
-                    </div>
-            }
-        </fieldset>
+        <legend> Search Database Dictionary </legend>
+        @using(@Html.BeginForm("search", "DB", FormMethod.Get))
+        {
+            <label> Search Criteria:</label ><br />
+              @Html.RadioButton("searchby", "1") <text> Database </text>
+              @Html.RadioButton("searchby", "2") <text> Table </text>
+              @Html.RadioButton("searchby", "3") <text> Field </text>
+              @Html.RadioButton("searchby", "4", true) <text> All </text>
+              <br/>
+                  <div id = "searchtxtbox">
+                       @Html.TextBox("search", null, new { placeholder = "Search............", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
+                   </div>
+                   <div id = "btnSearch">
+                        <button type = "submit" class="btn btn-primary" value="search"><span class="glyphicon glyphicon-search"></span></button>
+                </div>
+        }
+    </fieldset>
     </p>
 </div>

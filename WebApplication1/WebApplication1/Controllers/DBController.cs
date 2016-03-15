@@ -19,8 +19,8 @@ namespace WebApplication1.Controllers
     public class DBController : Controller
     {
         private DB_DictionaryContext db = new DB_DictionaryContext();
-        // GET: DB Information
-        [Authorize]
+      // GET: DB Information
+        //[Authorize]
         public ActionResult Index(string ServerName)
         {
             try
@@ -64,9 +64,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string ServerName, string altServerName, bool alternative, bool authen, string uName, string pWord, string connectString,string providerName, List<string> dbnames)
-        { 
-           dbnames = new List<string>(); //variable to hold database names list
+        public ActionResult Index(string ServerName, string altServerName, bool alternative, bool authen, string uName, string pWord, string connectString,string providerName)
+        {
+            List<string> dbnames = new List<string>(); //variable to hold database names list
             try
             {
                 //*****************************************************************
@@ -104,9 +104,9 @@ namespace WebApplication1.Controllers
                 stringsec.ConnectionStrings.Remove(conset);
                 stringsec.ConnectionStrings.Add(conset);
                 constring.Save(ConfigurationSaveMode.Modified);
-                //*********************************
+                //***************************
                 //USING CONNECTION STRING
-                //*********************************
+                //***************************
                 using (SqlConnection conn = new SqlConnection(connectString))
                 {
                     conn.Open();
@@ -128,7 +128,6 @@ namespace WebApplication1.Controllers
                 }
                 ViewBag.DBName = new SelectList(dbnames);
                 ViewBag.tblName = new SelectList("");
-                Session["dbnames"] = dbnames;
                 return View("DatabaseInformation");
             }
             catch (Exception)
@@ -138,24 +137,40 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public ActionResult DatabaseInformation(string DBName, List<string>dbnames)
+        public ActionResult DatabaseInformation(string DBName)
         { 
             try
             {
                 List<string> tbllist = new List<string>();
-                dbnames = (List<string>)Session["dbnames"];
+                List<string> dbnames = new List<string>();
                 using (SqlConnection con = new SqlConnection(WebConfigurationManager.ConnectionStrings["conn"].ConnectionString))
                 {
                     con.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM ["+DBName+"].INFORMATION_SCHEMA.TABLES", con);
+                    //*******************************
+                    //Getting Database Information
+                    //*******************************
+                    SqlCommand cmd = new SqlCommand("SELECT [name] FROM [master].[dbo].sysdatabases WHERE dbid > 6", con);
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-                    string name = dt.Rows[0].ItemArray[2].ToString();
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         DataRow Row = dt.Rows[i];
-                        var tblNames = dt.Rows[i].ItemArray[2].ToString();
+                        var dbname = dt.Columns[0].Table.Rows[i].ItemArray[0].ToString();
+                        dbnames.Add(dbname);
+                    }
+                    //***************************
+                    //Getting Table Information
+                    //***************************
+                    SqlCommand cmd1 = new SqlCommand("SELECT * FROM ["+DBName+"].INFORMATION_SCHEMA.TABLES", con);
+                    SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
+                    DataTable dt1 = new DataTable();
+                    da1.Fill(dt1);
+                    string name = dt1.Rows[0].ItemArray[2].ToString();
+                    for (int i = 0; i < dt1.Rows.Count; i++)
+                    {
+                        DataRow Row = dt1.Rows[i];
+                        var tblNames = dt1.Rows[i].ItemArray[2].ToString();
                         tbllist.Add(tblNames);
                     }
 
@@ -164,9 +179,8 @@ namespace WebApplication1.Controllers
                         ViewBag.tblName = new SelectList("");
                     }
                 }
-
-                ViewBag.tblName = new SelectList(tbllist);
                 ViewBag.DBName = new SelectList(dbnames);
+                ViewBag.tblName = new SelectList(tbllist);
                 return View();
             }
             catch (Exception)
