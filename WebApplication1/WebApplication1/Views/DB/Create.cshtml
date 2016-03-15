@@ -5,7 +5,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Database</h4>
+        <h4>Create New Database</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -23,6 +23,7 @@
                 @Html.ValidationMessageFor(model => model.DB_Description, "", new { @class = "text-danger" })
             </div>
         </div>
+        @Html.ActionLink("Add Table", "tbl/Create"/*db name/id*/);
 
 
 

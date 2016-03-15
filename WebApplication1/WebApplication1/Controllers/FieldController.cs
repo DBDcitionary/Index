@@ -29,6 +29,7 @@ namespace WebApplication1.Controllers
         public ActionResult Create()
         {
             ViewBag.DB_ID = new SelectList(db.Database_Tbl, "DB_ID", "DB_Name");
+            ViewBag.Table_ID = new SelectList(db.Table_Tbl, "TBL_Name", "TBL_Description");
             return View();
         }
         [HttpPost]
