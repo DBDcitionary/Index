@@ -104,30 +104,12 @@ namespace WebApplication1.Controllers
                 stringsec.ConnectionStrings.Remove(conset);
                 stringsec.ConnectionStrings.Add(conset);
                 constring.Save(ConfigurationSaveMode.Modified);
-                //***************************
-                //USING CONNECTION STRING
-                //***************************
-                using (SqlConnection conn = new SqlConnection(connectString))
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT [name] FROM [master].[dbo].sysdatabases WHERE dbid > 6", conn);
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        DataRow Row = dt.Rows[i];
-                        var dbname = dt.Columns[0].Table.Rows[i].ItemArray[0].ToString();
-                        dbnames.Add(dbname);
-                    }
 
-                    if (dt.Rows.Count == 0)
-                    {
-                        ViewBag.DBName = new SelectList("");
-                    }
-                }
-                ViewBag.DBName = new SelectList(dbnames);
+                IList<Database_Tbl> dblist = new dbModel().dblist();
+                var DB = new DB_DictionaryContext().Database_Tbl.ToList();
                 ViewBag.tblName = new SelectList("");
+                ViewBag.DBName = new SelectList(DB.Select(a => a.DB_Name));
+                ViewBag.Model = DB.Select(a => new { a.DB_Name, a.DB_Description });
                 return View("DatabaseInformation");
             }
             catch (Exception)
@@ -181,6 +163,7 @@ namespace WebApplication1.Controllers
                 }
                 ViewBag.DBName = new SelectList(dbnames);
                 ViewBag.tblName = new SelectList(tbllist);
+                ViewBag.Model = new DB_DictionaryContext().Database_Tbl.ToList();
                 return View();
             }
             catch (Exception)

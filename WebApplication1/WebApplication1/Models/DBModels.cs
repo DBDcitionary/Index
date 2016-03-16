@@ -10,13 +10,7 @@ using System.Data.Sql;
 namespace WebApplication1.Models
 {
     public class qlist
-    {
-
-        //Properties for Database Elements
-        [Key]
-        public string DB_Name { get; set; }
-        public string DB_Description { get; set; }
-
+    { 
         //Properties for Table Elements
         [Key]
         public string TBL_Name { get; set; }
@@ -30,6 +24,11 @@ namespace WebApplication1.Models
         public PagedList.IPagedList<Database_Tbl> dblist { get; set; }
         public PagedList.IPagedList<Table_Tbl> tbllist { get; set; }
         public PagedList.IPagedList<Field_Tbl> fldlist { get; set; }
+
+    }
+
+    public class Database : Database_Tbl
+    {
 
     }
 }

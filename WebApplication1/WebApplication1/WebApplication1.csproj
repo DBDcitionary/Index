@@ -245,7 +245,7 @@
     <Compile Include="Models\DBModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\AllModels.cs" />
+    <Compile Include="Models\DatabaseModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Table_Tbl.cs">

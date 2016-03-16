@@ -12,21 +12,21 @@ namespace WebApplication1.Controllers
 {
     public class tblController : Controller
     {
-        private DB_DictionaryContext db = new DB_DictionaryContext();
+        //private DB_DictionaryContext db = new DB_DictionaryContext();
 
-        // GET: tbl
-        public ActionResult tblInformation()
-        {
-            var table_Tbl = db.Table_Tbl.Include(t => t.Database_Tbl);
-            return View(table_Tbl.ToList());
-        }
+        //// GET: tbl
+        //public ActionResult tblInformation()
+        //{
+        //    var table_Tbl = db.Table_Tbl.Include(t => t.Database_Tbl);
+        //    return View(table_Tbl.ToList());
+        //}
 
-        // GET: tbl/Details/5
-        public ActionResult Details(int? id)
-        {
-            Table_Tbl table_Tbl = db.Table_Tbl.Find(id);
-            return View(table_Tbl);
-        }
+        //// GET: tbl/Details/5
+        //public ActionResult Details(int? id)
+        //{
+        //    Table_Tbl table_Tbl = db.Table_Tbl.Find(id);
+        //    return View(table_Tbl);
+        //}
 
         //// GET: tbl/Create
         //public ActionResult Create()

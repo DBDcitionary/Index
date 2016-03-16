@@ -1,10 +1,11 @@
 ﻿@using PagedList;
 @using PagedList.Mvc
-@model IEnumerable<WebApplication1.Models.dbInfor>
+@model IEnumerable<Database_Tbl>
 
 @{
     ViewBag.Title = "DatabaseInformation";
 }
+
 @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
 <script type="text/javascript">
     $().ready(function () { $(".form-control").removeAttr('multiple'); });
@@ -20,7 +21,7 @@
 </div>
 <div id="infor">
     <p class="text-info" style="font-size: 14px">
-        You Connected to Server: <b><i>@ViewBag.Name</i></b>
+        You Connected to Server: <b><i>@*@ViewBag.Name*@</i></b>
     </p>
 
     <div id="buttonChange">
@@ -48,23 +49,27 @@
 </div>
 
 <div class="section1">
-    <section>
-        <div id="sec1Header">
-            <text>Databases Information</text>
-        </div>
-    </section>
+        <section>
+            <div id="sec1Header">
+                <text>Databases Information</text>
+            </div>
+                @foreach (var item in ViewBag.Model)
+                {
+                      @Html.DisplayFor(ModelItem => item)
+                }
+        </section>
 </div>
 
 <div class="section2">
-    <section>
-        <div id="sec2Header">
-            <text>Table Information</text>
-        </div>
-    </section>
+     <section>
+          <div id="sec2Header">
+              <text>Table Information</text>
+          </div>
+     </section>
 </div>
 <div class="section3">
     <section>
-   
+  
     </section>
 </div>
 
