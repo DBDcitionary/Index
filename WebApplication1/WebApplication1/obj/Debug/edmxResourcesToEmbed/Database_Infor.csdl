@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB_DictionaryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Database_Tbl">
+    <Key>
+      <PropertyRef Name="DB_ID" />
+    </Key>
+    <Property Name="DB_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DB_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
+    <Property Name="DB_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Table_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Database_Tbl" ToRole="Table_Tbl" />
+    <Property Name="ObjectTypeID" Type="Int32" />
+    <NavigationProperty Name="lk_ObjectType" Relationship="DB_DictionaryModel.fk_DB_ObjectType" FromRole="Database_Tbl" ToRole="lk_ObjectType" />
+  </EntityType>
+  <EntityType Name="Field_Tbl">
+    <Key>
+      <PropertyRef Name="Field_ID" />
+    </Key>
+    <Property Name="Field_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Field_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
+    <Property Name="Field_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TBL_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Table_Tbl" Relationship="Self.fk_TBL_Field" FromRole="Field_Tbl" ToRole="Table_Tbl" />
+    <Property Name="ObjectTypeID" Type="Int32" />
+    <NavigationProperty Name="lk_ObjectType" Relationship="DB_DictionaryModel.fk_FIELD_ObjectType" FromRole="Field_Tbl" ToRole="lk_ObjectType" />
+  </EntityType>
+  <EntityType Name="Table_Tbl">
+    <Key>
+      <PropertyRef Name="TBL_ID" />
+    </Key>
+    <Property Name="TBL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TBL_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
+    <Property Name="TBL_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DB_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Database_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Table_Tbl" ToRole="Database_Tbl" />
+    <NavigationProperty Name="Field_Tbl" Relationship="Self.fk_TBL_Field" FromRole="Table_Tbl" ToRole="Field_Tbl" />
+    <Property Name="ObjectTypeID" Type="Int32" />
+    <NavigationProperty Name="lk_ObjectType" Relationship="DB_DictionaryModel.fk_TBL_ObjectType" FromRole="Table_Tbl" ToRole="lk_ObjectType" />
+  </EntityType>
+  <EntityType Name="User_Role_Tbl">
+    <Key>
+      <PropertyRef Name="User_Role_ID" />
+    </Key>
+    <Property Name="User_Role_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Role_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="User_Tbl" Relationship="Self.fk_UserRoleID" FromRole="User_Role_Tbl" ToRole="User_Tbl" />
+  </EntityType>
+  <EntityType Name="User_Tbl">
+    <Key>
+      <PropertyRef Name="User_ID" />
+    </Key>
+    <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="User_Role_ID" Type="Int32" />
+    <Property Name="Password" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="User_Role_Tbl" Relationship="Self.fk_UserRoleID" FromRole="User_Tbl" ToRole="User_Role_Tbl" />
+  </EntityType>
+  <Association Name="fk_DB_TBL">
+    <End Role="Database_Tbl" Type="Self.Database_Tbl" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Database_Tbl">
+        <PropertyRef Name="DB_ID" />
+      </Principal>
+      <Dependent Role="Table_Tbl">
+        <PropertyRef Name="DB_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_TBL_Field">
+    <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Field_Tbl" Type="Self.Field_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Table_Tbl">
+        <PropertyRef Name="TBL_ID" />
+      </Principal>
+      <Dependent Role="Field_Tbl">
+        <PropertyRef Name="TBL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserRoleID">
+    <End Role="User_Role_Tbl" Type="Self.User_Role_Tbl" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="User_Tbl" Type="Self.User_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User_Role_Tbl">
+        <PropertyRef Name="User_Role_ID" />
+      </Principal>
+      <Dependent Role="User_Tbl">
+        <PropertyRef Name="User_Role_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DB_DictionaryContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" />
+    <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" />
+    <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" />
+    <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" />
+    <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" />
+    <AssociationSet Name="fk_DB_TBL" Association="Self.fk_DB_TBL">
+      <End Role="Database_Tbl" EntitySet="Database_Tbl" />
+      <End Role="Table_Tbl" EntitySet="Table_Tbl" />
+    </AssociationSet>
+    <AssociationSet Name="fk_TBL_Field" Association="Self.fk_TBL_Field">
+      <End Role="Table_Tbl" EntitySet="Table_Tbl" />
+      <End Role="Field_Tbl" EntitySet="Field_Tbl" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserRoleID" Association="Self.fk_UserRoleID">
+      <End Role="User_Role_Tbl" EntitySet="User_Role_Tbl" />
+      <End Role="User_Tbl" EntitySet="User_Tbl" />
+    </AssociationSet>
+    <EntitySet Name="lk_ObjectType" EntityType="DB_DictionaryModel.lk_ObjectType" />
+    <AssociationSet Name="fk_DB_ObjectType" Association="DB_DictionaryModel.fk_DB_ObjectType">
+      <End Role="lk_ObjectType" EntitySet="lk_ObjectType" />
+      <End Role="Database_Tbl" EntitySet="Database_Tbl" />
+    </AssociationSet>
+    <AssociationSet Name="fk_FIELD_ObjectType" Association="DB_DictionaryModel.fk_FIELD_ObjectType">
+      <End Role="lk_ObjectType" EntitySet="lk_ObjectType" />
+      <End Role="Field_Tbl" EntitySet="Field_Tbl" />
+    </AssociationSet>
+    <AssociationSet Name="fk_TBL_ObjectType" Association="DB_DictionaryModel.fk_TBL_ObjectType">
+      <End Role="lk_ObjectType" EntitySet="lk_ObjectType" />
+      <End Role="Table_Tbl" EntitySet="Table_Tbl" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="lk_ObjectType">
+    <Key>
+      <PropertyRef Name="ObjectTypeID" />
+    </Key>
+    <Property Name="ObjectTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Object_Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="Object_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Database_Tbl" Relationship="DB_DictionaryModel.fk_DB_ObjectType" FromRole="lk_ObjectType" ToRole="Database_Tbl" />
+    <NavigationProperty Name="Field_Tbl" Relationship="DB_DictionaryModel.fk_FIELD_ObjectType" FromRole="lk_ObjectType" ToRole="Field_Tbl" />
+    <NavigationProperty Name="Table_Tbl" Relationship="DB_DictionaryModel.fk_TBL_ObjectType" FromRole="lk_ObjectType" ToRole="Table_Tbl" />
+  </EntityType>
+  <Association Name="fk_DB_ObjectType">
+    <End Type="DB_DictionaryModel.lk_ObjectType" Role="lk_ObjectType" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DB_DictionaryModel.Database_Tbl" Role="Database_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lk_ObjectType">
+        <PropertyRef Name="ObjectTypeID" />
+      </Principal>
+      <Dependent Role="Database_Tbl">
+        <PropertyRef Name="ObjectTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_FIELD_ObjectType">
+    <End Type="DB_DictionaryModel.lk_ObjectType" Role="lk_ObjectType" Multiplicity="0..1" />
+    <End Type="DB_DictionaryModel.Field_Tbl" Role="Field_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lk_ObjectType">
+        <PropertyRef Name="ObjectTypeID" />
+      </Principal>
+      <Dependent Role="Field_Tbl">
+        <PropertyRef Name="ObjectTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_TBL_ObjectType">
+    <End Type="DB_DictionaryModel.lk_ObjectType" Role="lk_ObjectType" Multiplicity="0..1" />
+    <End Type="DB_DictionaryModel.Table_Tbl" Role="Table_Tbl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="lk_ObjectType">
+        <PropertyRef Name="ObjectTypeID" />
+      </Principal>
+      <Dependent Role="Table_Tbl">
+        <PropertyRef Name="ObjectTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
