@@ -15,5 +15,5 @@ namespace WebApplication1.Models
         public DbSet<Table_Tbl> tblInfor { get; set; }
         public DbSet<Field_Tbl> fldInfor { get; set; }
         public DbSet<lk_ObjectType> lkO_type { get; set; }
-     }
+    }
 }

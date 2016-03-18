@@ -6,9 +6,9 @@ a{
     text-decoration:none;
     padding-bottom:5px;
     padding-top:5px;
-    padding-left:5px;
-    padding-right:5px;
-    border-radius: .6em;
+    padding-left:8px;
+    padding-right:8px;
+    border-radius: .3em;
     margin: 3px;
 
 }
@@ -177,4 +177,8 @@ background: #0094ff;
 color: white;
 font-size:19px;
 padding-left: 10px;
+}
+
+#logo{
+    
 }

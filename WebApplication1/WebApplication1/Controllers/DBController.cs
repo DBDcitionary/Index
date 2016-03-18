@@ -6,20 +6,13 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Models;
 using System.Data.Entity;
-using PagedList;
-using PagedList.Mvc;
-using System.Web.Configuration;
-using System.Configuration;
-using System.Data.Sql;
-using System.Data;
-using System.Data.SqlClient;
 
 namespace WebApplication1.Controllers
 {
     public class DBController : Controller
     {
-        private DB_DictionaryContext db = new DB_DictionaryContext();
-      // GET: DB Information
+        private DB_DictionaryContext db = new DB_DictionaryContext(); //Variale for Database Connection.
+        // GET: DB Information
         //[Authorize]
         public ActionResult Index(string ServerName)
         {
@@ -51,8 +44,8 @@ namespace WebApplication1.Controllers
                     ViewBag.ServerName = new SelectList(new[]{ "No Server Found" });
                 }
                 else
-                {
-                    return View();
+        {
+            return View();
                 }
                 return View();
                 
@@ -78,7 +71,7 @@ namespace WebApplication1.Controllers
                         if (authen == true)//condition to check if user is using SQL Authentication to Login into the Server
                         {
                             connectString = WebConfigurationManager.AppSettings[7]+altServerName+WebConfigurationManager.AppSettings[9]+uName+ WebConfigurationManager.AppSettings[10]+pWord; //Untrusted Connection string
-                        }
+        }
                         else
                             connectString = WebConfigurationManager.AppSettings[7]+altServerName+WebConfigurationManager.AppSettings[8]; //Trusted Connection string
                         ViewBag.Name = (altServerName);//Passing the Server Name into ViewBag Properties
@@ -177,7 +170,7 @@ namespace WebApplication1.Controllers
             //***************************************
             try
             {
-                //Condition to check the ID of the table if is not Empty
+                //Condition to check the ID of the table is not Empty
                 if (tbl_ID == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -206,13 +199,13 @@ namespace WebApplication1.Controllers
                 switch (searchby)
                 {
                     case "1":
-                        //Returning results and Refined by Database information 
+                    //Returning results and Refined by Database information 
                         querylist.dblist = db.Database_Tbl.OrderBy(c=>c.DB_Name).Where(a => a.DB_Name.Contains(search) || a.DB_Name == search || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting database information list
                         if (querylist.dblist == null || querylist.dblist.Count == 0)
                             ViewBag.Mesage = "No Results Found";
                         break;
                     case "2":
-                        //Returning results and Refined by Table information 
+                    //Returning results and Refined by Table information
                         querylist.tbllist = db.Table_Tbl.OrderBy(c => c.TBL_Name).Where(b => b.TBL_Name == search || b.TBL_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Gettting Table information list
                         if (querylist.tbllist == null || querylist.tbllist.Count == 0)
                             ViewBag.Mesage = "No Results Found";
@@ -237,14 +230,14 @@ namespace WebApplication1.Controllers
                         ViewBag.Mesage = "No Results Found";
                         break;
                 }
-                return View(querylist);
-            }
+                    return View(querylist);
+                }
             catch (Exception)
-            {
+                {
                 return View("Error");
-            }
+                }
      
-        }
+            }
 
         protected override void Dispose(bool disposing)
         {
@@ -252,8 +245,61 @@ namespace WebApplication1.Controllers
             {
                 db.Dispose();
             }
-            base.Dispose(disposing);
+     
         }
 
+        //GET: DB/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "DB_Name,DB_Description")] Database_Tbl database_Tbl)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Database_Tbl.Add(database_Tbl);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+            }
+            catch
+            {
+                //Log the error.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your systems administrator.");
+            }
+            return View(database_Tbl);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            Database_Tbl database_Tbl = db.Database_Tbl.Find(id);
+            return View(database_Tbl);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include ="DB_Name,DB_Description")] Database_Tbl database_Tbl)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(database_Tbl).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch(DataMisalignedException /*dex */)
+            {
+                //Log the error.
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your systems administrator");
+            }
+            return View(database_Tbl);
+        }
     }
 }
