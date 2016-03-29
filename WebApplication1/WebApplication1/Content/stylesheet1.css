@@ -58,7 +58,8 @@ fieldset {
     color: white;
 } 
 
-#buttonChange{
+#buttonChange,
+#btnUpdate{
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -81,7 +82,8 @@ fieldset {
 	padding:5px 5px;
 }
 
-#buttonChange:hover {
+#buttonChange:hover,
+#btnUpdate:hover{
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e9e9e9), color-stop(1, #f9f9f9));
 	background:-moz-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
 	background:-webkit-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
@@ -168,7 +170,7 @@ tbody{
 .section3{
     margin-top:10px;
     border:1px solid #0094ff;
-    height: 80em;
+    height: 10em;
 }
 
 #sec1Header,

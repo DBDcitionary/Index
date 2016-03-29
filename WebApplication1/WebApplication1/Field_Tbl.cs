@@ -18,9 +18,17 @@ namespace WebApplication1
         public string Field_Name { get; set; }
         public string Field_Description { get; set; }
         public int TBL_ID { get; set; }
-        public Nullable<int> ObjectTypeID { get; set; }
+        public string ServerName { get; set; }
+        public string DBName { get; set; }
+        public string TableName { get; set; }
+        public string SchemaName { get; set; }
+        public string DataType { get; set; }
+        public Nullable<int> Prec { get; set; }
+        public Nullable<int> ColumnLength { get; set; }
+        public string is_null { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         public virtual Table_Tbl Table_Tbl { get; set; }
-        public virtual lk_ObjectType lk_ObjectType { get; set; }
     }
 }

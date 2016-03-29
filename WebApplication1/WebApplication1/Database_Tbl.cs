@@ -23,10 +23,11 @@ namespace WebApplication1
         public int DB_ID { get; set; }
         public string DB_Name { get; set; }
         public string DB_Description { get; set; }
-        public Nullable<int> ObjectTypeID { get; set; }
+        public string ServerName { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Table_Tbl> Table_Tbl { get; set; }
-        public virtual lk_ObjectType lk_ObjectType { get; set; }
     }
 }

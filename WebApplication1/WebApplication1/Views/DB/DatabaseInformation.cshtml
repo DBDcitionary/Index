@@ -20,18 +20,22 @@
     <h1>Database Dictionary</h1>
 </div>
 <div id="infor">
-    <p class="text-info" style="font-size: 14px">
-        You Connected to Server: <b><i>@*@ViewBag.Name*@</i></b>
-    </p>
-
     <div id="buttonChange">
-        @Html.ActionLink("Change Server", "Index", "DB", new { style = "text-decoration:none;color:black" })
+        @Html.ActionLink("Add Server", "Index", "DB", new { style = "text-decoration:none;color:black" })
+    </div>
+    <div id="btnUpdate">
+        @Html.ActionLink("Update Server", "Index", "DB", new { style = "text-decoration:none;color:black" })
     </div>
 </div><br />
 <div>
     @using (Html.BeginForm("DatabaseInformation", "DB", FormMethod.Get, new { @class = "form", id = "dbform", name ="databaseinfor"}))
     {
         <div class="list">
+            <div id="serverlist">
+                <text><strong>Select Server:</strong></text>
+                @Html.DropDownList("server", null, new { @class = "form-control", style = "Width:100%" })
+            </div>
+            <br />
             <div id="listbox1">
                 <div id="tableheader">
                     <text><strong> Database List</strong></text>
@@ -53,10 +57,10 @@
             <div id="sec1Header">
                 <text>Databases Information</text>
             </div>
-                @foreach (var item in ViewBag.Model)
+                @*@foreach (var item in ViewBag.Model)
                 {
                       @Html.DisplayFor(ModelItem => item)
-                }
+                }*@
         </section>
 </div>
 

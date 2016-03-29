@@ -66,9 +66,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(string ServerName, string altServerName, bool alternative, bool authen, string uName, string pWord, string connectString,string providerName)
         {
-            List<string> dbnames = new List<string>(); //variable to hold database names list
-            try
-            {
+            //try
+            //{
                 //*****************************************************************
                 //CONDITION TO CHECK WHICH SERVER YOU USING FROM cmbbox or txtbox
                 //*****************************************************************
@@ -104,66 +103,51 @@ namespace WebApplication1.Controllers
                 stringsec.ConnectionStrings.Remove(conset);
                 stringsec.ConnectionStrings.Add(conset);
                 constring.Save(ConfigurationSaveMode.Modified);
-
+                //************************
+                //LISTING DATABASE LIST
+                //************************
                 IList<Database_Tbl> dblist = new dbModel().dblist();
                 var DB = new DB_DictionaryContext().Database_Tbl.ToList();
-                ViewBag.tblName = new SelectList("");
-                ViewBag.DBName = new SelectList(DB.Select(a => a.DB_Name));
+                var server = (DB.Select(a => a.ServerName)).Distinct().ToList();
+
+                //**************************
+                //PASSING VALUES TO VIEW 
+                //**************************
+                ViewBag.server = new SelectList(server);
+                ViewBag.DBName = new SelectList(new[] { "" });
+                ViewBag.tblName = new SelectList(new[] { "" });
+                //*********************
+                //
+                //*********************
                 ViewBag.Model = DB.Select(a => new { a.DB_Name, a.DB_Description });
                 return View("DatabaseInformation");
-            }
-            catch (Exception)
-            {
-                return View("ServerError");
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    return View("ServerError");
+            //}
         }
 
         [HttpGet]
-        public ActionResult DatabaseInformation(string DBName)
-        { 
+        public ActionResult DatabaseInformation(string DBName, string server)
+        {
             try
             {
-                List<string> tbllist = new List<string>();
-                List<string> dbnames = new List<string>();
-                using (SqlConnection con = new SqlConnection(WebConfigurationManager.ConnectionStrings["conn"].ConnectionString))
-                {
-                    con.Open();
-                    //*******************************
-                    //Getting Database Information
-                    //*******************************
-                    SqlCommand cmd = new SqlCommand("SELECT [name] FROM [master].[dbo].sysdatabases WHERE dbid > 6", con);
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        DataRow Row = dt.Rows[i];
-                        var dbname = dt.Columns[0].Table.Rows[i].ItemArray[0].ToString();
-                        dbnames.Add(dbname);
-                    }
-                    //***************************
-                    //Getting Table Information
-                    //***************************
-                    SqlCommand cmd1 = new SqlCommand("SELECT * FROM ["+DBName+"].INFORMATION_SCHEMA.TABLES", con);
-                    SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
-                    DataTable dt1 = new DataTable();
-                    da1.Fill(dt1);
-                    string name = dt1.Rows[0].ItemArray[2].ToString();
-                    for (int i = 0; i < dt1.Rows.Count; i++)
-                    {
-                        DataRow Row = dt1.Rows[i];
-                        var tblNames = dt1.Rows[i].ItemArray[2].ToString();
-                        tbllist.Add(tblNames);
-                    }
+                //*******************************
+                //LISTING DATABASE INFORMATION
+                //*******************************
+                var DB = new DB_DictionaryContext().Database_Tbl.ToList();
+                var serverList = (DB.Select(a =>a.ServerName)).Distinct().ToList();
+                ViewBag.server = new SelectList(serverList);
+                ViewBag.DBName = new SelectList(DB.Where(a=>a.ServerName == server).Select(a=>a.DB_Name));
 
-                    if (dt.Rows.Count == 0)
-                    {
-                        ViewBag.tblName = new SelectList("");
-                    }
-                }
-                ViewBag.DBName = new SelectList(dbnames);
-                ViewBag.tblName = new SelectList(tbllist);
-                ViewBag.Model = new DB_DictionaryContext().Database_Tbl.ToList();
+                //variable getting database id
+                var dbid = new DB_DictionaryContext().Database_Tbl.Where(a => a.DB_Name == DBName|| a.DB_Name == null).Select(a => a.DB_ID).FirstOrDefault().ToString();
+                //***************************
+                //LISTING TABLE INFORMATION
+                //***************************
+                var TBL = new DB_DictionaryContext().Table_Tbl.ToList();
+                ViewBag.tblName = new SelectList(TBL.Where(b => b.DB_ID == int.Parse(dbid) || b.DB_ID == 0).Select(b => b.TBL_Name));
                 return View();
             }
             catch (Exception)
