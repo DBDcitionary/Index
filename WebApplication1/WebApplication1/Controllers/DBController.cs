@@ -20,7 +20,6 @@ namespace WebApplication1.Controllers
     {
         private DB_DictionaryContext db = new DB_DictionaryContext();
       // GET: DB Information
-        //[Authorize]
         public ActionResult Index(string ServerName)
         {
             try
@@ -106,21 +105,20 @@ namespace WebApplication1.Controllers
                 //************************
                 //LISTING DATABASE LIST
                 //************************
-                IList<Database_Tbl> dblist = new dbModel().dblist();
                 var DB = new DB_DictionaryContext().Database_Tbl.ToList();
                 var server = (DB.Select(a => a.ServerName)).Distinct().ToList();
-
-                //**************************
-                //PASSING VALUES TO VIEW 
-                //**************************
+                IList<Database_Tbl> dblist = new dbModel(conset.ToString()).dblist();
+            //**************************
+            //PASSING VALUES TO VIEW 
+            //**************************
                 ViewBag.server = new SelectList(server);
-                ViewBag.DBName = new SelectList(new[] { "" });
+                ViewBag.DBName = new SelectList(DB.Select(a => a.DB_Name));
                 ViewBag.tblName = new SelectList(new[] { "" });
                 //*********************
                 //
                 //*********************
                 ViewBag.Model = DB.Select(a => new { a.DB_Name, a.DB_Description });
-                return View("DatabaseInformation");
+            return Redirect("~/DB/DatabaseInformation");//View("DatabaseInformation");
             //}
             //catch (Exception)
             //{
@@ -129,6 +127,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult DatabaseInformation(string DBName, string server)
         {
             try
@@ -140,7 +139,6 @@ namespace WebApplication1.Controllers
                 var serverList = (DB.Select(a =>a.ServerName)).Distinct().ToList();
                 ViewBag.server = new SelectList(serverList);
                 ViewBag.DBName = new SelectList(DB.Where(a=>a.ServerName == server).Select(a=>a.DB_Name));
-
                 //variable getting database id
                 var dbid = new DB_DictionaryContext().Database_Tbl.Where(a => a.DB_Name == DBName|| a.DB_Name == null).Select(a => a.DB_ID).FirstOrDefault().ToString();
                 //***************************

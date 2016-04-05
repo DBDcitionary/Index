@@ -4,6 +4,8 @@
     <EntitySetMapping Name="Database_Tbl">
       <EntityTypeMapping TypeName="DB_DictionaryModel.Database_Tbl">
         <MappingFragment StoreEntitySet="Database_Tbl">
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ServerName" ColumnName="ServerName" />
           <ScalarProperty Name="DB_ID" ColumnName="DB_ID" />
           <ScalarProperty Name="DB_Name" ColumnName="DB_Name" />
@@ -14,8 +16,11 @@
     <EntitySetMapping Name="Field_Tbl">
       <EntityTypeMapping TypeName="DB_DictionaryModel.Field_Tbl">
         <MappingFragment StoreEntitySet="Field_Tbl">
+          <ScalarProperty Name="ColLength" ColumnName="ColLength" />
+          <ScalarProperty Name="ConstraintType" ColumnName="ConstraintType" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="is_null" ColumnName="is_null" />
-          <ScalarProperty Name="ColumnLength" ColumnName="ColumnLength" />
           <ScalarProperty Name="Prec" ColumnName="prec" />
           <ScalarProperty Name="DataType" ColumnName="DataType" />
           <ScalarProperty Name="SchemaName" ColumnName="SchemaName" />
@@ -32,6 +37,8 @@
     <EntitySetMapping Name="Table_Tbl">
       <EntityTypeMapping TypeName="DB_DictionaryModel.Table_Tbl">
         <MappingFragment StoreEntitySet="Table_Tbl">
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="TBL_ID" ColumnName="TBL_ID" />
           <ScalarProperty Name="TBL_Name" ColumnName="TBL_Name" />
           <ScalarProperty Name="TBL_Description" ColumnName="TBL_Description" />

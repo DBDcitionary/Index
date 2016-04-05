@@ -9,6 +9,8 @@
     <Property Name="DB_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Table_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Database_Tbl" ToRole="Table_Tbl" />
     <Property Name="ServerName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="Field_Tbl">
     <Key>
@@ -25,8 +27,11 @@
     <Property Name="SchemaName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="DataType" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="Prec" Type="Int32" />
-    <Property Name="ColumnLength" Type="Int32" />
     <Property Name="is_null" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="ConstraintType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ColLength" Type="Int32" />
   </EntityType>
   <EntityType Name="Table_Tbl">
     <Key>
@@ -38,6 +43,8 @@
     <Property Name="DB_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Database_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Table_Tbl" ToRole="Database_Tbl" />
     <NavigationProperty Name="Field_Tbl" Relationship="Self.fk_TBL_Field" FromRole="Table_Tbl" ToRole="Field_Tbl" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="User_Role_Tbl">
     <Key>

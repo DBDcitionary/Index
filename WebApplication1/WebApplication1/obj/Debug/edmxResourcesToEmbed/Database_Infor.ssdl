@@ -8,6 +8,8 @@
     <Property Name="DB_Name" Type="varchar" MaxLength="225" />
     <Property Name="DB_Description" Type="varchar" MaxLength="225" Nullable="false" />
     <Property Name="ServerName" Type="varchar" MaxLength="250" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="Field_Tbl">
     <Key>
@@ -23,8 +25,11 @@
     <Property Name="SchemaName" Type="varchar" MaxLength="20" />
     <Property Name="DataType" Type="varchar" MaxLength="250" />
     <Property Name="prec" Type="int" />
-    <Property Name="ColumnLength" Type="int" />
     <Property Name="is_null" Type="varchar" MaxLength="10" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="ConstraintType" Type="varchar" MaxLength="100" />
+    <Property Name="ColLength" Type="int" />
   </EntityType>
   <EntityType Name="lk_ObjectType">
     <Key>
@@ -42,6 +47,8 @@
     <Property Name="TBL_Name" Type="varchar" MaxLength="225" />
     <Property Name="TBL_Description" Type="varchar" MaxLength="225" Nullable="false" />
     <Property Name="DB_ID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="User_Role_Tbl">
     <Key>

@@ -30,10 +30,11 @@
           <Property Name="SchemaName" Type="varchar" MaxLength="20" />
           <Property Name="DataType" Type="varchar" MaxLength="250" />
           <Property Name="prec" Type="int" />
-          <Property Name="ColumnLength" Type="int" />
           <Property Name="is_null" Type="varchar" MaxLength="10" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="ConstraintType" Type="varchar" MaxLength="100" />
+          <Property Name="ColLength" Type="int" />
         </EntityType>
         <EntityType Name="lk_ObjectType">
           <Key>
@@ -164,10 +165,11 @@
           <Property Name="SchemaName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DataType" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="Prec" Type="Int32" />
-          <Property Name="ColumnLength" Type="Int32" />
           <Property Name="is_null" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ConstraintType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ColLength" Type="Int32" />
         </EntityType>
         <EntityType Name="Table_Tbl">
           <Key>
@@ -292,10 +294,11 @@
           <EntitySetMapping Name="Field_Tbl">
             <EntityTypeMapping TypeName="DB_DictionaryModel.Field_Tbl">
               <MappingFragment StoreEntitySet="Field_Tbl">
+                <ScalarProperty Name="ColLength" ColumnName="ColLength" />
+                <ScalarProperty Name="ConstraintType" ColumnName="ConstraintType" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="is_null" ColumnName="is_null" />
-                <ScalarProperty Name="ColumnLength" ColumnName="ColumnLength" />
                 <ScalarProperty Name="Prec" ColumnName="prec" />
                 <ScalarProperty Name="DataType" ColumnName="DataType" />
                 <ScalarProperty Name="SchemaName" ColumnName="SchemaName" />
