@@ -4,7 +4,16 @@
     @{
         ViewBag.Title = "G4S Database Dictionary";
     }
-   
+    <p>
+        @Html.ActionLink("Create New","Create")
+        @using (Html.BeginForm("DatabaseInformation", "Database_Tbl", FormMethod.Get))
+        {
+            <p>
+                <input type="submit" value="filter" />
+            </p>
+        }
+    </p>
+
     <div>
             <fieldset>
                 <legend>Connect to Server</legend>
@@ -36,7 +45,7 @@
                              <div class="col-md-offset-2 col-md-10">
                                  <input type="submit" value="Connect" class="btn btn-default" />
                              </div>
-                        </div>
+    </div>
 }
 </fieldset>
         </div><br />
