@@ -8,6 +8,8 @@
     <Property Name="DB_Name" Type="varchar" MaxLength="225" />
     <Property Name="DB_Description" Type="varchar" MaxLength="225" Nullable="false" />
     <Property Name="ServerName" Type="varchar" MaxLength="250" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="Field_Tbl">
     <Key>
@@ -22,9 +24,12 @@
     <Property Name="TableName" Type="varchar" MaxLength="250" />
     <Property Name="SchemaName" Type="varchar" MaxLength="20" />
     <Property Name="DataType" Type="varchar" MaxLength="250" />
-    <Property Name="prec" Type="int" />
-    <Property Name="ColumnLength" Type="int" />
+    <Property Name="Prec" Type="int" />
     <Property Name="is_null" Type="varchar" MaxLength="10" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="ConstraintType" Type="varchar" MaxLength="100" />
+    <Property Name="ColLength" Type="int" />
   </EntityType>
   <EntityType Name="lk_ObjectType">
     <Key>
@@ -34,6 +39,16 @@
     <Property Name="Object_Type" Type="varchar" MaxLength="255" />
     <Property Name="Object_Description" Type="varchar" MaxLength="255" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="Table_Tbl">
     <Key>
       <PropertyRef Name="TBL_ID" />
@@ -42,6 +57,8 @@
     <Property Name="TBL_Name" Type="varchar" MaxLength="225" />
     <Property Name="TBL_Description" Type="varchar" MaxLength="225" Nullable="false" />
     <Property Name="DB_ID" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
   </EntityType>
   <EntityType Name="User_Role_Tbl">
     <Key>
@@ -106,6 +123,7 @@
     <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="lk_ObjectType" EntityType="Self.lk_ObjectType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" Schema="dbo" store:Type="Tables" />

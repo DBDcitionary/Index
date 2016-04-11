@@ -29,11 +29,12 @@
           <Property Name="TableName" Type="varchar" MaxLength="250" />
           <Property Name="SchemaName" Type="varchar" MaxLength="20" />
           <Property Name="DataType" Type="varchar" MaxLength="250" />
-          <Property Name="prec" Type="int" />
-          <Property Name="ColumnLength" Type="int" />
+          <Property Name="Prec" Type="int" />
           <Property Name="is_null" Type="varchar" MaxLength="10" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="ConstraintType" Type="varchar" MaxLength="100" />
+          <Property Name="ColLength" Type="int" />
         </EntityType>
         <EntityType Name="lk_ObjectType">
           <Key>
@@ -42,6 +43,16 @@
           <Property Name="ObjectTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Object_Type" Type="varchar" MaxLength="255" />
           <Property Name="Object_Description" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Table_Tbl">
           <Key>
@@ -117,6 +128,7 @@
           <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lk_ObjectType" EntityType="Self.lk_ObjectType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" Schema="dbo" store:Type="Tables" />
@@ -137,14 +149,35 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DB_DictionaryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DB_DictionaryContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Database_Tbl" EntityType="DB_DictionaryModel.Database_Tbl" />
+          <EntitySet Name="Field_Tbl" EntityType="DB_DictionaryModel.Field_Tbl" />
+          <EntitySet Name="lk_ObjectType" EntityType="DB_DictionaryModel.lk_ObjectType" />
+          <EntitySet Name="sysdiagrams" EntityType="DB_DictionaryModel.sysdiagram" />
+          <EntitySet Name="Table_Tbl" EntityType="DB_DictionaryModel.Table_Tbl" />
+          <EntitySet Name="User_Role_Tbl" EntityType="DB_DictionaryModel.User_Role_Tbl" />
+          <EntitySet Name="User_Tbl" EntityType="DB_DictionaryModel.User_Tbl" />
+          <AssociationSet Name="fk_DB_TBL" Association="DB_DictionaryModel.fk_DB_TBL">
+            <End Role="Database_Tbl" EntitySet="Database_Tbl" />
+            <End Role="Table_Tbl" EntitySet="Table_Tbl" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TBL_Field" Association="DB_DictionaryModel.fk_TBL_Field">
+            <End Role="Table_Tbl" EntitySet="Table_Tbl" />
+            <End Role="Field_Tbl" EntitySet="Field_Tbl" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserRoleID" Association="DB_DictionaryModel.fk_UserRoleID">
+            <End Role="User_Role_Tbl" EntitySet="User_Role_Tbl" />
+            <End Role="User_Tbl" EntitySet="User_Tbl" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Database_Tbl">
           <Key>
             <PropertyRef Name="DB_ID" />
           </Key>
           <Property Name="DB_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DB_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
-          <Property Name="DB_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Table_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Database_Tbl" ToRole="Table_Tbl" />
+          <Property Name="DB_Description" Type="String" Nullable="false" MaxLength="225" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Table_Tbl" Relationship="DB_DictionaryModel.fk_DB_TBL" FromRole="Database_Tbl" ToRole="Table_Tbl" />
           <Property Name="ServerName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
@@ -155,19 +188,38 @@
           </Key>
           <Property Name="Field_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Field_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
-          <Property Name="Field_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Field_Description" Type="String" Nullable="false" MaxLength="225" FixedLength="false" Unicode="false" />
           <Property Name="TBL_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Table_Tbl" Relationship="Self.fk_TBL_Field" FromRole="Field_Tbl" ToRole="Table_Tbl" />
+          <NavigationProperty Name="Table_Tbl" Relationship="DB_DictionaryModel.fk_TBL_Field" FromRole="Field_Tbl" ToRole="Table_Tbl" />
           <Property Name="ServerName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="DBName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="TableName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="SchemaName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DataType" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="Prec" Type="Int32" />
-          <Property Name="ColumnLength" Type="Int32" />
           <Property Name="is_null" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ConstraintType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ColLength" Type="Int32" />
+        </EntityType>
+        <EntityType Name="lk_ObjectType">
+          <Key>
+            <PropertyRef Name="ObjectTypeID" />
+          </Key>
+          <Property Name="ObjectTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Object_Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Object_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Table_Tbl">
           <Key>
@@ -175,10 +227,10 @@
           </Key>
           <Property Name="TBL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TBL_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
-          <Property Name="TBL_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TBL_Description" Type="String" Nullable="false" MaxLength="225" FixedLength="false" Unicode="false" />
           <Property Name="DB_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Database_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Table_Tbl" ToRole="Database_Tbl" />
-          <NavigationProperty Name="Field_Tbl" Relationship="Self.fk_TBL_Field" FromRole="Table_Tbl" ToRole="Field_Tbl" />
+          <NavigationProperty Name="Database_Tbl" Relationship="DB_DictionaryModel.fk_DB_TBL" FromRole="Table_Tbl" ToRole="Database_Tbl" />
+          <NavigationProperty Name="Field_Tbl" Relationship="DB_DictionaryModel.fk_TBL_Field" FromRole="Table_Tbl" ToRole="Field_Tbl" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
         </EntityType>
@@ -189,23 +241,23 @@
           <Property Name="User_Role_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Role_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="User_Tbl" Relationship="Self.fk_UserRoleID" FromRole="User_Role_Tbl" ToRole="User_Tbl" />
+          <NavigationProperty Name="User_Tbl" Relationship="DB_DictionaryModel.fk_UserRoleID" FromRole="User_Role_Tbl" ToRole="User_Tbl" />
         </EntityType>
         <EntityType Name="User_Tbl">
           <Key>
             <PropertyRef Name="User_ID" />
           </Key>
           <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="User_Role_ID" Type="Int32" />
           <Property Name="Password" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="User_Role_Tbl" Relationship="Self.fk_UserRoleID" FromRole="User_Tbl" ToRole="User_Role_Tbl" />
+          <NavigationProperty Name="User_Role_Tbl" Relationship="DB_DictionaryModel.fk_UserRoleID" FromRole="User_Tbl" ToRole="User_Role_Tbl" />
         </EntityType>
         <Association Name="fk_DB_TBL">
-          <End Role="Database_Tbl" Type="Self.Database_Tbl" Multiplicity="1">
+          <End Type="DB_DictionaryModel.Database_Tbl" Role="Database_Tbl" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="*" />
+          <End Type="DB_DictionaryModel.Table_Tbl" Role="Table_Tbl" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Database_Tbl">
               <PropertyRef Name="DB_ID" />
@@ -216,10 +268,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_TBL_Field">
-          <End Role="Table_Tbl" Type="Self.Table_Tbl" Multiplicity="1">
+          <End Type="DB_DictionaryModel.Table_Tbl" Role="Table_Tbl" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Field_Tbl" Type="Self.Field_Tbl" Multiplicity="*" />
+          <End Type="DB_DictionaryModel.Field_Tbl" Role="Field_Tbl" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Table_Tbl">
               <PropertyRef Name="TBL_ID" />
@@ -230,10 +282,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_UserRoleID">
-          <End Role="User_Role_Tbl" Type="Self.User_Role_Tbl" Multiplicity="0..1">
+          <End Type="DB_DictionaryModel.User_Role_Tbl" Role="User_Role_Tbl" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="User_Tbl" Type="Self.User_Tbl" Multiplicity="*" />
+          <End Type="DB_DictionaryModel.User_Tbl" Role="User_Tbl" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User_Role_Tbl">
               <PropertyRef Name="User_Role_ID" />
@@ -243,35 +295,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DB_DictionaryContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" />
-          <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" />
-          <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" />
-          <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" />
-          <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" />
-          <AssociationSet Name="fk_DB_TBL" Association="Self.fk_DB_TBL">
-            <End Role="Database_Tbl" EntitySet="Database_Tbl" />
-            <End Role="Table_Tbl" EntitySet="Table_Tbl" />
-          </AssociationSet>
-          <AssociationSet Name="fk_TBL_Field" Association="Self.fk_TBL_Field">
-            <End Role="Table_Tbl" EntitySet="Table_Tbl" />
-            <End Role="Field_Tbl" EntitySet="Field_Tbl" />
-          </AssociationSet>
-          <AssociationSet Name="fk_UserRoleID" Association="Self.fk_UserRoleID">
-            <End Role="User_Role_Tbl" EntitySet="User_Role_Tbl" />
-            <End Role="User_Tbl" EntitySet="User_Tbl" />
-          </AssociationSet>
-          <EntitySet Name="lk_ObjectType" EntityType="DB_DictionaryModel.lk_ObjectType" />
-        </EntityContainer>
-        <EntityType Name="lk_ObjectType">
-          <Key>
-            <PropertyRef Name="ObjectTypeID" />
-          </Key>
-          <Property Name="ObjectTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Object_Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Object_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -283,60 +307,30 @@
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ServerName" ColumnName="ServerName" />
-                <ScalarProperty Name="DB_ID" ColumnName="DB_ID" />
-                <ScalarProperty Name="DB_Name" ColumnName="DB_Name" />
                 <ScalarProperty Name="DB_Description" ColumnName="DB_Description" />
+                <ScalarProperty Name="DB_Name" ColumnName="DB_Name" />
+                <ScalarProperty Name="DB_ID" ColumnName="DB_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Field_Tbl">
             <EntityTypeMapping TypeName="DB_DictionaryModel.Field_Tbl">
               <MappingFragment StoreEntitySet="Field_Tbl">
+                <ScalarProperty Name="ColLength" ColumnName="ColLength" />
+                <ScalarProperty Name="ConstraintType" ColumnName="ConstraintType" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="is_null" ColumnName="is_null" />
-                <ScalarProperty Name="ColumnLength" ColumnName="ColumnLength" />
-                <ScalarProperty Name="Prec" ColumnName="prec" />
+                <ScalarProperty Name="Prec" ColumnName="Prec" />
                 <ScalarProperty Name="DataType" ColumnName="DataType" />
                 <ScalarProperty Name="SchemaName" ColumnName="SchemaName" />
                 <ScalarProperty Name="TableName" ColumnName="TableName" />
                 <ScalarProperty Name="DBName" ColumnName="DBName" />
                 <ScalarProperty Name="ServerName" ColumnName="ServerName" />
-                <ScalarProperty Name="Field_ID" ColumnName="Field_ID" />
-                <ScalarProperty Name="Field_Name" ColumnName="Field_Name" />
+                <ScalarProperty Name="TBL_ID" ColumnName="TBL_ID" />
                 <ScalarProperty Name="Field_Description" ColumnName="Field_Description" />
-                <ScalarProperty Name="TBL_ID" ColumnName="TBL_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Table_Tbl">
-            <EntityTypeMapping TypeName="DB_DictionaryModel.Table_Tbl">
-              <MappingFragment StoreEntitySet="Table_Tbl">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="TBL_ID" ColumnName="TBL_ID" />
-                <ScalarProperty Name="TBL_Name" ColumnName="TBL_Name" />
-                <ScalarProperty Name="TBL_Description" ColumnName="TBL_Description" />
-                <ScalarProperty Name="DB_ID" ColumnName="DB_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User_Role_Tbl">
-            <EntityTypeMapping TypeName="DB_DictionaryModel.User_Role_Tbl">
-              <MappingFragment StoreEntitySet="User_Role_Tbl">
-                <ScalarProperty Name="User_Role_ID" ColumnName="User_Role_ID" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Role_Description" ColumnName="Role_Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User_Tbl">
-            <EntityTypeMapping TypeName="DB_DictionaryModel.User_Tbl">
-              <MappingFragment StoreEntitySet="User_Tbl">
-                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="User_Role_ID" ColumnName="User_Role_ID" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Field_Name" ColumnName="Field_Name" />
+                <ScalarProperty Name="Field_ID" ColumnName="Field_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -346,6 +340,48 @@
                 <ScalarProperty Name="Object_Description" ColumnName="Object_Description" />
                 <ScalarProperty Name="Object_Type" ColumnName="Object_Type" />
                 <ScalarProperty Name="ObjectTypeID" ColumnName="ObjectTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DB_DictionaryModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Table_Tbl">
+            <EntityTypeMapping TypeName="DB_DictionaryModel.Table_Tbl">
+              <MappingFragment StoreEntitySet="Table_Tbl">
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="DB_ID" ColumnName="DB_ID" />
+                <ScalarProperty Name="TBL_Description" ColumnName="TBL_Description" />
+                <ScalarProperty Name="TBL_Name" ColumnName="TBL_Name" />
+                <ScalarProperty Name="TBL_ID" ColumnName="TBL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Role_Tbl">
+            <EntityTypeMapping TypeName="DB_DictionaryModel.User_Role_Tbl">
+              <MappingFragment StoreEntitySet="User_Role_Tbl">
+                <ScalarProperty Name="Role_Description" ColumnName="Role_Description" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="User_Role_ID" ColumnName="User_Role_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Tbl">
+            <EntityTypeMapping TypeName="DB_DictionaryModel.User_Tbl">
+              <MappingFragment StoreEntitySet="User_Tbl">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="User_Role_ID" ColumnName="User_Role_ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="User_ID" ColumnName="User_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

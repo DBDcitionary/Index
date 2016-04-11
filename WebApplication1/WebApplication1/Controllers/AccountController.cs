@@ -326,6 +326,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
                 var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            ViewBag.email = loginInfo.Email.ToString();
             if (loginInfo.Email.EndsWith(WebConfigurationManager.AppSettings["domain"]))
             {
                 if (loginInfo == null)
@@ -402,7 +403,7 @@ namespace WebApplication1.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "DB");
+            return RedirectToAction("DatabaseInformation", "DB");
         }
 
         //

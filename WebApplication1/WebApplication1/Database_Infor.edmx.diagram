@@ -4,16 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="439238b74fe54793b4329512f6b2e146" Name="Diagram1">
-        <EntityTypeShape EntityType="DB_DictionaryModel.Database_Tbl" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_DictionaryModel.Field_Tbl" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_DictionaryModel.Table_Tbl" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_DictionaryModel.User_Role_Tbl" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="DB_DictionaryModel.User_Tbl" Width="1.5" PointX="3.25" PointY="6" IsExpanded="true" />
-        <AssociationConnector Association="DB_DictionaryModel.fk_DB_TBL" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_DictionaryModel.fk_TBL_Field" ManuallyRouted="false" />
-        <AssociationConnector Association="DB_DictionaryModel.fk_UserRoleID" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="DB_DictionaryModel.lk_ObjectType" Width="1.5" PointX="4.875" PointY="6.125" />
+      <Diagram DiagramId="439238b74fe54793b4329512f6b2e146" Name="Diagram1" ZoomLevel="66">
+        <EntityTypeShape EntityType="DB_DictionaryModel.Database_Tbl" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="DB_DictionaryModel.Field_Tbl" Width="1.5" PointX="7.5" PointY="1" />
+        <EntityTypeShape EntityType="DB_DictionaryModel.lk_ObjectType" Width="1.5" PointX="0.75" PointY="1.125" />
+        <EntityTypeShape EntityType="DB_DictionaryModel.sysdiagram" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DB_DictionaryModel.Table_Tbl" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="DB_DictionaryModel.User_Role_Tbl" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="DB_DictionaryModel.User_Tbl" Width="1.5" PointX="3" PointY="4.875" />
+        <AssociationConnector Association="DB_DictionaryModel.fk_DB_TBL" />
+        <AssociationConnector Association="DB_DictionaryModel.fk_TBL_Field" />
+        <AssociationConnector Association="DB_DictionaryModel.fk_UserRoleID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

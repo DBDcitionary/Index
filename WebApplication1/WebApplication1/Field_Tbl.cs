@@ -24,10 +24,11 @@ namespace WebApplication1
         public string SchemaName { get; set; }
         public string DataType { get; set; }
         public Nullable<int> Prec { get; set; }
-        public Nullable<int> ColumnLength { get; set; }
         public string is_null { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public string ConstraintType { get; set; }
+        public Nullable<int> ColLength { get; set; }
     
         public virtual Table_Tbl Table_Tbl { get; set; }
     }
