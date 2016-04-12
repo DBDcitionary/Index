@@ -1,0 +1,15 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Login Error";
+}
+
+<h1 class="text-danger">Error</h1>
+<br />
+<br />
+<div>
+    <p class="text-danger">
+        Connecting the Server Failed!!! @Html.ActionLink("Please Click to Try Again", "Index", "DB", routeValues: null, htmlAttributes: new { id = "ServerLink" })
+    </p>
+</div>
+

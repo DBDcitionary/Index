@@ -1,0 +1,20 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Login Error";
+}
+
+<h1 class="text-danger">This service is not available</h1>
+<br />
+<h3>Database Dictionary is not available for <strong>@ViewBag.email</strong> within this network. Database Dictionary is only available for the following domains:
+    <ul>
+    <li> za.g4s.com
+        </li></ul>
+    Please talk to your network administrator for more information.
+    </h3>
+<div>
+    <p>
+        @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>
+

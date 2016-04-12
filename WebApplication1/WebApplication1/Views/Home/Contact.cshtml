@@ -1,8 +1,8 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<h2>@ViewBag.Title.</h2><br />
+<h3>@ViewBag.Message</h3><br />
 
 <address>
     1 Slate Road, N1 Business Park<br />
@@ -13,6 +13,40 @@
 </address>
 
 <address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+    <strong>Support:</strong>   <a style="background-color:transparent;border:none" href="mailto:systems@za.g4s.com">systems@za.g4s.com</a><br />
 </address>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://maps.googleapis.com/maps/api/js">
+    </script>
+
+    <script>
+        var myCenter = new google.maps.LatLng(-25.923754, 28.149463);
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:18,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+var marker=new google.maps.Marker({
+  position:myCenter,
+  });
+
+marker.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body>
+    <div id="googleMap" style="width:500px;height:380px;"></div>
+</body>
+</html>

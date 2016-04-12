@@ -1,0 +1,43 @@
+﻿@model WebApplication1.Table_Tbl
+
+@{
+    ViewBag.Title = "TableInformation";
+}
+<div class="jumbotron">
+    <h1>Database Dictionary</h1>
+</div>
+
+<h2>Table Information</h2><br />
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Name
+            <!--@Html.DisplayNameFor(model => model.TBL_Name)-->
+        </th>
+        <th>
+            Description
+            <!--@Html.DisplayNameFor(model => model.TBL_Description)-->
+        </th>
+        <th></th>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => Model.TBL_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.TBL_Description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { TBL_ID = Model.TBL_ID }) |
+            @Html.ActionLink("Details", "FieldInformation", new { TBL_ID = Model.TBL_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { TBL_ID = Model.TBL_ID })
+        </td>
+    </tr>
+
+
+</table>

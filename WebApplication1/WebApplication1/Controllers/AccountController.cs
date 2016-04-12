@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using System.Web.Configuration;
 
 
 namespace WebApplication1.Controllers
@@ -165,7 +166,7 @@ namespace WebApplication1.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("DatabaseInformation", "DB");
                 }
                 AddErrors(result);
             }
@@ -324,12 +325,20 @@ namespace WebApplication1.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+                var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            ViewBag.email = loginInfo.Email.ToString();
+            if (loginInfo.Email.EndsWith(WebConfigurationManager.AppSettings["domain"]))
             {
-                return RedirectToAction("Login");
+                if (loginInfo == null)
+                {
+                    return RedirectToAction("Login");
+                }
             }
-
+            else
+            {
+                return View("LoginError");
+            }
+           
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
@@ -394,7 +403,7 @@ namespace WebApplication1.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("DatabaseInformation", "DB");
         }
 
         //
@@ -451,7 +460,7 @@ namespace WebApplication1.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("DatabaseInformation", "DB");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

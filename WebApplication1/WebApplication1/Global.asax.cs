@@ -19,11 +19,9 @@ namespace WebApplication1
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
-        void connection()
+        protected void Session_Start()
         {
-            SqlConnection con = new SqlConnection("Data Source=DS-SYS-LNR2-LT;Initial Catalog=DB_Dictionary;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+           
         }
-        
-
     }
 }
