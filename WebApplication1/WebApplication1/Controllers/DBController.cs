@@ -66,8 +66,6 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult Index(List<string> ServerName, string altServerName, bool alternative, bool authen, string uName, string pWord, string connectString,string providerName,string button,string database)
         {
-            //try
-            //{
             var severN = ServerName[0];
             var DB = new DB_DictionaryContext().Database_Tbl.ToList();
             var server = (DB.Select(a => a.ServerName)).Distinct().ToList();
@@ -139,11 +137,6 @@ namespace WebApplication1.Controllers
                 ViewBag.Model = db.Database_Tbl.Select(a => new { a.DB_Name, a.DB_Description });
                 return View();
             }  
-            //}
-            //catch (Exception)
-            //{
-            //    return View("ServerError");
-            //}
         }
 
         [HttpGet]
@@ -188,7 +181,7 @@ namespace WebApplication1.Controllers
             }            
 
             //***************************
-            //LISTING TABLE INFORMATION
+            //LISTING TABLE and FIELD INFORMATION
             //***************************
             var dbid = new DB_DictionaryContext().Database_Tbl.Where(a => a.DB_Name == DBName || a.DB_Name == null).Select(a => a.DB_ID).FirstOrDefault().ToString();
             var TBL = new DB_DictionaryContext().Table_Tbl.ToList();
@@ -202,18 +195,8 @@ namespace WebApplication1.Controllers
                 int databID = int.Parse(dbid);
                 ViewBag.TBLModel = TBL.Where(a => a.DB_ID == databID && a.TBL_Name == tblName).ToList();               
             }
-
-            //***************************
-            //LISTING FEILD INFORMATION
-            //***************************
             return View(ViewBag.Model);
         }
-
-        //public class DBItem
-        //{
-        //    public String dbName { get; set; }
-        //    public String db_Descrition { get; set; }
-        //}
 
         public ActionResult TableInformation(int ? dB_ID, int? page)
         {
