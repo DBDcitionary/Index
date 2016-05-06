@@ -268,6 +268,7 @@
       <DependentUpon>Database_Infor.edmx</DependentUpon>
       <LastGenOutput>Database_Infor.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Database_Infor.edmx.sql" />
     <Content Include="Database_Infor.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Database_Infor.edmx</DependentUpon>

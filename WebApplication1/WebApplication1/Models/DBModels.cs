@@ -25,10 +25,6 @@ namespace WebApplication1.Models
         public PagedList.IPagedList<Table_Tbl> tbllist { get; set; }
         public PagedList.IPagedList<Field_Tbl> fldlist { get; set; }
 
-    }
-
-    public class Database : Database_Tbl
-    {
-
+        public IList<string> join { get; set; }
     }
 }

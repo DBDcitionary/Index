@@ -26,6 +26,7 @@ namespace WebApplication1
         public int DB_ID { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public string FK_Tableid { get; set; }
     
         public virtual Database_Tbl Database_Tbl { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

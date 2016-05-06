@@ -70,8 +70,9 @@ html {
 
 body {
   margin: 0;
-  background-color: lightgrey;
+  background-color: white;
 }
+
 
 a:focus {
   outline: thin dotted;
@@ -322,6 +323,7 @@ table {
 html {
   font-size: 62.5%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+   height:auto;
 }
 
 body {
@@ -330,7 +332,7 @@ body {
   line-height: 1.428571429;
   color: #333333;
   background-color: whitesmoke;
-
+  height:auto;
 }
 
 .jumbotron {

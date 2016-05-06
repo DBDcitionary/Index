@@ -5,65 +5,49 @@
       <PropertyRef Name="DB_ID" />
     </Key>
     <Property Name="DB_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="DB_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
-    <Property Name="DB_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DB_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="DB_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Table_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Database_Tbl" ToRole="Table_Tbl" />
-    <Property Name="ServerName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="FK_Databaseid" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Field_Tbl">
     <Key>
       <PropertyRef Name="Field_ID" />
     </Key>
     <Property Name="Field_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Field_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
-    <Property Name="Field_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Field_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Field_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="TBL_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Table_Tbl" Relationship="Self.fk_TBL_Field" FromRole="Field_Tbl" ToRole="Table_Tbl" />
-    <Property Name="ServerName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="DBName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="TableName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="SchemaName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="DataType" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="ServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="DBName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="TableName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="SchemaName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="DataType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="Prec" Type="Int32" />
-    <Property Name="is_null" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="is_null" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-    <Property Name="ConstraintType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ConstraintType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="ColLength" Type="Int32" />
+    <Property Name="FK_Fieldid" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Table_Tbl">
     <Key>
       <PropertyRef Name="TBL_ID" />
     </Key>
     <Property Name="TBL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="TBL_Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" />
-    <Property Name="TBL_Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TBL_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="TBL_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="DB_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Database_Tbl" Relationship="Self.fk_DB_TBL" FromRole="Table_Tbl" ToRole="Database_Tbl" />
     <NavigationProperty Name="Field_Tbl" Relationship="Self.fk_TBL_Field" FromRole="Table_Tbl" ToRole="Field_Tbl" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-  </EntityType>
-  <EntityType Name="User_Role_Tbl">
-    <Key>
-      <PropertyRef Name="User_Role_ID" />
-    </Key>
-    <Property Name="User_Role_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Role_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="User_Tbl" Relationship="Self.fk_UserRoleID" FromRole="User_Role_Tbl" ToRole="User_Tbl" />
-  </EntityType>
-  <EntityType Name="User_Tbl">
-    <Key>
-      <PropertyRef Name="User_ID" />
-    </Key>
-    <Property Name="User_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="User_Role_ID" Type="Int32" />
-    <Property Name="Password" Type="Binary" MaxLength="Max" FixedLength="false" />
-    <NavigationProperty Name="User_Role_Tbl" Relationship="Self.fk_UserRoleID" FromRole="User_Tbl" ToRole="User_Role_Tbl" />
+    <Property Name="FK_Tableid" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="fk_DB_TBL">
     <End Role="Database_Tbl" Type="Self.Database_Tbl" Multiplicity="1">
@@ -93,26 +77,10 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_UserRoleID">
-    <End Role="User_Role_Tbl" Type="Self.User_Role_Tbl" Multiplicity="0..1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="User_Tbl" Type="Self.User_Tbl" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User_Role_Tbl">
-        <PropertyRef Name="User_Role_ID" />
-      </Principal>
-      <Dependent Role="User_Tbl">
-        <PropertyRef Name="User_Role_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="DB_DictionaryContext" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" />
     <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" />
     <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" />
-    <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" />
-    <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" />
     <AssociationSet Name="fk_DB_TBL" Association="Self.fk_DB_TBL">
       <End Role="Database_Tbl" EntitySet="Database_Tbl" />
       <End Role="Table_Tbl" EntitySet="Table_Tbl" />
@@ -121,18 +89,5 @@
       <End Role="Table_Tbl" EntitySet="Table_Tbl" />
       <End Role="Field_Tbl" EntitySet="Field_Tbl" />
     </AssociationSet>
-    <AssociationSet Name="fk_UserRoleID" Association="Self.fk_UserRoleID">
-      <End Role="User_Role_Tbl" EntitySet="User_Role_Tbl" />
-      <End Role="User_Tbl" EntitySet="User_Tbl" />
-    </AssociationSet>
-    <EntitySet Name="lk_ObjectType" EntityType="DB_DictionaryModel.lk_ObjectType" />
   </EntityContainer>
-  <EntityType Name="lk_ObjectType">
-    <Key>
-      <PropertyRef Name="ObjectTypeID" />
-    </Key>
-    <Property Name="ObjectTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Object_Type" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="Object_Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-  </EntityType>
 </Schema>

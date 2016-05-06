@@ -29,6 +29,7 @@ namespace WebApplication1
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public string ConstraintType { get; set; }
         public Nullable<int> ColLength { get; set; }
+        public string FK_Fieldid { get; set; }
     
         public virtual Table_Tbl Table_Tbl { get; set; }
     }

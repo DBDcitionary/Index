@@ -28,8 +28,5 @@ namespace WebApplication1
         public virtual DbSet<Database_Tbl> Database_Tbl { get; set; }
         public virtual DbSet<Field_Tbl> Field_Tbl { get; set; }
         public virtual DbSet<Table_Tbl> Table_Tbl { get; set; }
-        public virtual DbSet<User_Role_Tbl> User_Role_Tbl { get; set; }
-        public virtual DbSet<User_Tbl> User_Tbl { get; set; }
-        public virtual DbSet<lk_ObjectType> lk_ObjectType { get; set; }
     }
 }

@@ -3,12 +3,32 @@
 @{
     ViewBag.Title = "Login Error";
 }
+<style>
+body {
+    background-color: white;
+}
+</style>
+<p>
+    <img src="~/fonts/GoogleAccounts.png" alt="google-logo" style="float:left;width:300px;height:95px" ;><br />
+    <div class="error"><h1 class="text-danger">This service is not available</h1></div>
+</p>
+<br>
+<br>
 
-<h1 class="text-danger">Please login with the right User Credentials</h1>
-<br />
-<div>
-    <p>
-        @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
-    </p>
+    <p><h3>
+        Database Dictionary is not available for <strong class="danger">@ViewBag.email</strong> within this network. Database Dictionary is only available for the following domains:
+        <ul>
+            <li>
+                za.g4s.com
+            </li>
+        </ul>
+        Please talk to your network administrator for more information.
+    </h3></p>
+
+<div><br />
+    <p><h4>
+    @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+</h4></p>
 </div>
+
 

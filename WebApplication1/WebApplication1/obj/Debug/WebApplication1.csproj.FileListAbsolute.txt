@@ -358,6 +358,9 @@ C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplicatio
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\roslyn\vbc.exe
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\roslyn\VBCSCompiler.exe
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Web.config
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Web.Debug.config
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Web.Release.config
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.dll.config
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\WebApplication1.pdb
@@ -436,7 +439,4 @@ C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplicatio
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
-C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Web.config
-C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Web.Debug.config
-C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Web.Release.config
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache

@@ -1,5 +1,5 @@
 ﻿@using PagedList;
-@using PagedList.Mvc
+@using PagedList.Mvc;
 @model IEnumerable<Database_Tbl>
 
 @{
@@ -8,28 +8,60 @@
 
 @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
 <script type="text/javascript">
-    $().ready(function () { $(".form-control").removeAttr('multiple'); });
+
+    $().ready(function () {
+        $(".form-control").removeAttr('multiple');
+    });
 
     $(function () {
         $(".form-control").change(function () {
             $("#dbform").submit();
+            $(".descrip").submit();
         });
     })
+
+    $(function () {
+        $("#editdb").click(function () {
+            $("#DBDescrip").prop('readonly', false).prop('disabled',false);
+        });
+    });
+
+    $(function () {
+        var clicked = false;
+        $('#savedb').click(function () {
+            clicked = true;
+            alert('clicked' + '=' + clicked);
+            var _url ="@(Url.Action("DatabaseInformation","DB", new { DBName = "testdb", server = "testserver" }))";
+            alert(_url);
+            $.ajax({
+                type: "POST",
+                url: _url,
+                data: data,
+                success: success,
+                dataType: dataType
+            });
+        });
+    });
+
+    //$(function () {
+    //    $('#tbltittle2').click(function () {
+    //        $(this).next().toggle();
+    //    });
+    //})
 </script>
 <div class="jumbotron">
     <h1>Database Dictionary</h1>
 </div>
+
 <div id="infor">
     <div id="buttonChange">
-        @Html.ActionLink("Add Server", "Index", "DB", new { style = "text-decoration:none;color:black" })
-    </div>
-    <div id="btnUpdate">
-        @Html.ActionLink("Update Server", "Index", "DB", new { style = "text-decoration:none;color:black" })
+        @Html.ActionLink("Add Database", "Index", "DB", new { style = "text-decoration:none;color:black", @id = "AddDB", @name ="link"})
     </div>
 </div><br />
-<div>
-    @using (Html.BeginForm("DatabaseInformation", "DB", FormMethod.Get, new { @class = "form", id = "dbform", name ="databaseinfor"}))
-    {
+
+@using (Html.BeginForm("DatabaseInformation", "DB", FormMethod.Get, new {id = "dbform", name = "databaseinfor" }))
+{
+<div class="form1">
         <div class="list">
             <div id="serverlist">
                 <text><strong>Select Server:</strong></text>
@@ -49,7 +81,6 @@
                     @Html.ListBox("tblName", null, new { @class = "form-control", style = "Width:100%", Size = 15 })
                 </div>
         </div>
-    }
 </div>
 
 <div class="section1">
@@ -57,25 +88,165 @@
             <div id="sec1Header">
                 <text>Databases Information</text>
             </div>
-                @*@foreach (var item in ViewBag.Model)
+                @foreach (Database_Tbl item in ViewBag.Model)
                 {
-                      @Html.DisplayFor(ModelItem => item)
-                }*@
+                    if (item != null)
+                    {
+                    <div id="DBInfor">
+                        <div class="name">
+                            <div id="dbtittle">
+                                <strong><text>Name :</text></strong>
+                            </div>
+                            <div id="dbbody">
+                                @Html.DisplayFor(ModelItem => item.DB_Name)
+                            </div>
+                        </div>
+                       <div class="desc">
+                           <div id="dbtittle">
+                               <strong><text>Description :</text></strong>
+                           </div>
+                           <div id="dbbody">
+                                    @Html.TextAreaFor(ModelItem => item.DB_Description,2,20, new { @id= "DBDescrip",Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
+                                        <div class="container">
+                                            <div id="icons">
+                                                <input id="editdb" name="button" type="button" value="Edit" class="btn-link"/> |
+                                                <input type="submit" name="button" value="Save" class="btn-link" />
+                                            </div>
+                                        </div>
+                                
+                           </div>    
+                       </div>
+                    </div>
+                    }
+                }
         </section>
 </div>
-
 <div class="section2">
-     <section>
-          <div id="sec2Header">
-              <text>Table Information</text>
-          </div>
-     </section>
-</div>
-<div class="section3">
     <section>
-  
+        <div id="sec2Header">
+            <text>Table Information</text>
+        </div>
+        @foreach (Table_Tbl item in ViewBag.TBLModel)
+        {
+            if (item != null)
+            {
+                <div id="tblInfor">
+                    <div class="name">
+                        <div id="dbtittle">
+                            <strong><text>Name :</text></strong>
+                        </div>
+                        <div id="dbbody">
+                            @Html.DisplayFor(ModelItem => item.TBL_Name)
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div id="dbtittle">
+                            <strong><text>Description :</text></strong>
+                        </div>
+                        <div id="dbbody">
+                            @Html.TextAreaFor(ModelItem => item.TBL_Description, 2, 20, new { @id = "DBDescrip", Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
+                            <div class="container">
+                                <div id="icons">
+                                    <input id="editdb" name="button" type="button" value="Edit" class="btn-link" /> |
+                                    <input type="submit" name="button" value="Save" class="btn-link" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ColumnCount">
+                        <strong><text><u><i>@Html.DisplayFor(ModelItem => item.TBL_Name)</i></u> table has <u><i>@Html.DisplayFor(ModelItem => item.Field_Tbl.Count) </i></u> columns</text></strong>
+                    </div>
+                </div>
+                <hr class="hr1" />
+                <div class="section3">
+                    <section>
+
+
+                        @{ int count = 1;}
+                        @foreach (var fielditem in item.Field_Tbl)
+                        {
+                            <div id="tbltittle">
+                                <strong>
+                                    <text>Column : @Html.DisplayFor(Modelitem => fielditem.Field_Name)</text>
+                                </strong>
+                            </div>
+                            <div class="" style="">
+                                    <div class="sec3name">
+                                        <strong><text>Database:</text></strong>
+                                    </div>
+                                    <div id="sec3dbbody">
+                                        @Html.DisplayFor(Modelitem => fielditem.DBName)
+                                    </div>
+
+                                    <div class="sec3name">
+                                        <strong><text>Column Name:</text></strong>
+                                    </div>
+                                    <div id="sec3dbbody">
+                                        @Html.DisplayFor(Modelitem => fielditem.Field_Name)
+                                    </div>
+
+                                    <div class="sec3name">
+                                        <strong><text>Column DataType:</text></strong>
+                                    </div>
+                                    <div id="sec3dbbody">
+                                        @Html.DisplayFor(Modelitem => fielditem.DataType)
+                                    </div>
+
+                                    <div class="sec3name">
+                                        <strong><text>Column Size:</text></strong>
+                                    </div>
+                                    <div id="sec3dbbody">
+
+                                        @if (fielditem.ColLength > 0)
+                                        {
+                                            @Html.DisplayFor(modelItem => fielditem.ColLength).ToString();
+                                        }
+                                        else
+                                        {
+                                            if (fielditem.ColLength == -1)
+                                            {
+                                                    string max = "Max";
+                                                @Html.DisplayFor(modelItem => max).ToString();
+                                             }
+                                             else
+                                             {
+                                                @Html.DisplayFor(modelItem => fielditem.Prec).ToString()
+                                             }
+                                          }
+                                    </div>
+
+                                    <div class="sec3name">
+                                        <strong><text>IS_NULL ?:</text></strong>
+                                    </div>
+                                    <div id="sec3dbbody">
+                                        @Html.DisplayFor(Modelitem => fielditem.is_null)
+                                    </div>
+
+                                    <div class="sec3name">
+                                        <strong><text>Column Description:</text></strong>
+                                    </div>
+                                    <div id="sec3dbbody">
+                                        @Html.TextAreaFor(ModelItem => item.TBL_Description, 2, 20, new { @id = "DBDescrip", Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
+                                        <div class="container">
+                                            <div id="icons">
+                                                <input id="editdb" name="button" type="button" value="Edit" class="btn-link" /> |
+                                                <input type="submit" name="button" value="Save" class="btn-link" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        }
+
+
+                    </section>
+                </div>
+            }
+         }
     </section>
 </div>
+}
+
+
 
 <div id = "search" >
     <p>
@@ -90,7 +261,7 @@
               @Html.RadioButton("searchby", "4", true) <text> All </text>
               <br/>
                   <div id = "searchtxtbox">
-                       @Html.TextBox("search", null, new { placeholder = "Search............", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
+                       @Html.TextBox("search", null, new { placeholder = "Search........", style = "Height:34px;Width:240px;box-shadow: 1px 1px 8px #d9d9d9;padding-left:7px;border-top-left:5px" })
                    </div>
                    <div id = "btnSearch">
                         <button type = "submit" class="btn btn-primary" value="search"><span class="glyphicon glyphicon-search"></span></button>

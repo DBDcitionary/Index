@@ -126,9 +126,9 @@ fieldset {
 }
 
 .list{
-margin-left: -350px;
-max-width:42em;
-max-height: initial;
+    margin-left: -350px;
+    max-width:23em;
+    height:auto;
 }
 
 #infor{
@@ -165,12 +165,12 @@ tbody{
 
 .section2{
     margin-top:10px;
+    height:auto;
 }
 
 .section3{
     margin-top:10px;
-    border:1px solid #0094ff;
-    height: 10em;
+    height: auto;
 }
 
 #sec1Header,
@@ -179,4 +179,88 @@ background: #0094ff;
 color: white;
 font-size:19px;
 padding-left: 10px;
+}
+
+.col-md-4{
+    margin-right:100em;
+}
+
+#dbtittle{
+    display:block;
+    margin-top: 1em;
+    padding-left: 1em;
+    font-size:100%;
+}
+
+#dbbody{
+    position: relative;
+    bottom: 20px;
+    left: 150px; 
+}
+
+.desc{
+    position: relative;
+    bottom:30px;
+}
+
+.desc,
+.name{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#DBDescrip{
+    padding-bottom: 120px;
+    width: 100em;
+}
+
+.error {
+position:relative;
+top:11px;
+}
+
+p.big {
+    line-height:1.4;
+}
+
+#tbltittle{
+    background-color: #0094ff;
+    width: 38em;
+    margin-bottom:15px;
+    margin-top: 15px;
+    margin-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left:15px;
+}
+
+.sec3name{
+    padding-left:30px;
+}
+
+#sec3dbbody{
+    position:relative;
+    bottom:20px;
+    left:15em;
+}
+
+.ColumnCount{
+    position:relative;
+    bottom:270px;
+    left:25em;
+    background-color: #ffd800;
+    max-width:500px;
+    text-align:center;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:18px;
+}
+
+.hr1{
+    border:1px solid #cfcbcb;
+    width: 80em;
+}
+
+.collapse,
+#tbltittle,
+#infor{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

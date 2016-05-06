@@ -5,67 +5,45 @@
       <PropertyRef Name="DB_ID" />
     </Key>
     <Property Name="DB_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="DB_Name" Type="varchar" MaxLength="225" />
-    <Property Name="DB_Description" Type="varchar" MaxLength="225" Nullable="false" />
-    <Property Name="ServerName" Type="varchar" MaxLength="250" />
+    <Property Name="DB_Name" Type="varchar(max)" />
+    <Property Name="DB_Description" Type="varchar(max)" Nullable="false" />
+    <Property Name="ServerName" Type="varchar(max)" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="FK_Databaseid" Type="varchar(max)" />
   </EntityType>
   <EntityType Name="Field_Tbl">
     <Key>
       <PropertyRef Name="Field_ID" />
     </Key>
     <Property Name="Field_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Field_Name" Type="varchar" MaxLength="225" />
-    <Property Name="Field_Description" Type="varchar" MaxLength="225" Nullable="false" />
+    <Property Name="Field_Name" Type="varchar(max)" />
+    <Property Name="Field_Description" Type="varchar(max)" Nullable="false" />
     <Property Name="TBL_ID" Type="int" Nullable="false" />
-    <Property Name="ServerName" Type="varchar" MaxLength="250" />
-    <Property Name="DBName" Type="varchar" MaxLength="250" />
-    <Property Name="TableName" Type="varchar" MaxLength="250" />
-    <Property Name="SchemaName" Type="varchar" MaxLength="20" />
-    <Property Name="DataType" Type="varchar" MaxLength="250" />
-    <Property Name="prec" Type="int" />
-    <Property Name="is_null" Type="varchar" MaxLength="10" />
+    <Property Name="ServerName" Type="varchar(max)" />
+    <Property Name="DBName" Type="varchar(max)" />
+    <Property Name="TableName" Type="varchar(max)" />
+    <Property Name="SchemaName" Type="varchar(max)" />
+    <Property Name="DataType" Type="varchar(max)" />
+    <Property Name="Prec" Type="int" />
+    <Property Name="is_null" Type="varchar(max)" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="UpdatedDate" Type="datetime" />
-    <Property Name="ConstraintType" Type="varchar" MaxLength="100" />
+    <Property Name="ConstraintType" Type="varchar(max)" />
     <Property Name="ColLength" Type="int" />
-  </EntityType>
-  <EntityType Name="lk_ObjectType">
-    <Key>
-      <PropertyRef Name="ObjectTypeID" />
-    </Key>
-    <Property Name="ObjectTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Object_Type" Type="varchar" MaxLength="255" />
-    <Property Name="Object_Description" Type="varchar" MaxLength="255" />
+    <Property Name="FK_Fieldid" Type="varchar(max)" />
   </EntityType>
   <EntityType Name="Table_Tbl">
     <Key>
       <PropertyRef Name="TBL_ID" />
     </Key>
     <Property Name="TBL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TBL_Name" Type="varchar" MaxLength="225" />
-    <Property Name="TBL_Description" Type="varchar" MaxLength="225" Nullable="false" />
+    <Property Name="TBL_Name" Type="varchar(max)" />
+    <Property Name="TBL_Description" Type="varchar(max)" Nullable="false" />
     <Property Name="DB_ID" Type="int" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="UpdatedDate" Type="datetime" />
-  </EntityType>
-  <EntityType Name="User_Role_Tbl">
-    <Key>
-      <PropertyRef Name="User_Role_ID" />
-    </Key>
-    <Property Name="User_Role_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Role" Type="varchar" MaxLength="50" />
-    <Property Name="Role_Description" Type="varchar" MaxLength="255" />
-  </EntityType>
-  <EntityType Name="User_Tbl">
-    <Key>
-      <PropertyRef Name="User_ID" />
-    </Key>
-    <Property Name="User_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="User_Role_ID" Type="int" />
-    <Property Name="Password" Type="varbinary(max)" />
+    <Property Name="FK_Tableid" Type="varchar(max)" />
   </EntityType>
   <Association Name="fk_DB_TBL">
     <End Role="Database_Tbl" Type="Self.Database_Tbl" Multiplicity="1">
@@ -95,27 +73,10 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_UserRoleID">
-    <End Role="User_Role_Tbl" Type="Self.User_Role_Tbl" Multiplicity="0..1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Role="User_Tbl" Type="Self.User_Tbl" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User_Role_Tbl">
-        <PropertyRef Name="User_Role_ID" />
-      </Principal>
-      <Dependent Role="User_Tbl">
-        <PropertyRef Name="User_Role_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="DB_DictionaryModelStoreContainer">
     <EntitySet Name="Database_Tbl" EntityType="Self.Database_Tbl" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Field_Tbl" EntityType="Self.Field_Tbl" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="lk_ObjectType" EntityType="Self.lk_ObjectType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Table_Tbl" EntityType="Self.Table_Tbl" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="User_Role_Tbl" EntityType="Self.User_Role_Tbl" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="User_Tbl" EntityType="Self.User_Tbl" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="fk_DB_TBL" Association="Self.fk_DB_TBL">
       <End Role="Database_Tbl" EntitySet="Database_Tbl" />
       <End Role="Table_Tbl" EntitySet="Table_Tbl" />
@@ -123,10 +84,6 @@
     <AssociationSet Name="fk_TBL_Field" Association="Self.fk_TBL_Field">
       <End Role="Table_Tbl" EntitySet="Table_Tbl" />
       <End Role="Field_Tbl" EntitySet="Field_Tbl" />
-    </AssociationSet>
-    <AssociationSet Name="fk_UserRoleID" Association="Self.fk_UserRoleID">
-      <End Role="User_Role_Tbl" EntitySet="User_Role_Tbl" />
-      <End Role="User_Tbl" EntitySet="User_Tbl" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

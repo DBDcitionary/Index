@@ -326,6 +326,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
                 var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            ViewBag.email = loginInfo.Email.ToString();
             if (loginInfo.Email.EndsWith(WebConfigurationManager.AppSettings["domain"]))
             {
                 if (loginInfo == null)

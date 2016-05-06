@@ -52,6 +52,27 @@
             <th>
                 <strong>Description</strong>
             </th>
+            @if (Model.tbllist != null)
+            {
+            <th>
+                Database Name
+            </th>
+            }
+            else if(Model.fldlist != null)
+            {
+                <th>
+                    Database Name
+                </th>
+                <th>
+                    Table Name
+                </th>
+                <th>
+                    Data Type
+                </th>
+                <th>
+                    Column Size
+                </th>
+            }
         </tr>
         if (Model.dblist != null)
         {
@@ -84,6 +105,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.TBL_Description)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Database_Tbl.DB_Name)
+                    </td>
                 </tr>
             }
             if (Model.tbllist != null)
@@ -103,6 +127,33 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Field_Description)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DBName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TableName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataType)
+                    </td>
+                    <th>
+                        @if (item.ColLength > 0)
+                        {
+                           @Html.DisplayFor(modelItem => item.ColLength).ToString();
+                        }
+                        else
+                        {
+                            if (item.ColLength == -1)
+                            {
+                                string max = "Max";
+                                @Html.DisplayFor(modelItem => max).ToString();
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.Prec)
+                            }
+                        }
+                    </th>
                 </tr>
             }
             if (Model.fldlist != null)

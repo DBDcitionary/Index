@@ -1,6 +1,5 @@
 ﻿@model WebApplication1.Models.qlist
 
-<div>
     @{
         ViewBag.Title = "G4S Database Dictionary";
     }
@@ -30,16 +29,27 @@
                         <text><strong>Password:</strong></text>
                         <div id="auth">
                             @Html.Password("pWord", null, new { @class = "form-control", @placeholder = "Password" })
-                            @Html.CheckBox("RememberMe") <text>Remember Me</text>
                         </div><br />
                         <div class="form-group">
                              <div class="col-md-offset-2 col-md-10">
-                                 <input type="submit" value="Connect" class="btn btn-default" />
+                                 <input type="submit" name="button" value="Connect" class="btn btn-default" />
                              </div>
                         </div>
-}
-</fieldset>
-        </div><br />
+
+                        <br />
+                                 <div>
+                                      <strong><text>Select Database To Import:</text></strong><br /><br />
+                                      <div>
+                                           @Html.DropDownList("database", null, new { @class = "form-control", style = "Width:100%"})
+                                      </div><br />
+                                      <div class="form-group">
+                                          <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" name="button" value="Import/Update" class="btn btn-default" />
+                                          </div>
+                                      </div>
+                            </div><br />
+                }
+        </fieldset>      
 </div>
 
 
