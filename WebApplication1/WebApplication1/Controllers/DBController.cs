@@ -141,7 +141,7 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult DatabaseInformation(string DBName,string tblName, string server,string button,string value,string DBDescrip)
+        public ActionResult DatabaseInformation(string DBName,string tblName, string server,string button,string value,string DBDescrip, string fldDescrip)
         {
             //******************************
             //UPDATING DATABASE DESCRIPTION
@@ -149,16 +149,21 @@ namespace WebApplication1.Controllers
             bool save = (button == "Save");
             if (save)
             {
-                using (var ent_ = new DB_DictionaryContext())
+                switch(fldDescrip)
                 {
-                    var desc = ent_.Database_Tbl.FirstOrDefault(a => a.DB_Name == DBName && a.ServerName == server);
-                    var updateDate = DateTime.Now;
-                    if (desc != null)
-                    {
-                        desc.DB_Description = DBDescrip;
-                        desc.UpdatedDate = updateDate;
-                        ent_.SaveChanges();
-                    }
+                    case null:
+                        if(DBDescrip == null)
+                        {
+                            //IList<Table_Tbl> UpdateTable = new UpdateFieldModel();
+                        }
+                        else
+                        {
+                            IList<Database_Tbl> UpdateDatabase = new UpdateDatabaseModel().UpdateDatabase(DBName,server,DBDescrip);
+                        }
+                        break;
+                    default:
+                            IList<Field_Tbl> UpdateField = new UpdateFieldModel().UpdateField(fldDescrip, DBName, tblName);
+                        break;
                 }
             }
 

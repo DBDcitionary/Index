@@ -6,6 +6,7 @@
     ViewBag.Title = "DatabaseInformation";
 }
 
+@{ int count = 0;}
 @Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
 <script type="text/javascript">
 
@@ -25,6 +26,15 @@
             $("#DBDescrip").prop('readonly', false).prop('disabled',false);
         });
     });
+
+    $(function () {
+       
+        $("#editfld").click(function () {
+            $("#fldDescrip").prop('readonly', false).prop('disabled', false); alert ('#editfld'+ @(count++));
+        });
+    });
+
+    
 
     $(function () {
         var clicked = false;
@@ -154,7 +164,11 @@
                         </div>
                     </div>
                     <div class="ColumnCount">
-                        <strong><text><u><i>@Html.DisplayFor(ModelItem => item.TBL_Name)</i></u> table has <u><i>@Html.DisplayFor(ModelItem => item.Field_Tbl.Count) </i></u> columns</text></strong>
+                        <strong>
+                            <text>
+                                <u><i>@Html.DisplayFor(ModelItem => item.TBL_Name)</i></u> table has <u><i>@Html.DisplayFor(ModelItem => item.Field_Tbl.Count) </i></u> columns
+                            </text>
+                        </strong>
                     </div>
                 </div>
                 <hr class="hr1" />
@@ -162,7 +176,7 @@
                     <section>
 
 
-                        @{ int count = 1;}
+                        @*@{ int count = 1;}*@
                         @foreach (var fielditem in item.Field_Tbl)
                         {
                             <div id="tbltittle">
@@ -226,11 +240,11 @@
                                         <strong><text>Column Description:</text></strong>
                                     </div>
                                     <div id="sec3dbbody">
-                                        @Html.TextAreaFor(ModelItem => item.TBL_Description, 2, 20, new { @id = "DBDescrip", Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
+                                        @Html.TextAreaFor(ModelItem => fielditem.Field_Description, 2, 20, new { @id = "fldDescrip", Name = "fldDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
                                         <div class="container">
                                             <div id="icons">
-                                                <input id="editdb" name="button" type="button" value="Edit" class="btn-link" /> |
-                                                <input type="submit" name="button" value="Save" class="btn-link" />
+                                                <input id="editfld" name="button" type="button" value="Edit" class="btn-link" /> |
+                                                <input id="editfld" name="button" type="submit" value="Save" class="btn-link" />
                                             </div>
                                         </div>
                                     </div>

@@ -208,7 +208,8 @@ padding-left: 10px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#DBDescrip{
+#DBDescrip, 
+#fldDescrip{
     padding-bottom: 120px;
     width: 100em;
 }
