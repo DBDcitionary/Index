@@ -141,12 +141,13 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult DatabaseInformation(string DBName,string tblName, string server,string button,string value,string DBDescrip, string fldDescrip)
+        public ActionResult DatabaseInformation(string fldDescrip,string DBName ="",string tblName = "", string server = "",string button = "",string value ="",string DBDescrip = "")
         {
             //******************************
             //UPDATING DATABASE DESCRIPTION
-            //*******************************
-            bool save = (button == "Save");
+            //******************************
+
+             bool save = (button == "Save");
             if (save)
             {
                 switch(fldDescrip)
@@ -202,6 +203,7 @@ namespace WebApplication1.Controllers
             }
             return View(ViewBag.Model);
         }
+
 
         public ActionResult TableInformation(int ? dB_ID, int? page)
         {

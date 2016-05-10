@@ -9,9 +9,11 @@ using System.Web.Configuration;
 
 namespace WebApplication1.Models
 {
+    //*************************
+    //Update Field Description
+    //*************************
     public class UpdateFieldModel
     {
-        //string connectionstring = WebConfigurationManager.ConnectionStrings["DB_Dictionary"].ToString();
         public DB_DictionaryContext Context_ { get; set;}
 
         public UpdateFieldModel()
@@ -27,15 +29,21 @@ namespace WebApplication1.Models
             var fldmodel = new DB_DictionaryContext().Field_Tbl.ToList();
             using (Context_)
             {
-                fieldinfo.Field_Description = Descript;
-                fieldinfo.UpdatedDate = DateTime.Now;
-                Context_.SaveChanges();
+                if(fieldinfo != null)
+                {
+                    fieldinfo.Field_Description = Descript;
+                    fieldinfo.UpdatedDate = DateTime.Now;
+                    Context_.SaveChanges();
+                } 
             }
             Context_ = new DB_DictionaryContext();
             return fldmodel;
         }
     }
 
+    //****************************
+    //Update Database Description
+    //****************************
     public class UpdateDatabaseModel
     {
         public DB_DictionaryContext Context_ { get; set; }
