@@ -18,7 +18,7 @@
             $("#dbform").submit();
             $(".descrip").submit();
         });
-    })
+    });
 
     $(function () {
         $("#editdb").click(function () {
@@ -26,34 +26,36 @@
         });
     });
 
+    $(function () {
+        $("#editTbl").click(function () {
+            $("#TBLDescrip").prop('readonly', false).prop('disabled', false);
+        });
+    });
+
     function f1($id)
     {
         var element = document.getElementById($id);
-        element.readOnly = element.readOnly==true?false:true;
+        element.readOnly = element.readOnly == true ? false : true;
+        element.disabled = false;
     };
 
-
-    function sub2($id)
+    function sub2(id, Name)
     {
-        var _url = '@Url.Action("DatabaseInformation", "DBController")';
-        var data_ = { fldDescrip: "fldDescrip" + $id };
-        var description = ((this).Request).Params("fldDescrip" + $id);
-        alert(_url);
+        var FieldDiscription = document.getElementById(id).value;
+        var FieldName = Name;
+        var DatabaseName = $("#DBName").val();
+        var TableName = $("#tblName").val();
+        var ServerName = $("#server").val();
         $.ajax({
+            url: '@Url.Action("DatabaseInformation","DB")',
             type: "POST",
-            url: _url,
-            data: data_,
-            dataType: 'text',
-            contentType: "application/json; charset=utf-8",
-            success: alert( data_.fldDescrip)
+            data: { fldDescrip: FieldDiscription, _DatabName: DatabaseName, _TableName: TableName, _FieldName : FieldName, server: ServerName },
         });
-    };
+    }
 
-    //$(function () {
-    //    $('#tbltittle2').click(function () {
-    //        $(this).next().toggle();
-    //    });
-    //});
+    function clicked(item) {
+        $(item).prop("display", true).next().toggle();
+    }
 </script>
 <div class="jumbotron">
     <h1>Database Dictionary</h1>
@@ -150,10 +152,10 @@
                             <strong><text>Description :</text></strong>
                         </div>
                         <div id="dbbody">
-                            @Html.TextAreaFor(ModelItem => item.TBL_Description, 2, 20, new { @id = "DBDescrip", Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
+                            @Html.TextAreaFor(ModelItem => item.TBL_Description, 2, 20, new { @id = "TBLDescrip", Name = "TBLDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
                             <div class="container">
                                 <div id="icons">
-                                    <input id="editdb" name="button" type="button" value="Edit" class="btn-link" /> |
+                                    <input id="editTbl" name="button" type="button" value="Edit" class="btn-link" /> |
                                     <input type="submit" name="button" value="Save" class="btn-link" />
                                 </div>
                             </div>
@@ -170,17 +172,15 @@
                 <hr class="hr1" />
                 <div class="section3">
                     <section>
-
-
                         @*@{ int count = 1;}*@
                         @foreach (var fielditem in item.Field_Tbl)
                         {
-                            <div id="tbltittle">
+                            <div id="tbltittle" onclick="clicked(this)">
                                 <strong>
                                     <text>Column : @Html.DisplayFor(Modelitem => fielditem.Field_Name)</text>
                                 </strong>
                             </div>
-                            <div class="" style="">
+                            <div class="" style="display:none">
                                     <div class="sec3name">
                                         <strong><text>Database:</text></strong>
                                     </div>
@@ -236,18 +236,17 @@
                                         <strong><text>Column Description:</text></strong>
                                     </div>
                                     <div id="sec3dbbody">
-                                        @Html.TextAreaFor(ModelItem => fielditem.Field_Description, 2, 20, new {@id= fielditem.Field_ID, @Name = "fldDescrip"+fielditem.Field_ID, wrap = "hard", @readOnly = true })
+                                        @Html.TextAreaFor(ModelItem => fielditem.Field_Description, 2, 20, new { @id = fielditem.Field_ID, @Name = "fldDescrip" + fielditem.Field_ID, wrap = "hard", @readOnly = true, disabled = "disabled" })
                                         <div class="container">
                                             <div id="icons">
-                                                <button id="edittbl" name="button" type="button" value="Edit" class="btn-link" onclick="f1(@fielditem.Field_ID)" >Edit</button> 
-                                                |<input id="editfld" name="button" type="submit" value="Save" class="btn-link" onclick="sub2(@fielditem.Field_ID)" />
+                                                
+                                                <button id="edittbl" name="button" type="button" value="Edit" class="btn-link" onclick="f1(@fielditem.Field_ID)">Edit</button>
+                                                |<input id="editfld" name="button" type="submit" value="Save" class="btn-link" onclick="sub2('@fielditem.Field_ID','@fielditem.Field_Name')" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                         }
-
-
                     </section>
                 </div>
             }

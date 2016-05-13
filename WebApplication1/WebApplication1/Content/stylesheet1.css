@@ -208,12 +208,15 @@ padding-left: 10px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#DBDescrip, 
-#fldDescrip{
+#DBDescrip{
     padding-bottom: 120px;
     width: 100em;
 }
 
+#TBLDescrip{
+     padding-bottom: 120px;
+    width: 100em;
+}
 .error {
 position:relative;
 top:11px;

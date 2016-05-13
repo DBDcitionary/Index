@@ -139,15 +139,14 @@ namespace WebApplication1.Controllers
             }  
         }
 
-        [HttpGet]
+        //[HttpGet]
         [Authorize]
-        public ActionResult DatabaseInformation(string fldDescrip,string DBName ="",string tblName = "", string server = "",string button = "",string value ="",string DBDescrip = "")
+        public ActionResult DatabaseInformation(string DBDescrip,string TBLDescrip,string fldDescrip,string DBName,string tblName, string server = "",string button = "",string value ="")
         {
             //******************************
             //UPDATING DATABASE DESCRIPTION
             //******************************
-
-             bool save = (button == "Save");
+            bool save = (button == "Save");
             if (save)
             {
                 switch(fldDescrip)
@@ -155,7 +154,10 @@ namespace WebApplication1.Controllers
                     case null:
                         if(DBDescrip == null)
                         {
-                            //IList<Table_Tbl> UpdateTable = new UpdateFieldModel();
+                            var DBID = new DB_DictionaryContext().Database_Tbl.FirstOrDefault(a => a.DB_Name == DBName && a.ServerName == server).DB_ID.ToString();
+                            int id = int.Parse(DBID);
+                            var FKID = new DB_DictionaryContext().Table_Tbl.Where(a => a.DB_ID == id && a.TBL_Name == tblName).Select(a => a.FK_Tableid).FirstOrDefault();
+                            IList<Table_Tbl> updatetable = new tableUpdate().updatetable(tblName, DBID, FKID, TBLDescrip);
                         }
                         else
                         {
@@ -163,7 +165,7 @@ namespace WebApplication1.Controllers
                         }
                         break;
                     default:
-                            IList<Field_Tbl> UpdateField = new UpdateFieldModel().UpdateField(fldDescrip, DBName, tblName);
+                            //IList<Field_Tbl> UpdateField = new UpdateFieldModel().UpdateField(fldDescrip, DBName, tblName);
                         break;
                 }
             }
@@ -204,6 +206,12 @@ namespace WebApplication1.Controllers
             return View(ViewBag.Model);
         }
 
+        [HttpPost]
+        public ActionResult DatabaseInformation(string DBDescrip, string TBLDescrip, string fldDescrip, string _DatabName, string _TableName, string _FieldName, string server)
+        {
+            IList<Field_Tbl> UpdateField = new UpdateFieldModel().UpdateField(fldDescrip, _DatabName, _TableName, _FieldName);
+            return RedirectToAction("DatabaseInformation", "DB");
+        }
 
         public ActionResult TableInformation(int ? dB_ID, int? page)
         {
