@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace WebApplication1.Models
 {
+    //Accesors
     public class NetworkServers
     {
         public string ServerName { get; set; }
@@ -17,6 +18,7 @@ namespace WebApplication1.Models
 
     public class NetworkPaths
     {
+        //Method for Listing Network Servers.
         public NetworkPaths()
         {
             SqlDataSourceEnumerator Servers = SqlDataSourceEnumerator.Instance;
