@@ -242,6 +242,7 @@
       <DependentUpon>Database_Infor.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\NetworkPaths.cs" />
     <Compile Include="Models\DBModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

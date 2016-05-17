@@ -18,49 +18,23 @@ namespace WebApplication1.Controllers
 {
     public class DBController : Controller
     {
-        private DB_DictionaryContext db = new DB_DictionaryContext();
+        private DB_DictionaryContext Context_ = new DB_DictionaryContext();
       // GET: DB Information
-        public ActionResult Index(string ServerName)
+        public ActionResult Index()
         {
             try
             {
-                SqlDataSourceEnumerator NetworkServers = SqlDataSourceEnumerator.Instance;
-                DataTable dataSource = NetworkServers.GetDataSources();
-                List<string> fullServerName = new List<string>();
-                ViewBag.database = new SelectList(new[] { "" });
-                for (int i = 0; i < dataSource.Rows.Count; i++)
-                {
-                        DataRow Row = dataSource.Rows[i];
-                        var servername = dataSource.Columns[WebConfigurationManager.AppSettings[5]].Table.Rows[i].ItemArray[0].ToString();
-                        var instancename = dataSource.Columns[WebConfigurationManager.AppSettings[6]].Table.Rows[i].ItemArray[1].ToString();
-                        string newServerName = servername + "\\" + instancename;
-                        switch (instancename)
-                        {
-                            case "":
-                                fullServerName.Add(servername);
-                                break;
-                            default:
-                                fullServerName.Add(newServerName);
-                                break;
-                        }
-                        ViewBag.ServerName = new SelectList(fullServerName);
-                }
 
-                if (dataSource.Rows.Count == 0)
-                {
-                    ViewBag.ServerName = new SelectList(new[]{ "No Server Found" });
-                }
-                else
-                {
-                    return View();
-                }
+                NetworkPaths NetworkServers = new NetworkPaths();
+                ViewBag.database = new SelectList(new[] { "" });
+                ViewBag.ServerName = NetworkServers.ServerPathList.ToList();
                 return View();
-                
+
             }
             catch (Exception)
             {
                 return View("ServerError");
-            }  
+            }
         }
 
         [HttpPost]
@@ -134,7 +108,7 @@ namespace WebApplication1.Controllers
                 ViewBag.tblName = new SelectList(new[] { "" });
                 ViewBag.ServerName = new SelectList(ServerName);
                 ViewBag.database = new SelectList(dbs);
-                ViewBag.Model = db.Database_Tbl.Select(a => new { a.DB_Name, a.DB_Description });
+                ViewBag.Model = Context_.Database_Tbl.Select(a => new { a.DB_Name, a.DB_Description });
                 return View();
             }  
         }
@@ -225,7 +199,7 @@ namespace WebApplication1.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                List<Table_Tbl> tblinfo = db.Table_Tbl.ToList();//listing Table Information based on the selected Database ID
+                List<Table_Tbl> tblinfo = Context_.Table_Tbl.ToList();//listing Table Information based on the selected Database ID
                 var t1 = tblinfo.Where(t => t.DB_ID == dB_ID).ToPagedList(page ?? 1, 50);//Filtering the list based on the selected Database ID
                 if (tblinfo == null)
                 {
@@ -251,7 +225,7 @@ namespace WebApplication1.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                List<Field_Tbl> fldinfo = db.Field_Tbl.ToList();//Listing fields 
+                List<Field_Tbl> fldinfo = Context_.Field_Tbl.ToList();//Listing fields 
                 var f1 = fldinfo.Where(l => l.TBL_ID == tbl_ID).ToPagedList(page ?? 1, 50);//Filtering results based on the selected TBL ID
                 if (fldinfo == null)
                 {
@@ -276,20 +250,20 @@ namespace WebApplication1.Controllers
                 {
                     case "1":
                         //Returning results and Refined by Database information
-                        querylist.dblist = db.Database_Tbl.OrderBy(c=>c.DB_Name).Where(a => a.DB_Name.Contains(search) || a.DB_Name == search || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting database information list
+                        querylist.dblist = Context_.Database_Tbl.OrderBy(c=>c.DB_Name).Where(a => a.DB_Name.Contains(search) || a.DB_Name == search || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting database information list
                         if (querylist.dblist == null || querylist.dblist.Count == 0)
                             ViewBag.Mesage = "No Results Found";
                         break;
                     case "2":
                         //Returning results and Refined by Table information 
-                          querylist.tbllist = db.Table_Tbl.OrderBy(c => c.TBL_Name).Where(b => b.TBL_Name == search || b.TBL_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Gettting Table information list
+                          querylist.tbllist = Context_.Table_Tbl.OrderBy(c => c.TBL_Name).Where(b => b.TBL_Name == search || b.TBL_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Gettting Table information list
                         if (querylist.tbllist == null || querylist.tbllist.Count == 0)
                             ViewBag.Mesage = "No Results Found";
                         break;
                     case "3":
                         //Returning results and Refined by Field information 
                         ViewBag.Max = WebConfigurationManager.AppSettings["ColMax"];
-                        querylist.fldlist = db.Field_Tbl.OrderBy(c => c.Field_Name).Where(c => c.Field_Name == search || c.Field_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting Field Infromation list
+                        querylist.fldlist = Context_.Field_Tbl.OrderBy(c => c.Field_Name).Where(c => c.Field_Name == search || c.Field_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting Field Infromation list
                         if (querylist.fldlist == null || querylist.fldlist.Count == 0)
                             ViewBag.Mesage = "No Results Found";
                         break;
@@ -297,9 +271,9 @@ namespace WebApplication1.Controllers
                         //Returning all Results
                         ViewBag.Max = WebConfigurationManager.AppSettings["ColMax"];
                         qlist newlist = new qlist();
-                        newlist.dblist = db.Database_Tbl.Where(a => a.DB_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting database information list
-                        newlist.tbllist = db.Table_Tbl.Where(b => b.TBL_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Gettting Table information list
-                        newlist.fldlist = db.Field_Tbl.Where(c => c.Field_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting Field Infromation list
+                        newlist.dblist = Context_.Database_Tbl.Where(a => a.DB_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting database information list
+                        newlist.tbllist = Context_.Table_Tbl.Where(b => b.TBL_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Gettting Table information list
+                        newlist.fldlist = Context_.Field_Tbl.Where(c => c.Field_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting Field Infromation list
                         querylist = newlist;
                         if(newlist.dblist.Count == 0 && newlist.tbllist.Count == 0 && newlist.fldlist.Count == 0)
                         ViewBag.Mesage = "No Results Found";
@@ -321,7 +295,7 @@ namespace WebApplication1.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                Context_.Dispose();
             }
             base.Dispose(disposing);
         }

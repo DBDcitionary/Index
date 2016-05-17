@@ -345,7 +345,6 @@ H:\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Ow
 H:\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 H:\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
 H:\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache
-C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\ApplicationInsights.config
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\roslyn\csc.exe
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -440,3 +439,4 @@ C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplicatio
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
+C:\Users\kgothatso.manganye\Documents\GitHub\DB_Dictionary-Project\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache

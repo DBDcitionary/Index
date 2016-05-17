@@ -5,20 +5,18 @@ using System.Web;
 
 namespace WebApplication1.Models
 {
-    //*************************
-    //Update Field Description
-    //*************************
-    public class UpdateFieldModel
+    public class UpdateFieldModel : UpdateDatabaseModel
     {
-        public DB_DictionaryContext Context_ { get; set; }
-
+        //Constructor With No Parameters
         public UpdateFieldModel()
         {
-
+            NewDescription = "";
+            NewtblName = "";
+            NewfldName = "";
         }
 
         public IList<Field_Tbl> UpdateField(string Description, string DBName, string tblname, string fldName)
-        {
+        { 
             Context_ = new DB_DictionaryContext();
             var id = Context_.Field_Tbl.Where(a => a.DBName == DBName && a.TableName == tblname && a.Field_Name == fldName).Select(a => a.Field_ID).FirstOrDefault();
             var fieldinfo = Context_.Field_Tbl.Where(a => a.Field_ID == id).FirstOrDefault();
@@ -39,5 +37,26 @@ namespace WebApplication1.Models
             Context_ = new DB_DictionaryContext();
             return fldmodel;
         }
+
+        //Accessor
+        public string getTableName()
+        {
+            return NewtblName;
+        }
+
+        private string getFieldDescription()
+        {
+            return NewDescription;
+        }
+
+        public string getFieldName()
+        {
+            return NewfldName;
+        }
+
+        //Member Variables
+        private string NewDescription;
+        private  string NewtblName;
+        private string NewfldName;
     }
 }
