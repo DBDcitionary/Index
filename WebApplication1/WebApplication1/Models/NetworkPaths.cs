@@ -25,12 +25,10 @@ namespace WebApplication1.Models
                                                     select new NetworkServers
                                                     {
                                                         ServerName = d["InstanceName"].ToString() == String.Empty ? d["ServerName"].ToString() : d["ServerName"].ToString() + "\\" + d["InstanceName"].ToString()
-                                                    }).ToList();
-            ServerPathList = new SelectList(_networkservers);
+                                                    }).ToList();            
+            ServerPathList = new SelectList(_networkservers, "ServerName", "ServerName");
         }
-
         //Accesors
-        public SelectList ServerPathList { get; set; }
-
+        public SelectList ServerPathList{get; set; }
     }
 }

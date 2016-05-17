@@ -24,12 +24,10 @@ namespace WebApplication1.Controllers
         {
             try
             {
-
                 NetworkPaths NetworkServers = new NetworkPaths();
                 ViewBag.database = new SelectList(new[] { "" });
-                ViewBag.ServerName = NetworkServers.ServerPathList.ToList();
-                return View();
-
+                ViewBag.ServerName = NetworkServers.ServerPathList.Items == null ? NetworkServers.ServerPathList : new SelectList(new[] { "No Server(s) Found" });
+              return View();
             }
             catch (Exception)
             {
