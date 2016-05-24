@@ -10,7 +10,6 @@ using System.Web.Mvc;
 
 namespace WebApplication1.Models
 {
-    //Accesors
     public class NetworkServers
     {
         public string ServerName { get; set; }

@@ -19,15 +19,26 @@ namespace WebApplication1.Controllers
     public class DBController : Controller
     {
         private DB_DictionaryContext Context_ = new DB_DictionaryContext();
-      // GET: DB Information
+        [HttpGet]
         public ActionResult Index()
         {
             try
             {
                 NetworkPaths NetworkServers = new NetworkPaths();
-                ViewBag.database = new SelectList(new[] { "" });
-                ViewBag.ServerName = NetworkServers.ServerPathList.Items == null ? NetworkServers.ServerPathList : new SelectList(new[] { "No Server(s) Found" });
-              return View();
+                DatabaseMetaData Database = new DatabaseMetaData();
+                Database.NewDatabaseList = new List<DatabaseMetaData>();
+                Database.NewDatabaseList = TempData["Data"] as List<DatabaseMetaData>;
+                List<string> DatabaseNames = new List<string>(); 
+                if (Database.NewDatabaseList != null)
+                {
+                    foreach(var item in Database.NewDatabaseList.Select(a=>a.DatabaseName).AsEnumerable())
+                    {
+                        DatabaseNames.Add(item);
+                    }
+                }
+                ViewBag.Databases = new SelectList(DatabaseNames);
+                ViewBag.ServerName = NetworkServers.ServerPathList.Items != null ? NetworkServers.ServerPathList : new SelectList(new[] { "No Server(s) Found" });
+                return View("Index");
             }
             catch (Exception)
             {
@@ -36,78 +47,37 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(List<string> ServerName, string altServerName, bool alternative, bool authen, string uName, string pWord, string connectString,string providerName,string button,string database)
+        public ActionResult Index(string ServerName, string AlternativeServerName, string UserName, string Password,string button,string database)
         {
-            var severN = ServerName[0];
-            var DB = new DB_DictionaryContext().Database_Tbl.ToList();
-            var server = (DB.Select(a => a.ServerName)).Distinct().ToList();
-
-            //*************************************
-            //IMPORTING FROM SLAVE DB to MASTER DB
-            //*************************************
+            bool alternativeChecked = Request.Form["AlternativeServerClicked"] != "false";
+            bool SQLAuthenticationCheked = Request.Form["SQLAuthentication"] != "false";
             bool import = (button == "Import/Update");
-            if(import)
+            ConnectionString setConnection = new ConnectionString();
+
+            //Condition to Check for Which button is clicked.
+            if (import == false)
             {
-                //******************************
-                //IDENTIFYING CONNECTION STRING
-                //******************************
-                connectString = ConfigurationManager.ConnectionStrings["conn"].ToString();
-                
-                //Listing
-                IList<Database_Tbl> dblist = new dbModel(connectString).dblist(database);
-                ViewBag.server = new SelectList(server);
-                ViewBag.DBName = new SelectList(DB.Select(a => a.DB_Name));
-                ViewBag.tblName = new SelectList(new[] { "" });
-                ViewBag.ServerName = new SelectList(ServerName);
-                ViewBag.Model = DB.Select(a => new { a.DB_Name, a.DB_Description });
-                return Redirect("~/DB/DatabaseInformation");
-            }
-            else
-            {
-                //*****************************************************************
-                //CONDITION TO CHECK WHICH SERVER YOU USING FROM cmbbox or txtbox
-                //*****************************************************************
-                switch (alternative)
+               // ConnectionString setConnection = new ConnectionString();
+                switch (SQLAuthenticationCheked)
                 {
                     case true:
-                        if (authen == true)//condition to check if user is using SQL Authentication to Login into the Server
-                        {
-                            connectString = WebConfigurationManager.AppSettings[7] + altServerName + WebConfigurationManager.AppSettings[9] + uName + WebConfigurationManager.AppSettings[10] + pWord; //Untrusted Connection string
-                        }
-                        else
-                            connectString = WebConfigurationManager.AppSettings[7] + altServerName + WebConfigurationManager.AppSettings[8]; //Trusted Connection string
-                        ViewBag.Name = (altServerName);//Passing the Server Name into ViewBag Properties
+                        setConnection.SQLAuthentication(ServerName, AlternativeServerName, UserName, Password, alternativeChecked);
                         break;
                     default:
-                        if (authen == true)
-                        {
-                            connectString = WebConfigurationManager.AppSettings[7] + severN + WebConfigurationManager.AppSettings[9] + uName + WebConfigurationManager.AppSettings[10] + pWord;
-                        }
-                        else
-                            connectString = WebConfigurationManager.AppSettings[7] + severN + WebConfigurationManager.AppSettings[8];
-                        ViewBag.Name = (severN);
+                        setConnection.WindowsAuthentication(alternativeChecked, ServerName, AlternativeServerName);
                         break;
                 }
 
-                //******************************
-                //MODIFYING CONNECTION STRING
-                //******************************
-                Configuration constring = WebConfigurationManager.OpenWebConfiguration("~");
-                int con = ConfigurationManager.ConnectionStrings.Count;
-                ConnectionStringSettings conset = new ConnectionStringSettings("conn", connectString, providerName + WebConfigurationManager.AppSettings["Password"]);
-                ConnectionStringsSection stringsec = constring.ConnectionStrings;
-                stringsec.ConnectionStrings.Remove(conset);
-                stringsec.ConnectionStrings.Add(conset);
-                constring.Save(ConfigurationSaveMode.Modified);
-
-                IList<string> dbs = new dbModel().database(conset.ToString());
-                ViewBag.server = new SelectList(server);
-                ViewBag.DBName = new SelectList(DB.Select(a => a.DB_Name));
-                ViewBag.tblName = new SelectList(new[] { "" });
-                ViewBag.ServerName = new SelectList(ServerName);
-                ViewBag.database = new SelectList(dbs);
-                ViewBag.Model = Context_.Database_Tbl.Select(a => new { a.DB_Name, a.DB_Description });
-                return View();
+                //Selecting DatabaseInfor from Selected server.
+                ImportDatabaseMetadata CollectingDatabaseNames = new ImportDatabaseMetadata(setConnection.connectionString_);
+                TempData["Data"] = CollectingDatabaseNames.NewDatabaseList;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                IList<Database_Tbl> dblist = new dbModel().dblist(database);
+                return Redirect("~/DB/DatabaseInformation");
+               
             }  
         }
 

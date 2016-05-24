@@ -1,5 +1,4 @@
-﻿@model WebApplication1.Models.NetworkPaths
-
+﻿@model WebApplication1.Models.DatabaseMetaData
     @{
         ViewBag.Title = "G4S Database Dictionary";
     }
@@ -9,45 +8,51 @@
                 <legend>Connect to Server</legend>
                 @using (Html.BeginForm("Index", "DB", FormMethod.Post))
                 {
+                    <div>
                         <text><strong>Server Name: </strong></text><br /><br />
-                        <div class ="text-info" style="font-size: 12px">
+                        <div class="text-info" style="font-size: 12px">
                             Please Select Server or Enter Server Name
                         </div>
                         <div id="cmbbox1">
                             @Html.DropDownList("ServerName", null, new { @class = "form-control" })
                         </div>
                         <text>Alternative :</text>
-                            @Html.TextBox("altServerName", null, new { @class = "form-control" })
+                        @Html.TextBox("AlternativeServerName", null, new { @class = "form-control" })
                         <div id="alternativeServer">
-                            @Html.CheckBox("alternative")<text> Check to use this Server</text>
+                            @Html.CheckBox("AlternativeServerClicked")<text> Check to use this Server</text>
                         </div>
-                            @Html.CheckBox("authen")<text> Use SQL Authentication</text><br /><br />
+                        @Html.CheckBox("SQLAuthentication")<text> Use SQL Authentication</text><br /><br />
                         <text><strong>User Name:</strong></text>
                         <div id="auth">
-                            @Html.TextBox("uName", null, new { @class = "form-control", @placeholder = "Username" })
+                            @Html.TextBox("UserName", null, new { @class = "form-control", @placeholder = "Username" })
                         </div>
                         <text><strong>Password:</strong></text>
                         <div id="auth">
-                            @Html.Password("pWord", null, new { @class = "form-control", @placeholder = "Password" })
+                            @Html.Password("Password", null, new { @class = "form-control", @placeholder = "Password" })
                         </div><br />
                         <div class="form-group">
-                             <div class="col-md-offset-2 col-md-10">
-                                 <input type="submit" name="button" value="Connect" class="btn btn-default" />
-                             </div>
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" name="button" value="Connect" class="btn btn-default" />
+                            </div>
                         </div>
-
-                        <br />
-                                 <div>
-                                      <strong><text>Select Database To Import:</text></strong><br /><br />
-                                      <div>
-                                           @Html.DropDownList("database", null, new { @class = "form-control", style = "Width:100%"})
-                                      </div><br />
-                                      <div class="form-group">
-                                          <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" name="button" value="Import/Update" class="btn btn-default" />
-                                          </div>
-                                      </div>
-                            </div><br />
+                    </div>
+                <br />
+                <div>
+                    @if (ViewBag.Databases.Items.Count != 0)
+                    {
+                            <strong><text>Select Database To Import:</text></strong><br /><br />
+                            <div>
+                                @Html.DropDownList("Databases", null, new { @class = "form-control", style = "Width:100%" })
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" name="button" value="Import/Update" class="btn btn-default" />
+                                </div>
+                            </div>
+                    }
+                </div>
+                <br />
                 }
         </fieldset>      
 </div>
