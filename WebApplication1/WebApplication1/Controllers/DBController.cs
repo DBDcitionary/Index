@@ -47,12 +47,13 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string ServerName, string AlternativeServerName, string UserName, string Password,string button,string database)
+        public ActionResult Index(string ServerName, string AlternativeServerName, string UserName, string Password,string button,string Databases)
         {
             bool alternativeChecked = Request.Form["AlternativeServerClicked"] != "false";
             bool SQLAuthenticationCheked = Request.Form["SQLAuthentication"] != "false";
             bool import = (button == "Import/Update");
             ConnectionString setConnection = new ConnectionString();
+            
 
             //Condition to Check for Which button is clicked.
             if (import == false)
@@ -71,12 +72,13 @@ namespace WebApplication1.Controllers
                 //Selecting DatabaseInfor from Selected server.
                 ImportDatabaseMetadata CollectingDatabaseNames = new ImportDatabaseMetadata(setConnection.connectionString_);
                 TempData["Data"] = CollectingDatabaseNames.NewDatabaseList;
+                TempData["Conn"] = setConnection.connectionString_;
                 return RedirectToAction("Index");
             }
             else
             {
-                IList<Database_Tbl> dblist = new dbModel().dblist(database);
-                return Redirect("~/DB/DatabaseInformation");
+                ImportingModel DatabaseInformation = new ImportingModel(TempData["Conn"].ToString(), Databases);
+                return RedirectToAction("DatabaseInformation");
                
             }  
         }

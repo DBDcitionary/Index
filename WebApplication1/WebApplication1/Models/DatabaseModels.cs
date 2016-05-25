@@ -10,110 +10,88 @@ using System.Data;
 using System.Configuration;
 
 namespace WebApplication1.Models
-{
-    public class dbModel
+{    
+    public class ImportingModel 
     {
-        string connectionstring;
-        public DB_DictionaryContext Context_ { get;  set; }
-
-        public dbModel(string conn)
+        //Default Constructor
+        public ImportingModel()
         {
-            connectionstring = conn;
+
+        }
+
+        //Overloaded Constructor
+        public ImportingModel(string connection, string Database)
+        {
+            ImportingDatabase import = new ImportingDatabase();
+            import.database(Database, connectionstring = connection);
+        }
+
+        //Member Variables
+        public DB_DictionaryContext Context_ { get; set; }
+        public string connectionstring;
+        public Database_Tbl DatabaseMetadata { get; set; }
+    }
+
+    class ImportingDatabase : ImportingModel
+    {
+        //Default Constructor
+        public ImportingDatabase()
+        {
+
+        }
+
+        //Method to Import Database Information
+        public Database_Tbl database(string Database, string connectionstring)
+        {
+            ImportDatabaseMetadata database_ = new ImportDatabaseMetadata(connectionstring);
+            DatabaseMetadata = new Database_Tbl();
             Context_ = new DB_DictionaryContext();
-        }
-
-        public dbModel()
-        {
-
-        }
-
-        public List<string> database(string connectionstring)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionstring))
+            foreach (var db in database_.NewDatabaseList.Where(a => a.DatabaseName == Database))
             {
-                SqlCommand cmd = new SqlCommand("SELECT [dbid],[name],[filename],@@Servername as server FROM [master].[dbo].sysdatabases WHERE dbid > 6", conn);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                List<string> db = new List<string>();
-                for (int i = 0; i < dt.Rows.Count; i++)
+                getserverName(db);
+                var exist = Context_.Database_Tbl.Where(a => a.ServerName == db.ServerName && a.DB_Name == db.DatabaseName && a.FK_Databaseid == db.id).FirstOrDefault();
+                if (exist != null)
                 {
-                    DataRow Rows = dt.Rows[i];
-                    var databname = Rows["name"].ToString();
-                    db.Add(databname);
+                    UpdateRecord(exist, db);
                 }
-                return db;
+                else
+                {
+                    DatabaseMetadata.DB_Name = databaseName;
+                    DatabaseMetadata.DB_Description = description;
+                    DatabaseMetadata.ServerName = serverName;
+                    DatabaseMetadata.CreatedDate = DateTime.Now;
+                    DatabaseMetadata.FK_Databaseid = db.id;
+                    CreateNewRecord(DatabaseMetadata);
+                }
+                ImportingTables Tables = new ImportingTables();
+                Tables.table(connectionstring, db);
             }
+            return DatabaseMetadata;
         }
 
-        public IList<Database_Tbl> dblist(string database)
+        //Accessor
+        public string getserverName(DatabaseMetaData database)
         {
-            var database_ = database;
-            using (SqlConnection conn = new SqlConnection(connectionstring))
-            {
-                conn.Open();
-                IList<Database_Tbl> _dbs = ImportDatabaseInformation(conn,database_);
-                ImportTablesInformation(conn, _dbs);
-                var dbmodel = new DB_DictionaryContext().Database_Tbl.ToList();
-                return dbmodel;
-            }
+            serverName = database.ServerName;
+            getdatabaseName(database);
+            return serverName;
         }
 
-        private IList<Database_Tbl> HttpNotFound()
+        public string getdatabaseName(DatabaseMetaData database)
         {
-            throw new NotImplementedException();
+            databaseName = database.DatabaseName;
+            getdescription(database);
+            return databaseName;
         }
 
-        private IList<Database_Tbl> ImportDatabaseInformation(SqlConnection conn, string database)
+        public string getdescription(DatabaseMetaData database)
         {
-            var dbname = "";
-            var filename = "";
-            var server = "";
-            var CreatedDate = DateTime.Now;
-            var databaseid = "";
-            SqlCommand cmd = new SqlCommand("SELECT [dbid],[name],[filename],@@Servername as server FROM [master].[dbo].sysdatabases WHERE dbid > 6 AND name = '"+database+"'", conn);
-            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            IList<Database_Tbl> _dbs = new List<Database_Tbl>();
-            adapter.Fill(dt);
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                DataRow Row = dt.Rows[i];
-                dbname = Row["name"].ToString();
-                filename = Row["filename"].ToString();
-                server = Row["server"].ToString();
-                databaseid = Row["dbid"].ToString();
-                _dbs.Add(new Database_Tbl { DB_Name = dbname, DB_Description = filename, ServerName = server, CreatedDate = CreatedDate, FK_Databaseid =  databaseid});
-            }
-
-            foreach(var db_ in _dbs)
-            {
-                   var databaseinfo= Context_.Database_Tbl.Where(a => a.ServerName == db_.ServerName && a.DB_Name == db_.DB_Name).FirstOrDefault();
-                   if (databaseinfo == null)
-                   {
-                        CreateNewRecord(db_);
-                   }
-                   else
-                   {
-                        UpdateRecord(databaseinfo, db_);
-                   }
-            }
-            return _dbs;
+            description = database.FileName;
+            return description;
         }
 
-        private void UpdateRecord(Database_Tbl existingRecod, Database_Tbl db_)
-        {
-            using (Context_)
-            {
-                existingRecod.DB_Name = db_.DB_Name;
-                existingRecod.DB_Description = db_.DB_Description;
-                Context_.SaveChanges();
-            }
-
-            Context_ = new DB_DictionaryContext();
-        }
-
-        private void CreateNewRecord(Database_Tbl db_)
+        //Method to Create New record
+        public void CreateNewRecord(Database_Tbl db_)
         {
             using (Context_)
             {
@@ -123,102 +101,145 @@ namespace WebApplication1.Models
             Context_ = new DB_DictionaryContext();
         }
 
-        private void ImportTablesInformation(SqlConnection conn, IList<Database_Tbl> _dbs)
+        //Method to Update if record exist
+        public void UpdateRecord(Database_Tbl existingRecord, DatabaseMetaData db_)
         {
-            var tblname = "";
-            var desc = "";
-            var CreatedDate = DateTime.Now;
-            var tableid = "";
-            IList<Table_Tbl> _tbls = new List<Table_Tbl>();
-            var dbnames = _dbs.Select(a => a);
-            //var dbnames = Context_.Database_Tbl.Select(a => a);
-            foreach (var dbrecord in dbnames)
+            using (Context_)
             {
-                string DBName = dbrecord.DB_Name;
-                var ForeignKeyDB = dbrecord.FK_Databaseid;
-                //var DBid = dbrecord.DB_ID;
-
-                SqlCommand cmd = new SqlCommand("SELECT object_id,name FROM ["+DBName+"].[sys].tables", conn);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                var id = Context_.Database_Tbl.Where(a=>a.DB_Name == DBName && a.FK_Databaseid == ForeignKeyDB).Select(a => a.DB_ID).Single().ToString();
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    DataRow Row = dt.Rows[i];
-                    tableid = Row["object_id"].ToString();
-                    tblname = Row["name"].ToString();
-                    _tbls.Add(new Table_Tbl { TBL_Name = tblname, TBL_Description = desc, DB_ID = int.Parse(id), CreatedDate = CreatedDate, FK_Tableid = tableid});
-                }
-
-                foreach (var tblrecord in _tbls)
-                {
-                    var tableinfo = Context_.Table_Tbl.Where(a => a.FK_Tableid == tblrecord.FK_Tableid && a.TBL_Name == tblrecord.TBL_Name &&a.DB_ID == tblrecord.DB_ID).FirstOrDefault();
-                    if(tableinfo == null)
-                    {
-                        CreateNewTableRecord(tblrecord);
-                    } 
-                    else
-                    {
-                        UpdateTableRecord(tableinfo, tblrecord);
-                    }
-                }
+                existingRecord.DB_Name = db_.DatabaseName;
+                existingRecord.DB_Description = db_.FileName;
+                existingRecord.UpdatedDate = DateTime.Now;
+                Context_.SaveChanges();
             }
-            ImportFields(conn, _tbls);
+            Context_ = new DB_DictionaryContext();
         }
 
-        private void CreateNewTableRecord(Table_Tbl tblrecord)
+        //Member Variables
+        public string serverName;
+        public string databaseName;
+        private string description;
+    }
+
+    class ImportingTables : ImportingDatabase
+    {
+        //Default Condtructor
+        public ImportingTables()
+        {
+
+        }
+
+        //Method to Import
+        public Table_Tbl table(string conn_, DatabaseMetaData databaseInfor_)
+        {
+            Table_Tbl tables = new Table_Tbl();
+            Context_ = new DB_DictionaryContext();
+            using (SqlConnection conn = new SqlConnection(conn_))
+            {
+                SqlCommand Command = new SqlCommand("SELECT object_id,name FROM ["+databaseInfor_.DatabaseName +"].[sys].tables", conn);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(Command);
+                DataTable dataSource = new DataTable();
+                dataAdapter.Fill(dataSource);
+                id(databaseInfor_);
+                foreach (var db in dataSource.AsEnumerable())
+                {
+                    gettableName(db);
+                    var exist = Context_.Table_Tbl.Where(a => a.DB_ID == DatabaseID && a.TBL_Name == tableName && a.FK_Tableid == FK_Tableid).FirstOrDefault();
+                    if (exist != null)
+                    {
+                        UpdateRecord(exist, db);
+                    }
+                    else
+                    { 
+                        tables.TBL_Name = tableName;
+                        tables.TBL_Description = tableDescription;
+                        tables.FK_Tableid = FK_Tableid;
+                        tables.CreatedDate = DateTime.Now;
+                        tables.DB_ID = DatabaseID;
+                        CreateNewRecord(tables);
+                    }
+                    ImportingColumns col = new ImportingColumns();
+                    col.ImportFields(conn_, db, databaseInfor_);
+                }
+            }
+            return tables;
+        }
+
+        //Method to Create New Record
+        private void CreateNewRecord(Table_Tbl tblrecord)
         {
             using (Context_)
             {
                 Context_.Table_Tbl.Add(tblrecord);
                 Context_.SaveChanges();
             }
-                Context_ = new DB_DictionaryContext();
+            Context_ = new DB_DictionaryContext();
         }
 
-        private void UpdateTableRecord(Table_Tbl tableinfo, Table_Tbl tblrecord)
+        //Method to Update record if Record exist
+        private void UpdateRecord(Table_Tbl existingRecord, DataRow tblrecord)
         {
             using (Context_)
             {
-                tableinfo.FK_Tableid = tblrecord.FK_Tableid;
-                tableinfo.TBL_Name = tblrecord.TBL_Name;
-                tableinfo.TBL_Description = tblrecord.TBL_Description;
-                tableinfo.UpdatedDate = DateTime.Now;
+                existingRecord.FK_Tableid = FK_Tableid;
+                existingRecord.TBL_Name = tableName;
+                existingRecord.UpdatedDate = DateTime.Now;
                 Context_.SaveChanges();
             }
-                Context_ = new DB_DictionaryContext();
+            Context_ = new DB_DictionaryContext();
         }
 
-        private void ImportFields(SqlConnection conn, IList<Table_Tbl> _tbls)
+        //Accessors
+        private int id(DatabaseMetaData databaseInfor_)
         {
-            DB_DictionaryContext db = new DB_DictionaryContext();
-            var server = "";
-            var DBName = "";
-            var TableName = "";
-            var SchemaName = "";
-            var ColName = "";
-            var dataType = "";
-            int ? precision = 0;
-            int ? length = 0;
-            var is_null = "";
-            var description = "";
-            var CreatedDate = DateTime.Now;
-            var fieldid = ""; 
+            List<int> id = Context_.Database_Tbl.Where(a => a.DB_Name == databaseInfor_.DatabaseName && a.FK_Databaseid == databaseInfor_.id && a.ServerName == databaseInfor_.ServerName).
+                                                    Select(a => a.DB_ID).ToList();
+            return DatabaseID = id[0];
+        }
 
-            var join = from table in _tbls
-                       join database in db.Database_Tbl on table.DB_ID equals database.DB_ID
-                       select new { table.TBL_Name, database.DB_Name,database.ServerName,database.DB_ID,table.TBL_ID,table.FK_Tableid };
-            var tblnames = join.Select(a => new{ a.TBL_Name,a.FK_Tableid,a.DB_ID }).ToList();
+        private string gettableName(DataRow databaseInfor_)
+        {
+            tableName = databaseInfor_["name"].ToString();
+            gettableDescription(databaseInfor_);
+            return tableName;
+        }
 
-            foreach (var tblrecord in tblnames)
+        private string gettableDescription(DataRow databaseInfor_)
+        {
+            tableDescription = "";
+            getFK_Tableid(databaseInfor_);
+            return tableDescription;
+        }
+
+        private string getFK_Tableid(DataRow databaseInfor_)
+        {
+            FK_Tableid = databaseInfor_["object_id"].ToString();
+            return FK_Tableid;
+        }
+
+        //Member Variable
+        private int DatabaseID;
+        public string tableName;
+        private string tableDescription;
+        private string FK_Tableid;
+    }
+
+    class ImportingColumns : ImportingTables
+    {
+        //Default Constructor
+        public ImportingColumns()
+        {
+
+        }
+
+        //Method for Importing
+        public void ImportFields(string connection, DataRow _tbls, DatabaseMetaData databaseInfor_)
+        {
+            getdataDatabase(databaseInfor_, _tbls);
+            Field_Tbl columns = new Field_Tbl();
+            Context_ = new DB_DictionaryContext();
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                string ForeignKeyTBL = tblrecord.FK_Tableid;
-                string tName = tblrecord.TBL_Name;
-                int Dataid = tblrecord.DB_ID;
-
-                var datab = join.Where(a => a.TBL_Name == tName).Select(a => a.DB_Name).ToArray()[0];
-                SqlCommand cmd = new SqlCommand(@"SELECT    sc.column_id as colid,
+                SqlCommand command = new SqlCommand(@"SELECT    sc.column_id as colid,
 		                                                    @@Servername as Server ,
 		                                                    tbl.TABLE_CATALOG as DBName ,
 		                                                    tbl.table_name as TableName,
@@ -229,74 +250,54 @@ namespace WebApplication1.Models
 		                                                    Character_Maximum_Length as LEN,
 		                                                    col.IS_NULLABLE,
 		                                                    ISNULL( colDesc.ColumnDescription,'') as ColumnDescription 
-                                                    FROM	"+datab+@".information_schema.tables tbl 
-                                                    INNER JOIN "+datab+@".information_schema.columns col 
+                                                    FROM	" + databaseName + @".information_schema.tables tbl 
+                                                    INNER JOIN " + databaseName + @".information_schema.columns col 
                                                         ON col.table_name = tbl.table_name 
-                                                    INNER JOIN "+datab+@".sys.columns sc 
+                                                    INNER JOIN " + databaseName + @".sys.columns sc 
                                                         ON col.COLUMN_NAME = sc.name
-                                                    INNER JOIN "+datab+@".sys.objects o
+                                                    INNER JOIN " + databaseName + @".sys.objects o
                                                         ON o.object_id = sc.object_id
                                                     LEFT JOIN (SELECT	colProp.major_id,
 					                                                    colProp.minor_id,
 					                                                    colProp.value as ColumnDescription 
-			                                                    FROM "+datab+@".sys.extended_properties colProp) colDesc 
+			                                                    FROM " + databaseName + @".sys.extended_properties colProp) colDesc 
                                                         ON colDesc.major_id = sc.object_id 
 			                                                    AND colDesc.minor_id = sc.column_id
-                                                    WHERE tbl.table_name = '"+ tName + "' and o.name = '"+ tName + "'", conn);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                IList<Field_Tbl> _fld = new List<Field_Tbl>();
-                adapter.Fill(dt);
-
-                for (int i = 0; i < dt.Rows.Count; i++)
+                                                    WHERE tbl.table_name = '" + tableName + "' and o.name = '" + tableName + "'", conn);
+                SqlDataAdapter DataAdapter = new SqlDataAdapter(command);
+                DataTable DataSource = new DataTable();
+                DataAdapter.Fill(DataSource);
+                foreach(var item in DataSource.AsEnumerable())
                 {
-                    DataRow Row = dt.Rows[i];
-                    server = Row["Server"].ToString();
-                    DBName = Row["DBName"].ToString();
-                    TableName = Row["TableName"].ToString();
-                    SchemaName = Row["SchemaName"].ToString();
-                    ColName = Row["ColumnName"].ToString();
-                    dataType = Row["ColumnDataType"].ToString();
-                    fieldid = Row["colid"].ToString();
-
-                    if (Row["Prec"].ToString().Count() == 0)
+                    getfieldName(item);
+                    var exist = Context_.Field_Tbl.Where(a => a.TBL_ID ==  tableID && a.Field_Name == fieldName && a.FK_Fieldid == FK_Fieldid).FirstOrDefault();
+                    if (exist != null)
                     {
-                        precision = 0;
+                        UpdateFeildRecord(exist, item);
                     }
                     else
-                    {
-                        precision = int.Parse(Row["Prec"].ToString());
-                    }
-
-                    if (Row["LEN"].ToString().Count() == 0)
-                    {
-                        length = 0;
-                    }
-                    else
-                    {
-                        length = int.Parse(Row["LEN"].ToString());
-                    }
-                    is_null = Row["Is_Nullable"].ToString();
-                    description = Row["ColumnDescription"].ToString();
-                    var id = Context_.Table_Tbl.Where(a => a.TBL_Name == tName && a.DB_ID == Dataid && a.FK_Tableid == ForeignKeyTBL).Select(a => a.TBL_ID).SingleOrDefault().ToString();
-                    _fld.Add(new Field_Tbl { ServerName = server, DBName = DBName, TableName = TableName, SchemaName = SchemaName, Field_Name = ColName, DataType = dataType, Prec = precision, ColLength = length, is_null = is_null, Field_Description = description, TBL_ID = int.Parse(id), CreatedDate = CreatedDate, FK_Fieldid = fieldid });
-                    foreach (var record in _fld)
-                    {
-                        var fieldinfo = Context_.Field_Tbl.Where(a => a.FK_Fieldid == record.FK_Fieldid && a.TBL_ID == record.TBL_ID).FirstOrDefault();
-                        if (fieldinfo == null)
-                        {
-                            CreateNewFieldRecord(record);
-                        }
-                        else
-                        {
-                            UpdateFeildRecord(fieldinfo, record);
-                        }
-                    }
+                    { 
+                        columns.ServerName = serverName;
+                        columns.DBName = databaseName;
+                        columns.TableName = tableName;
+                        columns.SchemaName = schemaName;
+                        columns.Field_Name = fieldName;
+                        columns.DataType = dataType;
+                        columns.Prec = precision;
+                        columns.ColLength = Length;
+                        columns.is_null = nullable;
+                        columns.Field_Description = fieldDescription;
+                        columns.TBL_ID = tableID;
+                        columns.CreatedDate = DateTime.Now;
+                        columns.FK_Fieldid = FK_Fieldid;
+                        CreateNewFieldRecord(columns);
+                    } 
                 }
             }
         }
 
-        private void CreateNewFieldRecord(Field_Tbl record)
+        //Method to create new record
+        public void CreateNewFieldRecord(Field_Tbl record)
         {
             using (Context_)
             {
@@ -306,25 +307,134 @@ namespace WebApplication1.Models
             Context_ = new DB_DictionaryContext();
         }
 
-        private void UpdateFeildRecord(Field_Tbl fieldinfo, Field_Tbl record)
+        //Method to Update existing record
+        public void UpdateFeildRecord(Field_Tbl fieldinfo, DataRow record)
         {
             using (Context_)
             {
-                fieldinfo.ServerName = record.ServerName;
-                fieldinfo.DBName = record.DBName;
-                fieldinfo.TableName = record.TableName;
-                fieldinfo.SchemaName = record.SchemaName;
-                fieldinfo.Field_Name = record.Field_Name;
-                fieldinfo.DataType = record.DataType;
-                fieldinfo.Prec = record.Prec;
-                fieldinfo.ColLength = record.ColLength;
-                fieldinfo.is_null = record.is_null;
-                fieldinfo.Field_Description = record.Field_Description;
-                fieldinfo.TBL_ID = record.TBL_ID;
-                fieldinfo.UpdatedDate = record.UpdatedDate;
-                fieldinfo.FK_Fieldid = record.FK_Fieldid;
+                fieldinfo.ServerName = serverName;
+                fieldinfo.DBName = databaseName;
+                fieldinfo.TableName = tableName;
+                fieldinfo.SchemaName = schemaName;
+                fieldinfo.Field_Name = fieldName;
+                fieldinfo.DataType = dataType;
+                fieldinfo.Prec = precision;
+                fieldinfo.ColLength = Length;
+                fieldinfo.is_null = nullable;
+                fieldinfo.Field_Description = fieldDescription;
+                fieldinfo.TBL_ID = tableID;
+                fieldinfo.UpdatedDate = DateTime.Now;
+                fieldinfo.FK_Fieldid = FK_Fieldid;
+                Context_.SaveChanges();
             }
             Context_ = new DB_DictionaryContext();
         }
+
+        //Accessors
+        public string getdataDatabase(DatabaseMetaData databaseInfor_, DataRow tableInfor)
+        {
+            databaseName = databaseInfor_.DatabaseName;
+            gettableName(tableInfor);
+            getserver(databaseInfor_);
+            return databaseName;
+        }
+
+        public string getserver(DatabaseMetaData databaseInfor_)
+        {
+            serverName = databaseInfor_.ServerName;
+            return serverName;
+        }
+
+        public string gettableName(DataRow tableInfor)
+        {
+            tableName = tableInfor["name"].ToString();
+            gettableId(tableInfor);
+            return tableName;
+        }
+
+        public int gettableId(DataRow tableInfor)
+        {
+            var fk = tableInfor["Object_id"].ToString();
+            List<int> id = new List<int>();
+            using (Context_ = new DB_DictionaryContext())
+            {
+                id = Context_.Table_Tbl.Where(a => a.TBL_Name == tableName && a.FK_Tableid == fk).
+                                                                       Select(a => a.TBL_ID).ToList();
+            }  
+            return tableID = id[0];
+        }
+
+        public string getfieldName(DataRow fieldInfor)
+        {
+            fieldName = fieldInfor["ColumnName"].ToString();
+            getschemaName(fieldInfor);
+            return fieldName;
+        }
+
+        public string getschemaName(DataRow fieldInfor)
+        {
+            schemaName = fieldInfor["SchemaName"].ToString();
+            getdataType(fieldInfor);
+            return schemaName;
+        }
+
+        public string getdataType(DataRow fieldInfor)
+        {
+            dataType = fieldInfor["ColumnDataType"].ToString();
+            getprecision(fieldInfor);
+            return dataType;
+        }
+
+        public int getprecision(DataRow fieldInfor)
+        {
+            if(fieldInfor["Prec"].ToString().Count() == 0)
+            {
+                precision = 0;
+            }
+            else
+            {
+                precision = int.Parse(fieldInfor["Prec"].ToString());
+            }  
+            getLength(fieldInfor);
+            return precision;
+        }
+
+        public int getLength(DataRow fieldInfor)
+        {
+            if(fieldInfor["LEN"].ToString().Count() == 0)
+            {
+                Length = 0;
+            }
+            else
+            {
+                Length = int.Parse(fieldInfor["LEN"].ToString());
+            }
+            getnullable(fieldInfor);
+            return Length;
+        }
+
+        public string getnullable(DataRow fieldInfor)
+        {
+            nullable = fieldInfor["IS_NULLABLE"].ToString();
+            getFK_Fieldid(fieldInfor);
+            return nullable;
+        }
+
+        public string getFK_Fieldid(DataRow fieldInfor)
+        {
+            FK_Fieldid = fieldInfor["colid"].ToString();
+            return FK_Fieldid;
+        }
+
+        //Member Variables
+        private string schemaName;
+        private string fieldName;
+        private string fieldDescription = "";
+        private string dataType;
+        private int precision;
+        private int Length;
+        private string nullable;
+        private int tableID;
+        private string FK_Fieldid;
     }
 }
