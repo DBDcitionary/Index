@@ -16,7 +16,7 @@ using System.Data.SqlClient;
 
 namespace WebApplication1.Controllers
 {
-    public class DBController : Controller
+    public class DatabaseDictionaryController : Controller
     {
         private DB_DictionaryContext Context_ = new DB_DictionaryContext();
         [HttpGet]
@@ -83,78 +83,20 @@ namespace WebApplication1.Controllers
             }  
         }
 
-        //[HttpGet]
+        [HttpGet]
         [Authorize]
-        public ActionResult DatabaseInformation(string DBDescrip,string TBLDescrip,string fldDescrip,string DBName,string tblName, string server = "",string button = "",string value ="")
+        public ActionResult DatabaseInformation(string Servers = " ", string Databases = " ", string Tables = " ") 
         {
-            //******************************
-            //UPDATING DATABASE DESCRIPTION
-            //******************************
-            bool save = (button == "Save");
-            if (save)
-            {
-                switch(fldDescrip)
-                {
-                    case null:
-                        if(DBDescrip == null)
-                        {
-                            var DBID = new DB_DictionaryContext().Database_Tbl.FirstOrDefault(a => a.DB_Name == DBName && a.ServerName == server).DB_ID.ToString();
-                            int id = int.Parse(DBID);
-                            var FKID = new DB_DictionaryContext().Table_Tbl.Where(a => a.DB_ID == id && a.TBL_Name == tblName).Select(a => a.FK_Tableid).FirstOrDefault();
-                            IList<Table_Tbl> updatetable = new tableUpdate().updatetable(tblName, DBID, FKID, TBLDescrip);
-                        }
-                        else
-                        {
-                            IList<Database_Tbl> UpdateDatabase = new UpdateDatabaseModel().UpdateDatabase(DBName,server,DBDescrip);
-                        }
-                        break;
-                    default:
-                            //IList<Field_Tbl> UpdateField = new UpdateFieldModel().UpdateField(fldDescrip, DBName, tblName);
-                        break;
-                }
-            }
-
-            //*******************************
-            //LISTING DATABASE INFORMATION
-            //*******************************
-            var DB = new DB_DictionaryContext().Database_Tbl.ToList();
-            var serverList = (DB.Select(a =>a.ServerName)).Distinct().ToList();
-            ViewBag.server = new SelectList(serverList);
-            ViewBag.DBName = new SelectList(DB.Where(a => a.ServerName == server).Select(a => a.DB_Name));
-
-            if (DBName == null)
-            {
-               ViewBag.Model = "";
-            }
-            else
-            {
-                var variable = DB.Where(b => b.DB_Name == DBName && b.ServerName == b.ServerName).ToList();
-                ViewBag.Model = variable;
-            }            
-
-            //***************************
-            //LISTING TABLE and FIELD INFORMATION
-            //***************************
-            var dbid = new DB_DictionaryContext().Database_Tbl.Where(a => a.DB_Name == DBName || a.DB_Name == null).Select(a => a.DB_ID).FirstOrDefault().ToString();
-            var TBL = new DB_DictionaryContext().Table_Tbl.ToList();
-            ViewBag.tblName = new SelectList(TBL.Where(b => b.DB_ID == int.Parse(dbid) || b.DB_ID == 0).Select(b => b.TBL_Name));
-            if(tblName == null)
-            {
-                ViewBag.TBLModel = "";
-            }
-            else
-            {
-                int databID = int.Parse(dbid);
-                ViewBag.TBLModel = TBL.Where(a => a.DB_ID == databID && a.TBL_Name == tblName).ToList();               
-            }
-            return View(ViewBag.Model);
+            List<Database_Tbl> Model = Context_.Database_Tbl.Select(a=>a).ToList();
+            ListingDatabaseInforModels test = new ListingDatabaseInforModels(Model);
+            return View(test);
         }
 
         [HttpPost]
         public ActionResult DatabaseInformation(string DBDescrip, string TBLDescrip, string fldDescrip, string _DatabName, string _TableName, string _FieldName, string server)
         {
             IList<Field_Tbl> UpdateField = new UpdateFieldModel().UpdateField(fldDescrip, _DatabName, _TableName, _FieldName);
-            return RedirectToAction("DatabaseInformation", "DB");
+            return RedirectToAction("DatabaseInformation", "DatabaseDictionary");
         }
 
         public ActionResult TableInformation(int ? dB_ID, int? page)
@@ -212,7 +154,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public ActionResult Search(string searchby, string search,int ? page)
         {
-            qlist querylist = new qlist();//Variable
+            Search querylist = new Search();//Variable
             try
             {
                 ViewBag.Message = null;
@@ -240,7 +182,7 @@ namespace WebApplication1.Controllers
                     case "4":
                         //Returning all Results
                         ViewBag.Max = WebConfigurationManager.AppSettings["ColMax"];
-                        qlist newlist = new qlist();
+                        Search newlist = new Search();
                         newlist.dblist = Context_.Database_Tbl.Where(a => a.DB_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting database information list
                         newlist.tbllist = Context_.Table_Tbl.Where(b => b.TBL_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Gettting Table information list
                         newlist.fldlist = Context_.Field_Tbl.Where(c => c.Field_Name.Contains(search) || search == null).ToList().ToPagedList(page ?? 1, 20);//Getting Field Infromation list

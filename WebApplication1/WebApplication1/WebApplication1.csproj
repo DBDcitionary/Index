@@ -210,7 +210,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\DBController.cs" />
+    <Compile Include="Controllers\DatabaseDictionaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\tblController.cs" />
@@ -243,8 +243,9 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DatabaseInformation.cs" />
+    <Compile Include="Models\ListingDatabaseInforModels.cs" />
     <Compile Include="Models\NetworkPaths.cs" />
-    <Compile Include="Models\DBModels.cs" />
+    <Compile Include="Models\SearchModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\DatabaseModels.cs" />
@@ -348,19 +349,21 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\DB\DatabaseInformation.cshtml" />
-    <Content Include="Views\DB\Index.cshtml" />
-    <Content Include="Views\DB\TableInformation.cshtml" />
-    <Content Include="Views\DB\FieldInformation.cshtml" />
+    <Content Include="Views\DatabaseDictionary\DatabaseInformation.cshtml" />
+    <Content Include="Views\DatabaseDictionary\Index.cshtml" />
+    <Content Include="Views\DatabaseDictionary\TableInformation.cshtml" />
+    <Content Include="Views\DatabaseDictionary\FieldInformation.cshtml" />
     <Content Include="Views\tbl\Create.cshtml" />
     <Content Include="Views\tbl\Delete.cshtml" />
     <Content Include="Views\tbl\Details.cshtml" />
     <Content Include="Views\tbl\Edit.cshtml" />
     <Content Include="Views\tbl\Index.cshtml" />
     <Content Include="Views\tbl\tblInformation.cshtml" />
-    <Content Include="Views\DB\Search.cshtml" />
+    <Content Include="Views\DatabaseDictionary\Search.cshtml" />
     <Content Include="Views\Shared\LoginError.cshtml" />
     <Content Include="Views\Shared\ServerError.cshtml" />
+    <Content Include="Views\DatabaseDictionary\Form.cshtml" />
+    <Content Include="Views\DatabaseDictionary\SearchForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

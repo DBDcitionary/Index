@@ -1,0 +1,121 @@
+﻿@using WebApplication1.Models
+@model ListingDatabaseInforModels
+
+@{
+    ViewBag.Title = "DatabaseInformation";
+}
+
+@Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
+
+<script type="text/javascript">
+
+    $().ready(function () {
+        $(".form-control").removeAttr('multiple');
+    });
+
+    $(function () {
+        $(".form-control").change(function () {
+            $("#dbform").submit();
+            $(".descrip").submit();
+        });
+    });
+
+    $(function () {
+        $("#editdb").click(function () {
+            $("#DBDescrip").prop('readonly', false).prop('disabled',false);
+        });
+    });
+
+    $(function () {
+        $("#editTbl").click(function () {
+            $("#TBLDescrip").prop('readonly', false).prop('disabled', false);
+        });
+    });
+
+    function f1($id)
+    {
+        var element = document.getElementById($id);
+        element.readOnly = element.readOnly == true ? false : true;
+        element.disabled = false;
+    };
+
+    function sub2(id, Name)
+    {
+        var FieldDiscription = document.getElementById(id).value;
+        var FieldName = Name;
+        var DatabaseName = $("#DBName").val();
+        var TableName = $("#tblName").val();
+        var ServerName = $("#server").val();
+        $.ajax({
+            url: '@Url.Action("DatabaseInformation","DatabaseDictionary")',
+            type: "POST",
+            data: { fldDescrip: FieldDiscription, _DatabName: DatabaseName, _TableName: TableName, _FieldName : FieldName, server: ServerName },
+        });
+    }
+
+    function clicked(item) {
+        $(item).prop("display", true).next().toggle();
+    }
+</script>
+
+<div class="jumbotron">
+    <h1>Database Dictionary</h1>
+</div>
+
+<div id="infor">
+    <div id="buttonChange">
+        @Html.ActionLink("Add Database", "Index", "DatabaseDictionary", new { style = "text-decoration:none;color:black", @id = "AddDB", @name ="link"})
+    </div>
+</div><br />
+
+@using (Html.BeginForm("DatabaseInformation", "DatabaseDictionary", FormMethod.Get, new {id = "dbform", name = "databaseinfor" }))
+{
+<div>
+     @Html.Partial("Form")
+</div>
+
+@*<div class="section1">
+        <section>
+            <div id="sec1Header">
+                <text>Databases Information</text>
+            </div>
+                @foreach (Database_Tbl item in ViewBag.Model)
+                {
+                    if (item != null)
+                    {
+                    <div id="DBInfor">
+                        <div class="name">
+                            <div id="dbtittle">
+                                <strong><text>Name :</text></strong>
+                            </div>
+                            <div id="dbbody">
+                                @Html.DisplayFor(ModelItem => item.DB_Name)
+                            </div>
+                        </div>
+                       <div class="desc">
+                           <div id="dbtittle">
+                               <strong><text>Description :</text></strong>
+                           </div>
+                           <div id="dbbody">
+                                    @Html.TextAreaFor(ModelItem => item.DB_Description,2,20, new { @id= "DBDescrip",Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
+                                        <div class="container">
+                                            <div id="icons">
+                                                <input id="editdb" name="button" type="button" value="Edit" class="btn-link"/> |
+                                                <input type="submit" name="button" value="Save" class="btn-link" />
+                                            </div>
+                                        </div>
+                                
+                           </div>    
+                       </div>
+                    </div>
+                    }
+                }
+        </section>
+</div>
+
+<div id="TableInformation">
+    @Html.Partial("TableInformation")
+</div>*@        
+}
+
+@*@Html.Partial("SearchForm")*@
