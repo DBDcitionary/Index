@@ -53,8 +53,6 @@ namespace WebApplication1.Controllers
             bool SQLAuthenticationCheked = Request.Form["SQLAuthentication"] != "false";
             bool import = (button == "Import/Update");
             ConnectionString setConnection = new ConnectionString();
-            
-
             //Condition to Check for Which button is clicked.
             if (import == false)
             {
@@ -85,18 +83,23 @@ namespace WebApplication1.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult DatabaseInformation(string Servers = " ", string Databases = " ", string Tables = " ") 
+        public ActionResult DatabaseInformation() 
         {
-            List<Database_Tbl> Model = Context_.Database_Tbl.Select(a=>a).ToList();
-            ListingDatabaseInforModels test = new ListingDatabaseInforModels(Model);
-            return View(test);
+            List<Database_Tbl> DatabaseModel = Context_.Database_Tbl.Select(a=>a).ToList();
+            ListingDatabaseInforModels Model = new ListingDatabaseInforModels(DatabaseModel);
+            return View(Model);
         }
 
         [HttpPost]
-        public ActionResult DatabaseInformation(string DBDescrip, string TBLDescrip, string fldDescrip, string _DatabName, string _TableName, string _FieldName, string server)
+        public ActionResult DatabaseInformation(string ServerNames = " ", string DatabaseNames = " ", string TableseNames = " ")
         {
-            IList<Field_Tbl> UpdateField = new UpdateFieldModel().UpdateField(fldDescrip, _DatabName, _TableName, _FieldName);
-            return RedirectToAction("DatabaseInformation", "DatabaseDictionary");
+            List<Database_Tbl> DatabaseModel = Context_.Database_Tbl.Select(a => a).ToList();
+            ListingDatabaseInforModels Model = new ListingDatabaseInforModels();
+            Model.ServerName = ServerNames;
+            Model.DB_Name = DatabaseNames;
+            Model.TBL_Name = TableseNames;
+            Model.SubmitForm(DatabaseModel);
+            return View("DatabaseInformation", Model);
         }
 
         public ActionResult TableInformation(int ? dB_ID, int? page)

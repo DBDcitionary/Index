@@ -16,7 +16,7 @@
     $(function () {
         $(".form-control").change(function () {
             $("#dbform").submit();
-            $(".descrip").submit();
+            //$(".descrip").submit();
         });
     });
 
@@ -68,36 +68,33 @@
     </div>
 </div><br />
 
-@using (Html.BeginForm("DatabaseInformation", "DatabaseDictionary", FormMethod.Get, new {id = "dbform", name = "databaseinfor" }))
+@using (Html.BeginForm("DatabaseInformation", "DatabaseDictionary", FormMethod.Post, new {id = "dbform", name = "dbform" }))
 {
 <div>
      @Html.Partial("Form")
 </div>
 
-@*<div class="section1">
+<div class="section1">
         <section>
             <div id="sec1Header">
                 <text>Databases Information</text>
             </div>
-                @foreach (Database_Tbl item in ViewBag.Model)
-                {
-                    if (item != null)
-                    {
                     <div id="DBInfor">
                         <div class="name">
                             <div id="dbtittle">
                                 <strong><text>Name :</text></strong>
                             </div>
                             <div id="dbbody">
-                                @Html.DisplayFor(ModelItem => item.DB_Name)
+                                @Html.DisplayFor(modelitem => modelitem.DB_Name)
                             </div>
                         </div>
+                        <br />
                        <div class="desc">
                            <div id="dbtittle">
                                <strong><text>Description :</text></strong>
                            </div>
                            <div id="dbbody">
-                                    @Html.TextAreaFor(ModelItem => item.DB_Description,2,20, new { @id= "DBDescrip",Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
+                                    @Html.TextAreaFor(modelitem => modelitem.DB_Description, 2,20, new { @id= "DBDescrip",Name = "DBDescrip", wrap = "hard", @readonly = true, disabled = "disabled" })
                                         <div class="container">
                                             <div id="icons">
                                                 <input id="editdb" name="button" type="button" value="Edit" class="btn-link"/> |
@@ -108,14 +105,12 @@
                            </div>    
                        </div>
                     </div>
-                    }
-                }
         </section>
 </div>
 
 <div id="TableInformation">
     @Html.Partial("TableInformation")
-</div>*@        
+</div>        
 }
 
 @*@Html.Partial("SearchForm")*@

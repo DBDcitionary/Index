@@ -5,20 +5,20 @@
         <div class="list">
             <div id="serverlist">
                 <text><strong>Select Server:</strong></text>
-                @Html.DropDownList("ServerNames", Model.Servers, new { @class = "form-control", style = "Width:100%" })
+                @Html.DropDownList("ServerNames", new SelectList(Model.Servers.Select(a=>a.ServerName)), new { @class = "form-control", style = "Width:100%" })
             </div>
             <br />
             <div id="listbox1">
                 <div id="tableheader">
                     <text><strong> Database List</strong></text>
                 </div>
-                @Html.ListBox("DatabaseNames", Model.Databases.ToList(), new { @class = "form-control", style = "Width:100%", Size = 15 })
+                @Html.ListBox("DatabaseNames", new SelectList(Model.Databases.Select(a=>a.DB_Name)), new { @class = "form-control", style = "Width:100%", Size = 15 })
             </div>
             <div id="listbox2">
                 <div id="tableheader">
                     <text><strong> Table List</strong></text>
                 </div>
-                @Html.ListBox("TableseNames", Model.Tables.ToList(), new { @class = "form-control", style = "Width:100%", Size = 15 })
+                @Html.ListBox("TableseNames", new SelectList(Model.Tables.Select(a=>a.TBL_Name)), new { @class = "form-control", style = "Width:100%", Size = 15 })
             </div>
         </div>
     </div>
